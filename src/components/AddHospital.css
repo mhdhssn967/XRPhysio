@@ -1,0 +1,44 @@
+.form-addHospital{
+    margin: 15px;
+}
+.form-addHospital label,.form-addHospital input{
+    margin: 5px;
+}
+.addhospt-btn{
+    width: 150px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.fa-square-plus{
+    cursor: pointer;
+  }
+  .fa-square-plus:hover{
+    color: var(--primary-color);
+  }
+  .fa-square-plus:active{
+    color: rgb(37, 37, 37);
+  }
+  .form-container form{
+    min-height: 250px;
+    animation: openField .5s;
+    overflow: hidden;
+    max-height: fit-content;
+  }
+  @keyframes openField{
+    0%{
+        height: 0px;
+    }100%{
+        height: 250px;
+    }
+
+  }
+  .addhospt-btn{
+    transition: 0.2s;
+  }
+  .addhospt-btn:hover{
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+  .addhospt-btn:active{
+    transform: scale(1);
+  }

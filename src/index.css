@@ -1,0 +1,154 @@
+*{
+    font-family: "Raleway", sans-serif;
+    margin: 0%;
+    max-width: 100vw;
+}
+:root {
+    --primary-color: #fd8f45;
+    --secondary-color: #f17f32;
+    --extra-color: #f8c080;
+    --background-color: #f5e9de;
+  }
+  .main-btn{
+    background-color: white;
+    border: solid var(--secondary-color) 0.5px;
+  }
+  .sec-btn{
+    background-color:var(--secondary-color);
+    color: white;
+    border: none;
+  }
+  .app-btn{
+    padding: 2%;
+    font-size: 20px;
+    margin-top: 2%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    width: 350px;
+    transition: 0.1s;
+  }
+.deactivate-hosp{
+  background-color: #f17f32;
+  color: white;
+  border: none;
+}
+.delete-hosp{
+  background-color: #d84d4d;
+  border: none;
+  color: white;
+  font-weight: 700;
+}
+ 
+  .app-btn{
+    cursor: pointer;
+  }
+  .app-btn:hover{
+    transform: scale(1.05);
+  }
+  .app-btn:active{
+    transform: scale(1);
+  }
+  .main-heading{
+    padding: 1%;
+    font-size: 40px;
+    font-weight: 200;
+    color: #333;
+  }
+  .sub-heading{
+    padding: 2%;
+    font-size: 40px;
+    font-weight: 500;
+    color: #333;
+  }
+  .container-head{
+    border-bottom: #333 solid 0.5px;
+    display: flex;
+    align-items: center;
+  }
+  .custom-modal{
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    align-self: center;
+    text-wrap: nowrap;
+    min-width: 500px;
+    padding: 2%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 20px rgb(128, 128, 128) ;
+    animation: openModal .2s;
+    z-index: 1;
+}
+@keyframes openModal {
+    0%{
+        transform: scale(0) translateX(-50%);
+    }
+    100%{
+        transform: scale(1) translateX(-50%);
+    }
+    
+}
+.modal-head{
+  display: flex;
+  justify-content: space-between;
+}
+.modal-body{
+  display: flex;
+}
+.modal-body i{
+  color: var(--secondary-color);
+}
+.modal-body h2, .custom-modal h2{
+  font-weight: 300;
+  font-size: 20px;
+  margin: 3%;
+}
+.modal-body span{
+  font-weight: 500;
+}
+.modal-body div{
+  display: flex;
+  flex-direction: column;
+  margin-top: 3%;
+  width: 400px;
+  justify-content: space-between;
+}
+.modal-head i{
+  transition: 0.2s;
+  font-size: 25px;
+}
+.modal-head i:hover{
+  transform: scale(1.1);
+  color: rgb(247, 156, 72);
+  cursor: pointer;
+}
+.modal-overlay{
+  position: absolute;
+  display: flex;
+  height: 100vh;
+  left: -0.1%;
+  top: -0.1%;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.35)
+}
+@keyframes openUp{
+  0%{
+      transform: scale(0);
+  }100%{
+      transform: scale(1);
+  }
+}
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.custom-loader {
+  animation: loader 0.5s linear infinite;
+}

@@ -1,0 +1,13 @@
+.device-modal-details{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+.fa-vr-cardboard{
+color: var(--secondary-color);
+}
+.modal-overlay button{
+    width: 150px;
+    height: 30px;
+    font-size: 12px;
+}

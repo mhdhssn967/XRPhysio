@@ -1,0 +1,11 @@
+  
+  body {
+    margin: 0;
+    background-color: var(--background-color);
+  }
+  
+  .content{
+    margin-left: 8%;
+  }
+  
+  

@@ -1,0 +1,61 @@
+.game-sessions-page{
+    padding: 2rem;
+}
+.sessions-body div img{
+    width: 400px;
+}
+.sessions-container{
+    background-color: rgb(248, 245, 245);
+    border: solid 0.5px var(--primary-color);
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    justify-self: left;
+    width: 80%;
+    margin-top: 3%;
+    padding: 2% 5%;
+}
+.sessions-container img{
+    width: 500px;
+    margin-left: 5%;
+}
+.sessions-body{
+    display: flex;
+    align-items: right;
+    flex-direction: column;
+    margin-top: 2%;
+    width: fit-content;
+    padding: 1%;
+    animation: openUp 0.3s;
+}
+.sessions-body h2{
+    margin: 30px;
+    font-weight: 200;
+    font-size: 30px;
+}
+.sessions-body p{
+    font-weight: 600;
+}
+.sessions-body select{
+    width: 300px;
+    height: 30px;
+    border-radius: 8px;
+    margin-right: 60px;
+    margin-left: 10px;
+}
+.sessions-body div{
+    display: flex;
+    align-items: center;
+}
+.main-btn{
+    width: 30%;
+    margin-top: 10px;
+    padding: 1%;
+    margin-left: 5%;
+    border-radius: 5px;
+    border: solid var(--primary-color) 0.5px;
+    background-color: var(--primary-color);
+}
+.input-sessions{
+    margin: 15px;
+}

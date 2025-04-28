@@ -1,0 +1,28 @@
+.hospital-card h2{
+    font-weight: 400;
+    display: inline-block;
+}
+.hospital-card{
+    cursor: pointer;
+    margin: 1rem;
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+    padding: 1%;
+    border-radius: 10px;
+    border: solid var(--extra-color) 0.5px;
+    background-color: white;
+    transition: 0.2s;
+}
+.hospital-cards{
+    display: flex;
+    flex-wrap: wrap;
+}
+.hospital-card:hover{
+    transform: scale(1.05);
+}
+.hospital-card:active{
+    transform: scale(1);
+}
