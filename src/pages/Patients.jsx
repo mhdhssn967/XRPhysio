@@ -68,8 +68,8 @@ const Patients = ({ user, triggerRefresh, setTriggerRefresh }) => {
         </div>
         <PatientData setInsightPage={setInsightPage} setPatientDataPage={setPatientDataPage} clickedPatientID={clickedPatientId} user={user}/>
       </div>}
-      {setInsightPage &&
-        <SessionInsight/>
+      {(inisghtPage) &&
+        <SessionInsight setInsightPage={setInsightPage} setPatientDataPage={setPatientDataPage}/>
       }
     </>
   );

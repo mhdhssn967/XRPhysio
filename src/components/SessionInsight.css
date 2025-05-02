@@ -1,0 +1,41 @@
+.visualizer{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    margin-top: -6%;
+}
+.visualizer-heading{
+    padding-top: 5%;
+    display: flex;
+    gap: 100px;
+    justify-content: center;
+}
+.visualizer-heading h2{
+    font-weight: 600;
+}
+.visual-data-div{
+    width: 300px;
+    padding: 50px;
+    text-wrap: nowrap;
+    
+}
+.visual-data-div h2{
+    margin-bottom: 3%;
+}
+.visual-data-div hr{
+    margin: 10% 0%;
+}
+.visual-data-div p{
+    margin: 4%;
+}
+.visual-data-div img{
+    width: 30px;
+}
+.performance-matrix{
+    display: flex;
+    gap: 2%;
+    margin:2% 10%;
+}
+.physio-data-div{
+    padding: 2%;
+}
