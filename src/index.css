@@ -153,3 +153,6 @@
 .custom-loader {
   animation: loader 0.5s linear infinite;
 }
+.container{
+  margin-left: 1.5%;
+}

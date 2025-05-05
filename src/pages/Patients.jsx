@@ -45,33 +45,35 @@ const Patients = ({ user, triggerRefresh, setTriggerRefresh }) => {
   return (
 
     <>
-      {/* Patient Table */}
-      {(!patientDataPage && !inisghtPage) &&
-      <div className="patients-container">
-        <div className='container-head'><h2 className='main-heading'>Patients </h2><i title='Add a new patient' className="fa-solid fa-user-plus" onClick={handleAddPatients}></i>
-        </div>
-        {addPatients ?
-          <Addpatient setAddPatients={setAddPatients} addPatients={addPatients} user={user} setTriggerRefresh={setTriggerRefresh} triggerRefresh={triggerRefresh} />
-          : <div className='no-add-patients'>
+     <div className='container'>
+        {/* Patient Table */}
+        {(!patientDataPage && !inisghtPage) &&
+        <div className="patients-container">
+          <div className='container-head'><h2 className='main-heading'>Patients </h2><i title='Add a new patient' className="fa-solid fa-user-plus" onClick={handleAddPatients}></i>
           </div>
-        }
-        {patients.length>0?
-          <PatientsTable patients={patients} setTriggerRefresh={setTriggerRefresh} triggerRefresh={triggerRefresh} setPatientDataPage={setPatientDataPage} setClickedPatientID={setClickedPatientID}/>
-        :<Loader/>
-        }
-      </div>
-}
-      {/* Patient Details page */}
-      {patientDataPage &&  
-      <div className='patient-details'>
-        <div className='container-head'><h2 className='main-heading'>Patient Details </h2>
+          {addPatients ?
+            <Addpatient setAddPatients={setAddPatients} addPatients={addPatients} user={user} setTriggerRefresh={setTriggerRefresh} triggerRefresh={triggerRefresh} />
+            : <div className='no-add-patients'>
+            </div>
+          }
+          {patients.length>0?
+            <PatientsTable patients={patients} setTriggerRefresh={setTriggerRefresh} triggerRefresh={triggerRefresh} setPatientDataPage={setPatientDataPage} setClickedPatientID={setClickedPatientID}/>
+          :<Loader/>
+          }
         </div>
-        <PatientData setInsightPage={setInsightPage} setPatientDataPage={setPatientDataPage} clickedPatientID={clickedPatientId} user={user}/>
-      </div>}
-      {(inisghtPage) &&
-        <SessionInsight setInsightPage={setInsightPage} setPatientDataPage={setPatientDataPage}/>
-      }
-    </>
+  }
+        {/* Patient Details page */}
+        {patientDataPage &&  
+        <div className='patient-details'>
+          <div className='container-head'><h2 className='main-heading'>Patient Details </h2>
+          </div>
+          <PatientData setInsightPage={setInsightPage} setPatientDataPage={setPatientDataPage} clickedPatientID={clickedPatientId} user={user}/>
+        </div>}
+        {(inisghtPage) &&
+          <SessionInsight setInsightPage={setInsightPage} setPatientDataPage={setPatientDataPage}/>
+        }
+         </div>
+      </>
   );
 };
 
