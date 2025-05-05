@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Addpatient.css'
+import './AddPatient.css'
 import { addPatientToHospital } from '../firebase/services';
 import Swal from 'sweetalert2';
 
