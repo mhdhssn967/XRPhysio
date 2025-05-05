@@ -26,5 +26,6 @@
     padding: 0.55%;
     border-radius: 25px;
     border: solid 0.5px var(--secondary-color);
+    color: rgb(43, 100, 43);
   }
   

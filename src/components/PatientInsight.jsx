@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
     LineChart, Line, XAxis, YAxis, Tooltip, BarChart, Bar, Legend, ResponsiveContainer, CartesianGrid,
 } from "recharts";
@@ -12,12 +12,12 @@ const mockSessions = [
     { sessionId: "s005", date: "2024-06-07", gameType: "Fine Motor", gameName: "Thread the Beads", score: 40, maxScore: 50 },
     { sessionId: "s006", date: "2024-06-08", gameType: "Neck", gameName: "Follow the Dot", score: 25, maxScore: 40 },
     { sessionId: "s007", date: "2024-06-09", gameType: "Gross Motor", gameName: "Wall Punch", score: 60, maxScore: 80 },
-    { sessionId: "s008", date: "2024-06-10", gameType: "Fine Motor", gameName: "Tiny Button Tap", score: 68, maxScore: 60 },
-    { sessionId: "s009", date: "2024-06-11", gameType: "Neck", gameName: "Balance and Look", score: 68, maxScore: 45 },
+    { sessionId: "s008", date: "2024-06-10", gameType: "Fine Motor", gameName: "Tiny Button Tap", score: 50, maxScore: 60 },
+    { sessionId: "s009", date: "2024-06-11", gameType: "Neck", gameName: "Balance and Look", score: 45, maxScore: 45 },
     { sessionId: "s010", date: "2024-06-13", gameType: "Gross Motor", gameName: "Jump Squat VR", score: 68, maxScore: 100 },
-    { sessionId: "s011", date: "2024-06-14", gameType: "Fine Motor", gameName: "Pinch and Place", score: 75, maxScore: 50 },
-    { sessionId: "s012", date: "2024-06-15", gameType: "Neck", gameName: "Head Tilt Puzzle", score: 88, maxScore: 50 },
-    { sessionId: "s013", date: "2024-06-16", gameType: "Gross Motor", gameName: "Reach and Touch", score: 100, maxScore: 90 },
+    { sessionId: "s011", date: "2024-06-14", gameType: "Fine Motor", gameName: "Pinch and Place", score: 25, maxScore: 50 },
+    { sessionId: "s012", date: "2024-06-15", gameType: "Neck", gameName: "Head Tilt Puzzle", score: 48, maxScore: 50 },
+    { sessionId: "s013", date: "2024-06-16", gameType: "Gross Motor", gameName: "Reach and Touch", score: 89, maxScore: 90 },
     { sessionId: "s014", date: "2024-06-17", gameType: "Fine Motor", gameName: "Nimble Fingers", score: 52, maxScore: 60 },
     { sessionId: "s015", date: "2024-06-18", gameType: "Neck", gameName: "Neck Twist Challenge", score: 40, maxScore: 50 },
 ];
@@ -29,28 +29,25 @@ const enrichSessions = (sessions) =>
     }));
 
 const PatientInsight = () => {
-    const [fromDate, setFromDate] = useState("");
-    const [toDate, setToDate] = useState("");
-    const [selectedGameType, setSelectedGameType] = useState("All");
-
     const sessionEfficiency = enrichSessions(mockSessions);
 
-    const filteredData = sessionEfficiency.filter((s) => {
-        const sessionDate = new Date(s.date);
-        const from = fromDate ? new Date(fromDate) : null;
-        const to = toDate ? new Date(toDate) : null;
+    const minDate = sessionEfficiency[0].date;
+    const maxDate = sessionEfficiency[sessionEfficiency.length - 1].date;
 
-        const matchDate =
-            (!from || sessionDate >= from) && (!to || sessionDate <= to);
+    const [fromDate, setFromDate] = useState(minDate);
+    const [toDate, setToDate] = useState(maxDate);
+    const [selectedGameType, setSelectedGameType] = useState("All");
 
-        const matchType =
-            selectedGameType === "All" || s.gameType === selectedGameType;
-
-        return matchDate && matchType;
-    });
+    const filteredData = useMemo(() => {
+        return sessionEfficiency.filter((s) => {
+            const sessionDate = s.date;
+            const matchDate = sessionDate >= fromDate && sessionDate <= toDate;
+            const matchType = selectedGameType === "All" || s.gameType === selectedGameType;
+            return matchDate && matchType;
+        });
+    }, [sessionEfficiency, fromDate, toDate, selectedGameType]);
 
     const totalSessions = filteredData.length;
-
     const averageEfficiency = totalSessions
         ? (filteredData.reduce((sum, s) => sum + s.efficiency, 0) / totalSessions).toFixed(1)
         : 0;
@@ -107,7 +104,7 @@ const PatientInsight = () => {
                 </div>
             </div>
 
-            <h3 style={{margin:'2%',textAlign:'center'}}>Efficiency Over Time</h3>
+            <h3 style={{ margin: '2%', textAlign: 'center' }}>Efficiency Over Time</h3>
             <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={filteredData}>
                     <XAxis dataKey="date" />
@@ -115,25 +112,24 @@ const PatientInsight = () => {
                     <Tooltip formatter={(v) => `${v.toFixed(1)}%`} />
                     <CartesianGrid strokeDasharray="3 3" />
                     <Line
-                        type="step"
+                        type="monotone"
                         dataKey="efficiency"
-                        stroke="#ff0055"
+                        stroke="red"
                         strokeWidth={2}
-                        dot={{ r: 2 }}
+                        dot={{r:5}}
                         isAnimationActive={false}
                     />
                 </LineChart>
             </ResponsiveContainer>
 
-            <h3 style={{margin:'2%',textAlign:'center'}}>Average Efficiency by Game Type</h3>
+            <h3 style={{ margin: '2%', textAlign: 'center' }}>Average Efficiency by Game Type</h3>
             <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={efficiencyBarData}>
                     <XAxis dataKey="gameType" />
                     <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
                     <Tooltip formatter={(v) => `${v}%`} />
-
                     <CartesianGrid strokeDasharray="3 3" />
-                    <Bar dataKey="averageEfficiency" fill="#82ca9d" />
+                    <Bar dataKey="averageEfficiency" fill="green" />
                 </BarChart>
             </ResponsiveContainer>
         </div>
