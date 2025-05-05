@@ -5,11 +5,11 @@
     color: #505050;
 }
 :root {
-    --primary-color: #fd8f45;
-    --secondary-color: #f17f32;
-    --extra-color: #f8c080;
-    --background-color: #f5e9de;
-  }
+  --primary-color: #fd8f45;
+  --secondary-color: #f17f32;
+  --extra-color: #f8c080;
+  --background-color: #f5e9de;
+}
   .main-btn{
     background-color: white;
     border: solid var(--secondary-color) 0.5px;
