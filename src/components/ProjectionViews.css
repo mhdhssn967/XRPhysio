@@ -2,12 +2,17 @@
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
+    overflow-x: scroll;
+  }
+  .projections-wrapper::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
   
   .projection {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-right: 20px;
   }
   
   .view-box {

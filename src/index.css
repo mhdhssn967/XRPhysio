@@ -154,5 +154,6 @@
   animation: loader 0.5s linear infinite;
 }
 .container{
-  margin-left: 2rem;
+  margin-left: 3rem;
+  margin-right: 2rem;
 }

@@ -34,7 +34,7 @@ const SessionInsight = ({ setInsightPage, setPatientDataPage }) => {
   });
 
   return (
-    <div>
+    <div className='container'>
       <div className='visualizer-heading'>
         <h2>Shamsad P</h2>
         <h2>Stroke</h2>
