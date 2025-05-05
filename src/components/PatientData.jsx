@@ -64,7 +64,7 @@ const PatientData = ({ user, clickedPatientID, setPatientDataPage, setInsightPag
                           </div>
                           <div className="session-table-container">
                             <PatientInsight/>
-        <h2>Session History</h2>
+        <h2 style={{margin:'2%'}}>Session History</h2>
         <table className="session-table">
           <thead>
             <tr>

@@ -12,6 +12,8 @@
     /* background-color: white; */
     width: 80%;
     padding: 1%;
+    flex-wrap: nowrap;
+    white-space: nowrap;
 }
 
 
@@ -32,15 +34,16 @@
   }
   
   .session-table {
-    width: 90%;
+    width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+
   }
   
   .session-table th, .session-table td {
     border-bottom: 1px solid #313030;
     padding: 10px;
-    text-align: left;
+    text-align: center;
   }
   
   .session-table thead {

@@ -16,4 +16,15 @@
     border-radius: 6px;
     border: 1px solid #ccc;
   }
+  .overview{
+    display: flex;
+    gap: 2%;
+  }
+  .card{
+    display: flex;
+    background-color: var(--extra-color);
+    padding: 0.55%;
+    border-radius: 25px;
+    border: solid 0.5px var(--secondary-color);
+  }
   

@@ -75,7 +75,6 @@ const PatientInsight = () => {
 
     return (
         <div className="insight-container">
-            <h2>Patient Insights</h2>
 
             <div className="filters">
                 <div>
@@ -99,16 +98,16 @@ const PatientInsight = () => {
 
             <div className="overview">
                 <div className="card">
-                    <h4>Total Sessions</h4>
-                    <p>{totalSessions}</p>
+                    <h4>Total Sessions : </h4>
+                    <p> {totalSessions}</p>
                 </div>
                 <div className="card">
-                    <h4>Average Efficiency</h4>
-                    <p>{averageEfficiency}%</p>
+                    <h4>Average Efficiency : </h4>
+                    <p> {averageEfficiency}%</p>
                 </div>
             </div>
 
-            <h3>Efficiency Over Time</h3>
+            <h3 style={{margin:'2%',textAlign:'center'}}>Efficiency Over Time</h3>
             <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={filteredData}>
                     <XAxis dataKey="date" />
@@ -126,13 +125,13 @@ const PatientInsight = () => {
                 </LineChart>
             </ResponsiveContainer>
 
-            <h3>Average Efficiency by Game Type</h3>
+            <h3 style={{margin:'2%',textAlign:'center'}}>Average Efficiency by Game Type</h3>
             <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={efficiencyBarData}>
                     <XAxis dataKey="gameType" />
                     <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
                     <Tooltip formatter={(v) => `${v}%`} />
-                    <Legend />
+
                     <CartesianGrid strokeDasharray="3 3" />
                     <Bar dataKey="averageEfficiency" fill="#82ca9d" />
                 </BarChart>
