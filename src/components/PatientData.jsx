@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './PatientData.css'
 import { getSelectedPatientData } from '../firebase/services'
 import Loader from '../helperComponents/Loader'
+import PatientInsight from './PatientInsight'
 
 
 const PatientData = ({ user, clickedPatientID, setPatientDataPage, setInsightPage }) => {
@@ -61,6 +62,7 @@ const PatientData = ({ user, clickedPatientID, setPatientDataPage, setInsightPag
                             <p>Therapist : <strong>{patientDetails.therapist}</strong> </p>
                         </div>
                         <div className="session-table-container">
+                          <PatientInsight/>
       <h2>Session History</h2>
       <table className="session-table">
         <thead>

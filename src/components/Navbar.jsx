@@ -19,7 +19,7 @@ const Navbar = ({user, adminId, setPage, page}) => {
                <button title='home' onClick={()=>setPage(0)} ><img src={home} alt="" style={page==0?{backgroundColor:'white',filter:'invert(0)'}:{}} /></button>
                <button title='Manage Patients' onClick={()=>setPage(1)} ><img src={examination} alt="" style={page==1?{backgroundColor:'white',filter:'invert(0)'}:{}} /></button>
                <button title='Manage Therapists' onClick={()=>setPage(2)} ><img src={medicalteam} alt="" /></button>
-               <button title='Manage Devices' onClick={()=>setPage(3)}><img src={vr2} alt="" /></button>
+               <button title='Manage Devices' onClick={()=>setPage(3)}><img src={vr2}  style={page==3?{backgroundColor:'white',filter:'invert(0)'}:{}} alt="" /></button>
                <button title='Game sessions' onClick={()=>setPage(4)}><img src={vr} alt="" style={page==4?{backgroundColor:'white',filter:'invert(0)'}:{}} /></button>
                <button title='Settings' onClick={()=>setPage(5)}><img src={settings} alt="" /></button>
 
