@@ -51,50 +51,52 @@ const PatientData = ({ user, clickedPatientID, setPatientDataPage, setInsightPag
 
     return (
         <>
-        <button className='sec-btn app-btn action-btn' onClick={() => setPatientDataPage(false)}> <i className='fa-solid fa-arrow-left'></i> Back to all patients</button>
-                {patientDetails?
-                    <>
-                        <div className='patient-detail-head'>
-                            <p>Name : <strong>{patientDetails.name}</strong> </p>
-                            <p>Age : <strong>{patientDetails.age}</strong> </p>
-                            <p>Condition : <strong>{patientDetails.condition}</strong> </p>
-                            <p>Starting Stage : <strong>{patientDetails.startingStage}</strong> </p>
-                            <p>Therapist : <strong>{patientDetails.therapist}</strong> </p>
-                        </div>
-                        <div className="session-table-container">
-                          <PatientInsight/>
-      <h2>Session History</h2>
-      <table className="session-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Date</th>
-            <th>Duration</th>
-            <th>Game</th>
-            <th>Status</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sessionData.map((session, index) => (
-            <tr key={index} onClick={()=>showInsights()}>
-              <td>{index + 1}</td>
-              <td>{session.date}</td>
-              <td>{session.duration}</td>
-              <td>{session.game}</td>
-              <td className={session.status === 'Completed' ? 'status-completed' : 'status-abandoned'}>
-                {session.status}
-              </td>
-              <td>{session.notes}</td>
+        <div className='container'>
+          <button className='sec-btn app-btn action-btn' onClick={() => setPatientDataPage(false)}> <i className='fa-solid fa-arrow-left'></i> Back to all patients</button>
+                  {patientDetails?
+                      <>
+                          <div className='patient-detail-head'>
+                              <p>Name : <strong>{patientDetails.name}</strong> </p>
+                              <p>Age : <strong>{patientDetails.age}</strong> </p>
+                              <p>Condition : <strong>{patientDetails.condition}</strong> </p>
+                              <p>Starting Stage : <strong>{patientDetails.startingStage}</strong> </p>
+                              <p>Therapist : <strong>{patientDetails.therapist}</strong> </p>
+                          </div>
+                          <div className="session-table-container">
+                            <PatientInsight/>
+        <h2>Session History</h2>
+        <table className="session-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Duration</th>
+              <th>Game</th>
+              <th>Status</th>
+              <th>Notes</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-                    </>
-        :
-            <Loader/>
-            }
+          </thead>
+          <tbody>
+            {sessionData.map((session, index) => (
+              <tr key={index} onClick={()=>showInsights()}>
+                <td>{index + 1}</td>
+                <td>{session.date}</td>
+                <td>{session.duration}</td>
+                <td>{session.game}</td>
+                <td className={session.status === 'Completed' ? 'status-completed' : 'status-abandoned'}>
+                  {session.status}
+                </td>
+                <td>{session.notes}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+                      </>
+          :
+              <Loader/>
+              }
+        </div>
         </>
     )
 }
