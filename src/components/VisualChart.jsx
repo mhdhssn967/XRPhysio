@@ -53,39 +53,6 @@ const VisualChart = () => {
         <p><strong>Lower Body Reach:</strong> 80%</p>
         <p><strong>Left/Right Balance:</strong> 90%</p>
      </div>
-     {/* xy */}
-            <ResponsiveContainer width="100%" height={300} >
-                <ScatterChart>
-                    <CartesianGrid />
-                    <XAxis type="number" dataKey="x" name="X" />
-                    <YAxis type="number" dataKey="y" name="Y" />
-                    <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                    <Scatter name="Touches" data={xyPoints} fill="#8884d8" />
-                </ScatterChart>
-            </ResponsiveContainer>
-
-    {/* xz */}
-
-            <ResponsiveContainer width="100%" height={300} >
-                <ScatterChart>
-                    <CartesianGrid />
-                    <XAxis type="number" dataKey="x" name="X" />
-                    <YAxis type="number" dataKey="y" name="Y" />
-                    <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                    <Scatter name="Touches" data={xyPoints} fill="#8884d8" />
-                </ScatterChart>
-            </ResponsiveContainer>
-
-    {/* yz */}
-            <ResponsiveContainer width="100%" height={300} >
-                <ScatterChart>
-                    <CartesianGrid />
-                    <XAxis type="number" dataKey="x" name="X" />
-                    <YAxis type="number" dataKey="y" name="Y" />
-                    <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                    <Scatter name="Touches" data={xyPoints} fill="#8884d8" />
-                </ScatterChart>
-            </ResponsiveContainer>
         </div>
     )
 }

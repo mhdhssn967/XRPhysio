@@ -41,6 +41,7 @@ const PatientEfficiencyVisualizer = () => {
       { name: "Point 9", position: [0, 3, 2] },
       { name: "Point 10", position: [0, 2, 0] },
     ];
+    
 
     const newCoordinates = points.map((point, index) => {
       const touchCount = Math.floor(Math.random() * 6);

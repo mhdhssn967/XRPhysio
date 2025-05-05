@@ -1,0 +1,38 @@
+.projections-wrapper {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .projection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .view-box {
+    width: 400px;
+    height: 400px;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+  }
+  
+  /* Dots */
+  .dot {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: 0.4s;
+  }
+  .dot:hover{
+    transform: scale(2);
+    transform-origin: center;
+  }
+  

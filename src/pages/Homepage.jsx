@@ -7,6 +7,7 @@ import Patients from './Patients';
 import Landing from './Landing';
 import AdminPage from './AdminPage';
 import GameSessions from './GameSessions';
+import MockVRData from '../components/MockVRData';
 const adminId = import.meta.env.VITE_ADMIN_ID
 
 
@@ -44,7 +45,7 @@ const Homepage = () => {
       case 2:
         return <ManageTherapists />
       case 3:
-        return <ManageDevices />
+        return <MockVRData />
       case 4:
         return <GameSessions triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} user={user} />
       case 5:
