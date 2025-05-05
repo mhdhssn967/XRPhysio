@@ -5,8 +5,8 @@
     width: 400px;
 }
 .sessions-container{
-    background-color: rgb(248, 245, 245);
-    border: solid 0.5px var(--primary-color);
+    /* background-color: rgb(248, 245, 245); */
+    /* border: solid 0.5px var(--primary-color); */
     display: flex;
     align-items: center;
     width: fit-content;
@@ -16,7 +16,7 @@
     padding: 2% 5%;
 }
 .sessions-container img{
-    width: 500px;
+    width: 30%;
     margin-left: 5%;
 }
 .sessions-body{
