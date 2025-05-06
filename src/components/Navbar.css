@@ -33,12 +33,13 @@
 }
 .menu-div button{
     margin: 2%;
-    width: 50%;
+    width: 60%;
     display: flex;
     justify-content: center;
-    background:none;
+    background: none;
     border: none;
 }
+
 .menu-div button img{
     width: 60px;
     filter: invert(1);
@@ -47,9 +48,11 @@
     cursor: pointer;
 }
 .menu-div button img:hover{
-    background-color: rgb(243, 243, 243);
+    background-color: rgba(243, 243, 243,0.9);
     filter: invert(0);
+    padding-left: 80px;
 }
+
 .menu-div ul{
     display: flex;
     flex-direction: column;

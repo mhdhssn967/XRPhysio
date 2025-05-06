@@ -7,6 +7,9 @@ import ProjectionViews from './ProjectionViews'
 const SessionInsight = ({ setInsightPage, setPatientDataPage }) => {
 
   const [position, setPosition] = useState({ x: 0, y: 0, z: 0 });
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
   const points = [
     { name: "Point 1", position: [2, 0, 2] },
