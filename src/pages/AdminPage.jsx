@@ -3,24 +3,18 @@ import './AdminPage.css'
 import HospList from '../components/HospList'
 import { fetchAllHospitals } from '../firebase/services'
 import AddHospital from '../components/AddHospital'
+import { useAccessRequestStatus } from '../firebase/authRequest'
+import RegisterDevice from '../components/RegisterDevice'
+
 
 
 const AdminPage = ({user,triggerRefresh,setTriggerRefresh}) => {
     // const [hospitals,setHospitals]=useState([])
-    const [registerHospital, setRegisterHospital]=useState(false)
-    console.log(triggerRefresh);
-    
-    // useEffect(() => {
-    //     const fetchHosps = async () => {
-    //         try {
-    //             const data = await fetchAllHospitals(user); 
-    //             setHospitals(data) // You can set this data to state if needed
-    //         } catch (error) {
-    //             console.error("Error while fetching hospitals:", error);
-    //         }
-    //     };
-    //     fetchHosps();
-    // }, [triggerRefresh]);
+  const [registerHospital, setRegisterHospital] = useState(false);
+  const authRequest = useAccessRequestStatus(); // 👈 Real-time state
+
+  console.log(authRequest);
+
 
   return (
     <div className='admin-page'>
@@ -30,6 +24,7 @@ const AdminPage = ({user,triggerRefresh,setTriggerRefresh}) => {
 
         {registerHospital&&<AddHospital user={user} triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} setRegisterHospital={setRegisterHospital}/>}
         <HospList user={user} triggerRefresh={triggerRefresh}/>
+        {authRequest&&<div className='reg-device'><RegisterDevice/></div>}
     </div>
   )
 }
