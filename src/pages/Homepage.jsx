@@ -13,7 +13,9 @@ const adminId = import.meta.env.VITE_ADMIN_ID
 
 const Homepage = () => {
 
-  const [user, setUser]=useState(null)  
+  const [user, setUser]=useState(null) 
+  console.log(user);
+   
   const [hospName, setHospName]=useState(null)
   const [page, setPage]=useState(0)
   const [triggerRefresh, setTriggerRefresh]=useState(false) 

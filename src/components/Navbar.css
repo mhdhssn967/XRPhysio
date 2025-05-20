@@ -41,7 +41,7 @@
 }
 
 .menu-div button img{
-    width: 60px;
+    width: 55px;
     filter: invert(1);
     padding: 50%;
     transition: .2s;
@@ -51,6 +51,9 @@
     background-color: rgba(243, 243, 243,0.9);
     filter: invert(0);
     padding-left: 80px;
+}
+.menu-div button img:active{
+    padding-left: 0px;
 }
 
 .menu-div ul{

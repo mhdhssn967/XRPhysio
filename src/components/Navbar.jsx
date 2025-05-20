@@ -11,6 +11,9 @@ import home from '../assets/home.png'
 
 const Navbar = ({user, adminId, setPage, page}) => {
 
+  console.log(user, adminId);
+  
+
   return (
     <>
     <div className='nav-container'>

@@ -11,7 +11,7 @@ const Landing = ({hospName}) => {
             <div className="dashboard-home">
               <div className="dashboard-info">
                 <h2>Welcome, <br /> <span className="highlight"><strong>{hospName}</strong></span></h2>
-                <p className="tagline">Monitoring VR Therapy Sessions with <strong>XRPhysio</strong></p>
+                <p className="tagline">Monitoring VR Therapy Sessions with <strong>Happy Moves</strong></p>
                 <div className="stats-grid">
                   <div className="stat-card">👥 Total Patients: <strong>128</strong></div>
                   <div className="stat-card">🎮 Sessions Played: <strong>452</strong></div>

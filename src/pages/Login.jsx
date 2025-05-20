@@ -26,7 +26,7 @@ const Login = () => {
     <div className="login-container">
       <div className="login-left">
         <img src={logo} alt="Oqulix Logo" className="login-logo" />
-        <h2>XRPhysio</h2>
+        <h2>Happy Moves</h2>
         <p>Revolutionizing physiotherapy through immersive VR experiences</p>
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
