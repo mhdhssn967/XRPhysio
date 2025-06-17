@@ -27,12 +27,14 @@
     margin:3% 0% 4% 0%;
 }
 .input-register button{
-    background-color: var(--primary-color);
     padding: 2%;
     border-radius: 10px;
-    border: solid 0.5px rgb(211, 99, 8);
     color: rgb(255, 255, 255);
     font-weight: 600;
+    border: none;
+}
+.input-register button:hover{
+    filter: brightness(1.2);
 }
 .register-device h2 span{
     background-color: var(--extra-color);
@@ -47,18 +49,26 @@
 .reg-btn{
     cursor: pointer;
     transition: 0.3s;
+    width: 45%;
 }
-.reg-btn:hover{
-    background-color: rgb(209, 124, 54);
-    transform: scale(1.05);
-}
-.reg-btn:active{
-    background-color: rgb(247, 188, 78);
-    transform: scale(0.95);
-}
+
 .reg-device{
     position: absolute;
     top: 25%;
     left: 50%;
     right: 50%;
+}
+.success-reg{
+    animation: openUp 0.5s;
+}
+.reg-btn-div{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.reg-reject{
+    background-color: rgb(206, 23, 23) ;
+}
+.reg-accept{
+    background-color: rgb(80, 172, 80) ;
 }

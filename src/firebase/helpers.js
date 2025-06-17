@@ -60,7 +60,7 @@ export const initiateSession = async (deviceId,patientId,deviceName,patientName,
       startedAt: serverTimestamp()
     };
 
-    await setDoc(doc(db, "activeDeviceSessions", deviceId), sessionData);
+    await setDoc(doc(db,'hospitalData',hospitalId, "activeDeviceSessions", deviceId), sessionData);
     console.log("Session started successfully!");
   } catch (error) {
     console.error("Error starting session:", error.message);
@@ -72,7 +72,7 @@ export const initiateSession = async (deviceId,patientId,deviceName,patientName,
 
 export const fetchActiveSessions = async (hospitalId) => {
     try {
-        const sessionsRef = collection(db, "activeDeviceSessions");
+        const sessionsRef = collection(db,'hospitalData',hospitalId, "activeDeviceSessions");
         
         const q = query(sessionsRef, where("hospitalId", "==", hospitalId));
         
@@ -108,13 +108,13 @@ export const endActiveSession = async (sessionId) => {
 
 
 // update gameplay status
-export const updateGameStatus = async (deviceId, newStatus) => {
+export const updateGameStatus = async (hospitalId,deviceId, newStatus) => {
     try {
       if (!deviceId || !newStatus) {
         throw new Error("Device ID and new status are required.");
       }
   
-      const sessionRef = doc(db, "activeDeviceSessions", deviceId);
+      const sessionRef = doc(db,'hospitalData',hospitalId, "activeDeviceSessions",deviceId);
       await updateDoc(sessionRef, {
         gameStatus: newStatus,
       });

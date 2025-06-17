@@ -17,8 +17,8 @@ const ActiveSessions = ({ user,triggerRefresh, setTriggerRefresh }) => {
     getSessions();
   }, [user,triggerRefresh]);
 
- const handleEditStatus=async(deviceId, status)=>{
-    await updateGameStatus(deviceId, status)
+ const handleEditStatus=async(hospitalId,deviceId, status)=>{
+    await updateGameStatus(hospitalId, deviceId, status)
     setTriggerRefresh(!triggerRefresh)
  }
 
@@ -40,7 +40,7 @@ const ActiveSessions = ({ user,triggerRefresh, setTriggerRefresh }) => {
                 <tr key={session.id}>
                   <td>{session.deviceName || session.deviceId}</td>
                   <td>{session.patientName}</td>
-                  {<td>{session.gameStatus=='idle'?<i class="fa-solid fa-circle-play game-btn" onClick={()=>handleEditStatus(session.deviceId,'playing')}></i>:<i className="fa-solid fa-circle-stop game-btn" onClick={()=>handleEditStatus(session.deviceId,'idle')}></i>}
+                  {<td>{session.gameStatus=='idle'?<i class="fa-solid fa-circle-play game-btn" onClick={()=>handleEditStatus(session.hospitalId,session.deviceId,'playing')}></i>:<i className="fa-solid fa-circle-stop game-btn" onClick={()=>handleEditStatus(session.hospitalId,session.deviceId,'idle')}></i>}
                  </td>}
                 </tr>
               ))

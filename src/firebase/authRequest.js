@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getFirestore, collection, query, where, onSnapshot, getDocs, updateDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, query, where, onSnapshot, getDocs, updateDoc, doc, deleteDoc, serverTimestamp } from "firebase/firestore";
 
 const firestore = getFirestore();
 
@@ -86,3 +86,58 @@ export const registerDevice = async (deviceId, reqEmail, reqPassword) => {
     console.error("Error in device registration and credential storage:", error);
   }
 };
+
+
+
+export const registerDeviceFalse = async (deviceId, bool) => {
+  try {
+
+
+    // Step 1: Get the only document in 'access_request'
+    const querySnapshot = await getDocs(collection(firestore, "access_request"));
+
+    if (!querySnapshot.empty) {
+      const docRef = querySnapshot.docs[0].ref;
+
+      // Step 2: Update that document's request_status and timestamp
+      await updateDoc(docRef, {
+        request_status: bool,
+        timestamp: serverTimestamp()
+      });
+    } else {
+      console.warn("No document found in 'access_request'.");
+    }
+
+    const deviceDocRef = doc(firestore, "device_request", deviceId);
+
+    // Step 3: If bool is true, create/update the device_request doc
+    if (bool) {
+      await setDoc(deviceDocRef, {
+        status: "active",
+        timestamp: serverTimestamp(),
+        deviceId: deviceId
+      });
+    } else {
+      // Step 4: If bool is false, delete the device_request doc
+      await deleteDoc(deviceDocRef);
+    }
+
+    console.log("Device registration process completed.");
+  } catch (error) {
+    console.error("Error registering device: ", error);
+  }
+};
+
+export const setCredentialsFalse=async()=>{
+  const querySnapshotCredentials = await getDocs(collection(firestore, "access_request"));
+
+    if (!querySnapshotCredentials.empty) {
+      const firstDoc = querySnapshotCredentials.docs[0];
+      const docRef = doc(firestore, "access_request", firstDoc.id);
+
+      // set credentials exist false
+      await updateDoc(docRef, {
+        credentials_exist:false
+      });
+    }   
+}
