@@ -8,6 +8,8 @@ import vr2 from '../assets/vr-glasses (1).png'
 import settings from '../assets/settings.png'
 import adminImg from '../assets/administrator-developer-icon.png'
 import home from '../assets/home.png'
+import logoutbtn from '../assets/logoutbtn.png'
+import { logout } from '../firebase/auth'
 
 const Navbar = ({user, adminId, setPage, page}) => {
 
@@ -25,6 +27,8 @@ const Navbar = ({user, adminId, setPage, page}) => {
                <button title='Manage Devices' onClick={()=>setPage(3)}><img src={vr2}  style={page==3?{backgroundColor:'white',filter:'invert(0)'}:{}} alt="" /></button>
                <button title='Game sessions' onClick={()=>setPage(4)}><img src={vr} alt="" style={page==4?{backgroundColor:'white',filter:'invert(0)'}:{}} /></button>
                <button title='Settings' onClick={()=>setPage(5)}><img src={settings} alt="" /></button>
+                              <button title='Logout' onClick={logout}><img src={logoutbtn} alt="" /></button>
+
 
                {user==adminId&&
                 <button title='Admin Settings'onClick={()=>setPage(6)} ><img style={page==6?{backgroundColor:'white',filter:'invert(0)'}:{}} src={adminImg} alt="" /></button>
