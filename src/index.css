@@ -157,3 +157,8 @@
   margin-left: 3rem;
   margin-right: 2rem;
 }
+html,
+body {
+  touch-action: manipulation; /* Prevents pinch zoom and double-tap zoom */
+  overscroll-behavior: none;
+}
