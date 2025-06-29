@@ -27,7 +27,7 @@ const Navbar = ({user, adminId, setPage, page}) => {
                <button title='Manage Devices' onClick={()=>setPage(3)}><img src={vr2}  style={page==3?{backgroundColor:'white',filter:'invert(0)'}:{}} alt="" /></button>
                <button title='Game sessions' onClick={()=>setPage(4)}><img src={vr} alt="" style={page==4?{backgroundColor:'white',filter:'invert(0)'}:{}} /></button>
                <button title='Settings' onClick={()=>setPage(5)}><img src={settings} alt="" /></button>
-                              <button title='Logout' onClick={logout}><img src={logoutbtn} alt="" /></button>
+               <button title='Logout' onClick={logout}><img src={logoutbtn} alt="" /></button>
 
 
                {user==adminId&&
