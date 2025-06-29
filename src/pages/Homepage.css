@@ -10,6 +10,8 @@
   .body-section{
     /* display: flex; */
     max-height: 100vh;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
   .content{
     max-height: 100vh;

@@ -1,7 +1,6 @@
 .homepage-wrapper {
     display: flex;
     align-items: end;
-    height: 100vh;
     background-color: var(--background-color);
     animation: openUp 0.3s;
     /* overflow: hidden; */

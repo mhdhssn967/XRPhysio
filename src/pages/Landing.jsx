@@ -22,9 +22,6 @@ const Landing = ({hospName}) => {
                 </div>  
               </div>
             </div>
-            <div className="dashboard-image">
-                <img src={man} alt="Dashboard Visual" />
-              </div>
               
           </div>
         </div>
