@@ -74,6 +74,7 @@
     .nav-container{
         width: 100vw;
         height: 50px;
+        min-height: 50px;
         bottom: 0px;
     }
     .menu-div{
