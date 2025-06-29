@@ -91,8 +91,6 @@ export const registerDevice = async (deviceId, reqEmail, reqPassword) => {
 
 export const registerDeviceFalse = async (deviceId, bool) => {
   try {
-
-
     // Step 1: Get the only document in 'access_request'
     const querySnapshot = await getDocs(collection(firestore, "access_request"));
 

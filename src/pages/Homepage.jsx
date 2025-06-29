@@ -17,9 +17,17 @@ const Homepage = () => {
   console.log(user);
    
   const [hospName, setHospName]=useState(null)
-  const [page, setPage]=useState(0)
+  // const [page, setPage]=useState(0)
   const [triggerRefresh, setTriggerRefresh]=useState(false) 
+
+  const [page, setPage] = useState(() => {
+  const savedPage = localStorage.getItem("currentPage");
+  return savedPage !== null ? parseInt(savedPage) : 0;
+});
   
+useEffect(() => {
+  localStorage.setItem("currentPage", page);
+}, [page]);
   
   useEffect(() => {
     const fetchUserID = async() => {
@@ -60,10 +68,12 @@ const Homepage = () => {
   }
   return (
     <>
-    <Navbar user={user} adminId={adminId} setPage={setPage} page={page}/>  
-        <div className="content">
-        {renderPage()}
-      </div>
+    <div className='body-section'>
+      <Navbar user={user} adminId={adminId} setPage={setPage} page={page}/>  
+          <div className="content">
+          {renderPage()}
+        </div>
+    </div>
     </>
   );
 };
