@@ -3,10 +3,7 @@
     margin: 0;
     background-color: var(--background-color);
   }
-  
-  .content{
-    margin-left: 5%;
-  }
+
   .body-section{
     /* display: flex; */
     max-height: 100vh;
