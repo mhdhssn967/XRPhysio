@@ -70,7 +70,7 @@
     cursor: pointer;
     transform: scale(1.2);
 }
-@media (max-width:600px){
+@media (max-width:720px){
     .nav-container{
         width: 100vw;
         height: 50px;

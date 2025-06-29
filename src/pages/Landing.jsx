@@ -7,7 +7,7 @@ import './Landing.css'
 const Landing = ({hospName}) => {
   return (
     <div className='landing-main'>
-      <p>V 1.2</p>
+      <p>V 1.3</p>
           <div className="homepage-wrapper">
             <div className="dashboard-home">
               <div className="dashboard-info">
