@@ -1,46 +1,167 @@
-import React from 'react'
-import logo from '../assets/OQ.png'
-import './Navbar.css'
-import examination from '../assets/examination.png'
-import medicalteam from '../assets/medical-team.png'
-import vr from '../assets/vr-glasses.png'
-import vr2 from '../assets/vr-glasses (1).png'
-import settings from '../assets/settings.png'
-import adminImg from '../assets/administrator-developer-icon.png'
-import home from '../assets/home.png'
-import logoutbtn from '../assets/logoutbtn.png'
-import { logout } from '../firebase/auth'
+import React from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import MuiDrawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Tooltip from '@mui/material/Tooltip';
+import Box from '@mui/material/Box';
+import MenuIcon from '@mui/icons-material/Menu';
 
-const Navbar = ({user, adminId, setPage, page}) => {
+import home from '../assets/home.png';
+import examination from '../assets/examination.png';
+import medicalteam from '../assets/medical-team.png';
+import vr2 from '../assets/vr-glasses (1).png';
+import vr from '../assets/vr-glasses.png';
+import settings from '../assets/settings.png';
+import logoutbtn from '../assets/logoutbtn.png';
+import adminImg from '../assets/administrator-developer-icon.png';
+import { logout } from '../firebase/auth';
 
-  console.log(user, adminId);
-  
+const drawerWidth = 240;
+
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
+
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: 60,
+});
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    ...(open && {
+      ...openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme),
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      '& .MuiDrawer-paper': closedMixin(theme),
+    }),
+  }),
+);
+
+const menuItems = [
+  { title: 'Home', img: home },
+  { title: 'Manage Patients', img: examination },
+  { title: 'Manage Therapists', img: medicalteam },
+  { title: 'Manage Devices', img: vr2 },
+  { title: 'Game Sessions', img: vr },
+  { title: 'Settings', img: settings },
+  { title: 'Logout', img: logoutbtn, action: logout },
+];
+
+const Navbar = ({ user, adminId, setPage, page }) => {
+  const [open, setOpen] = React.useState(false);
+
+  const toggleDrawer = () => setOpen((prev) => !prev);
 
   return (
-    <>
-    <div className='nav-container'>
-        
-        <div className='menu-div'>
-               <button title='home' onClick={()=>setPage(0)} ><img src={home} alt="" style={page==0?{backgroundColor:'white',filter:'invert(0)'}:{}} /></button>
-               <button title='Manage Patients' onClick={()=>setPage(1)} ><img src={examination} alt="" style={page==1?{backgroundColor:'white',filter:'invert(0)'}:{}} /></button>
-               <button title='Manage Therapists' onClick={()=>setPage(2)} ><img src={medicalteam} alt="" /></button>
-               <button title='Manage Devices' onClick={()=>setPage(3)}><img src={vr2}  style={page==3?{backgroundColor:'white',filter:'invert(0)'}:{}} alt="" /></button>
-               <button title='Game sessions' onClick={()=>setPage(4)}><img src={vr} alt="" style={page==4?{backgroundColor:'white',filter:'invert(0)'}:{}} /></button>
-               <button title='Settings' onClick={()=>setPage(5)}><img src={settings} alt="" /></button>
-               <button title='Logout' onClick={logout}><img src={logoutbtn} alt="" /></button>
+    <Box sx={{ display: 'flex' }}>
+      <Drawer
+  variant="permanent"
+  open={open}
+  sx={{
+    '& .MuiDrawer-paper': {
+      backgroundColor: 'var(--primary-color)',
+      color: 'white'  // Optional: to make text/icons white
+    }
+  }}
+>
+        <Box sx={{ display: 'flex', justifyContent: open ? 'flex-end' : 'center', p: 1 }}>
+          <IconButton onClick={toggleDrawer}>
+            <MenuIcon />
+          </IconButton>
+        </Box>
 
+        <List>
+          {menuItems.map((item, index) => (
+            <Tooltip title={!open ? item.title : ''} placement="right" key={index}>
+              <ListItem disablePadding sx={{ display: 'block' }}>
+                <ListItemButton
+                  onClick={() => {
+                    if (item.action) item.action();
+                    else setPage(index);
+                  }}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
+                    '& img': {
+                      filter: page === index ? 'invert(0)' : 'invert(1)',
+                      backgroundColor: page === index ? 'white' : 'transparent',
+                      padding: '4px',
+                      borderRadius: '8px',
+                      width: 24,
+                      height: 24,
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 2 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <img src={item.img} alt={item.title} />
+                  </ListItemIcon>
+                </ListItemButton>
+              </ListItem>
+            </Tooltip>
+          ))}
 
-               {user==adminId&&
-                <button title='Admin Settings'onClick={()=>setPage(6)} ><img style={page==6?{backgroundColor:'white',filter:'invert(0)'}:{}} src={adminImg} alt="" /></button>
-                }
+          {user === adminId && (
+            <Tooltip title={!open ? 'Admin Settings' : ''} placement="right">
+              <ListItem disablePadding sx={{ display: 'block' }}>
+                <ListItemButton
+                  onClick={() => setPage(6)}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
+                    backgroundColor: page === 6 ? 'white' : 'inherit',
+                    '& img': {
+                      filter: page === 6 ? 'invert(0)' : 'invert(1)',
+                      backgroundColor: page === 6 ? 'white' : 'transparent',
+                      padding: '4px',
+                      borderRadius: '8px',
+                      width: 24,
+                      height: 24,
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 2 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <img src={adminImg} alt="Admin Settings" />
+                  </ListItemIcon>
+                </ListItemButton>
+              </ListItem>
+            </Tooltip>
+          )}
+        </List>
+      </Drawer>
+    </Box>
+  );
+};
 
-
-            
-        </div>
-        
-    </div>
-    </>
-  )
-}
-
-export default Navbar
+export default Navbar;
