@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
+  Legend,
 } from "recharts";
 import './PatientInsight.css';
 
@@ -62,38 +63,40 @@ const PatientInsight = ({ displaySessionData = [] }) => {
       {/* Combined Line Chart */}
       <h3 style={{ margin: '2%', textAlign: 'center' }}>Session Progress</h3>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={filteredData}>
-          <XAxis dataKey="dateStr" />
-          <YAxis yAxisId="left" domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
-          <YAxis yAxisId="right" orientation="right" />
-          <Tooltip
-            formatter={(value, name) =>
-              name === "Efficiency"
-                ? [`${value.toFixed(1)}%`, "Efficiency"]
-                : [`${value.toFixed(2)} s`, "Reaction Time"]
-            }
-          />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Line
-            yAxisId="left"
-            type="monotone"
-            dataKey="efficiency"
-            stroke="red"
-            strokeWidth={2}
-            dot={{ r: 5 }}
-            name="Efficiency"
-          />
-          <Line
-            yAxisId="right"
-            type="monotone"
-            dataKey="reaction"
-            stroke="green"
-            strokeWidth={2}
-            dot={{ r: 5 }}
-            name="Reaction Time"
-          />
-        </LineChart>
-      </ResponsiveContainer>
+  <LineChart data={filteredData}>
+    <XAxis dataKey="dateStr" />
+    <YAxis yAxisId="left" domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
+    <YAxis yAxisId="right" orientation="right" />
+    <Tooltip
+      formatter={(value, name) =>
+        name === "Efficiency"
+          ? [`${value.toFixed(1)}%`, "Efficiency"]
+          : [`${value.toFixed(2)} s`, "Reaction Time"]
+      }
+    />
+    <CartesianGrid strokeDasharray="3 3" />
+    <Legend verticalAlign="top" height={36} />
+    <Line
+      yAxisId="left"
+      type="monotone"
+      dataKey="efficiency"
+      stroke="red"
+      strokeWidth={2}
+      dot={{ r: 5 }}
+      name="Efficiency"
+    />
+    <Line
+      yAxisId="right"
+      type="monotone"
+      dataKey="reaction"
+      stroke="green"
+      strokeWidth={2}
+      dot={{ r: 5 }}
+      name="Reaction Time"
+    />
+  </LineChart>
+</ResponsiveContainer>
+
     </div>
   );
 };
