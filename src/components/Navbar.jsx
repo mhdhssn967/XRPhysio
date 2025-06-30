@@ -12,14 +12,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ListItemText from '@mui/material/ListItemText';
 
 
-import home from '../assets/home.png';
-import examination from '../assets/examination.png';
-import medicalteam from '../assets/medical-team.png';
-import vr2 from '../assets/vr-glasses (1).png';
-import vr from '../assets/vr-glasses.png';
-import settings from '../assets/settings.png';
-import logoutbtn from '../assets/logoutbtn.png';
-import adminImg from '../assets/administrator-developer-icon.png';
+import home from '../assets/home.svg';
+import examination from '../assets/examination.svg';
+import medicalteam from '../assets/medical-team.svg';
+import vr2 from '../assets/vr-glasses(1).svg';
+import vr from '../assets/vr-glasses.svg';
+import settings from '../assets/settings.svg';
+import logoutbtn from '../assets/logoutbtn.svg';
+import adminImg from '../assets/administrator-developer-icon.svg';
 import { logout } from '../firebase/auth';
 
 
@@ -106,8 +106,8 @@ const Navbar = ({ user, adminId, setPage, page }) => {
                     justifyContent: open ? 'initial' : 'center',
                     px: 2.5,
                     '& img': {
-                      filter: page === index ? 'invert(0)' : 'invert(1)',
-                      backgroundColor: page === index ? 'white' : 'transparent',
+                      filter: page === index ? 'invert(1)' : 'invert(0)',
+                      backgroundColor: page === index ? 'black' : 'transparent',
                       padding: '4px',
                       borderRadius: '8px',
                       width: 24,

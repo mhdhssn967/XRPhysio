@@ -4,6 +4,7 @@ import meta from '../assets/meta.png'
 import { fetchDeviceIdsForHospitals, getPatientDataforHospitals, initiateSession } from '../firebase/helpers'
 import ActiveSessions from '../components/ActiveSessions'
 import Swal from 'sweetalert2';
+import Typography from '@mui/material/Typography';
 
 
 
@@ -52,8 +53,22 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
         <>
             <div className='game-sessions-page'>
                 <div className='container-head'>
-                    <h1 className='main-heading'>Game Sessions</h1>
-                </div>
+<Typography
+  component="h1"
+  sx={{
+    fontSize: {
+      xs: '1.5rem', // Mobile
+      sm: '2rem',   // Tablets
+      md: '2.5rem', // Laptops
+    },
+    fontWeight: 600,
+    color: '#505050',  // 👈 set color to black
+    mt: 2,
+    mb: 2
+  }}
+>
+  Game Sessions
+</Typography>               </div>
                 <div  className='sessions-container'>
                 <img src={meta} alt="" />
                     <div className='sessions-body'>
