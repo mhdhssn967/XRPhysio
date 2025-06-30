@@ -7,12 +7,12 @@ import './Landing.css'
 const Landing = ({hospName}) => {
   return (
     <div className='landing-main'>
-      <p>V 2.1</p>
+      <p>V 2.2</p>
           <div className="homepage-wrapper">
             <div className="dashboard-home">
               <div className="dashboard-info">
                 <h2> <br /> <span className="highlight"><strong>{hospName}</strong></span></h2>
-                <p className="tagline">Monitoring VR Therapy Sessions with <strong>Happy Moveshhhh</strong></p>
+                <p className="tagline">Monitoring VR Therapy Sessions with <strong>Happy Moves</strong></p>
                 <div className="stats-grid">
                   <div className="stat-card"><i class="fa-solid fa-bed-pulse"></i> <h4>Total Patients: <strong>128</strong></h4></div>
                   <div className="stat-card"><i class="fa-solid fa-gamepad"></i> <h4>Sessions Played: <strong>452</strong></h4></div>
