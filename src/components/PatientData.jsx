@@ -1,104 +1,127 @@
-import React, { useEffect, useState } from 'react'
-import './PatientData.css'
-import { getSelectedPatientData } from '../firebase/services'
-import Loader from '../helperComponents/Loader'
-import PatientInsight from './PatientInsight'
-
+import React, { useEffect, useState } from 'react';
+import './PatientData.css';
+import { fetchSessionHistoryOfPatient, getSelectedPatientData } from '../firebase/services';
+import Loader from '../helperComponents/Loader';
+import PatientInsight from './PatientInsight';
 
 const PatientData = ({ user, clickedPatientID, setPatientDataPage, setInsightPage }) => {
+  const [patientDetails, setPatientDetails] = useState(null);
+  const [sessionRawData, setSessionRawData] = useState([]);           // 🔴 Raw data
+  const [displaySessionData, setDisplaySessionData] = useState([]);   // 🟢 Processed data
 
-    const [patientDetails, setPatientDetails] = useState(null)
-    const [showAll, setShowAll] = useState(false);
+  const showInsights = () => {
+    setPatientDataPage(false);
+    setInsightPage(true);
+  };
 
+  useEffect(() => {
+    const getSessionHistory = async () => {
+      const rawData = await fetchSessionHistoryOfPatient(clickedPatientID, user);
+      setSessionRawData(rawData);
 
-    // Mock data
-    const sessionData = [
-        { date: '2024-06-10', duration: '25 mins', game: 'Balloon Pop', status: 'Completed', notes: 'Good concentration today' },
-        { date: '2024-06-09', duration: '10 mins', game: 'Memory Match', status: 'Abandoned', notes: 'Patient got tired quickly' },
-        { date: '2024-06-08', duration: '20 mins', game: 'Shape Sorter', status: 'Completed', notes: 'Improved motor control' },
-        { date: '2024-06-07', duration: '18 mins', game: 'Maze Runner', status: 'Completed', notes: 'Quick reflexes observed' },
-        { date: '2024-06-06', duration: '5 mins', game: 'Color Match', status: 'Abandoned', notes: 'Network error' },
-        { date: '2024-06-05', duration: '30 mins', game: 'Shape Sorter', status: 'Completed', notes: 'Great focus' },
-        { date: '2024-06-04', duration: '15 mins', game: 'Memory Match', status: 'Completed', notes: 'Memory improved slightly' },
-        { date: '2024-06-03', duration: '22 mins', game: 'Balloon Pop', status: 'Completed', notes: '-' },
-        { date: '2024-06-02', duration: '12 mins', game: 'Maze Runner', status: 'Abandoned', notes: 'Device crashed' },
-        { date: '2024-06-01', duration: '28 mins', game: 'Color Match', status: 'Completed', notes: 'Very responsive today' },
-        { date: '2024-06-10', duration: '25 mins', game: 'Balloon Pop', status: 'Completed', notes: 'Good concentration today' },
-        { date: '2024-06-09', duration: '10 mins', game: 'Memory Match', status: 'Abandoned', notes: 'Patient got tired quickly' },
-        { date: '2024-06-08', duration: '20 mins', game: 'Shape Sorter', status: 'Completed', notes: 'Improved motor control' },
-        { date: '2024-06-07', duration: '18 mins', game: 'Maze Runner', status: 'Completed', notes: 'Quick reflexes observed' },
-        { date: '2024-06-06', duration: '5 mins', game: 'Color Match', status: 'Abandoned', notes: 'Network error' },
-        { date: '2024-06-05', duration: '30 mins', game: 'Shape Sorter', status: 'Completed', notes: 'Great focus' },
-        { date: '2024-06-04', duration: '15 mins', game: 'Memory Match', status: 'Completed', notes: 'Memory improved slightly' },
-        { date: '2024-06-03', duration: '22 mins', game: 'Balloon Pop', status: 'Completed', notes: '-' },
-        { date: '2024-06-02', duration: '12 mins', game: 'Maze Runner', status: 'Abandoned', notes: 'Device crashed' },
-        { date: '2024-06-01', duration: '28 mins', game: 'Color Match', status: 'Completed', notes: 'Very responsive today' }
-      ];
+      // Process & store derived values
+      const transformedData = rawData.map((session) => {
+        const avgReaction =
+          session.reactionTime?.length > 0
+            ? (session.reactionTime.reduce((a, b) => a + b, 0) / session.reactionTime.length).toFixed(2)
+            : 'N/A';
 
-    const showInsights=()=>{
-      setPatientDataPage(false)
-      setInsightPage(true)
-     
-    }
-    
+        const avgEfficiency =
+          session.targetEfficiency?.length > 0
+            ? (session.targetEfficiency.reduce((a, b) => a + b, 0) / session.targetEfficiency.length).toFixed(1)
+            : 'N/A';
 
-    useEffect(() => {
-        const fetchPatientDetails = async () => {
-            const dataRef = await getSelectedPatientData(user, clickedPatientID)
-            setPatientDetails(dataRef)
-        };fetchPatientDetails();
-    }, [])
+        const dateStr = session.timestamp?.seconds
+          ? new Date(session.timestamp.seconds * 1000).toLocaleDateString()
+          : 'N/A';
 
-    return (
+        return {
+          id: session.id,
+          date: dateStr,
+          gameName: session.gameName || 'N/A',
+          hand: session.handSelected || 'N/A',
+          totalReps: session.totalRepCount || 'N/A',
+          avgReaction,
+          avgEfficiency,
+        };
+      });
+
+      setDisplaySessionData(transformedData);
+    };
+
+    getSessionHistory();
+  }, [user, clickedPatientID]);
+
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      const dataRef = await getSelectedPatientData(user, clickedPatientID);
+      setPatientDetails(dataRef);
+    };
+
+    fetchPatientDetails();
+  }, []);
+
+  return (
+    <div className="container">
+      <button className="sec-btn app-btn action-btn" onClick={() => setPatientDataPage(false)}>
+        <i className="fa-solid fa-arrow-left"></i> Back to all patients
+      </button>
+
+      {patientDetails ? (
         <>
-        <div className='container'>
-          <button className='sec-btn app-btn action-btn' onClick={() => setPatientDataPage(false)}> <i className='fa-solid fa-arrow-left'></i> Back to all patients</button>
-                  {patientDetails?
-                      <>
-                          <div className='patient-detail-head'>
-                              <p>Name : <strong>{patientDetails.name}</strong> </p>
-                              <p>Age : <strong>{patientDetails.age}</strong> </p>
-                              <p>Condition : <strong>{patientDetails.condition}</strong> </p>
-                              <p>Starting Stage : <strong>{patientDetails.startingStage}</strong> </p>
-                              <p>Therapist : <strong>{patientDetails.therapist}</strong> </p>
-                          </div>
-                          <div className="session-table-container">
-                            <PatientInsight/>
-        <h2 style={{margin:'2%'}}>Session History</h2>
-        <table className="session-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Date</th>
-              <th>Duration</th>
-              <th>Game</th>
-              <th>Status</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sessionData.map((session, index) => (
-              <tr key={index} onClick={()=>showInsights()}>
-                <td>{index + 1}</td>
-                <td>{session.date}</td>
-                <td>{session.duration}</td>
-                <td>{session.game}</td>
-                <td className={session.status === 'Completed' ? 'status-completed' : 'status-abandoned'}>
-                  {session.status}
-                </td>
-                <td>{session.notes}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-                      </>
-          :
-              <Loader/>
-              }
-        </div>
-        </>
-    )
-}
+          <div className="patient-detail-head">
+            <p>Name: <strong>{patientDetails.name}</strong></p>
+            <p>Age: <strong>{patientDetails.age}</strong></p>
+            <p>Condition: <strong>{patientDetails.condition}</strong></p>
+            <p>Starting Stage: <strong>{patientDetails.startingStage}</strong></p>
+            <p>Therapist: <strong>{patientDetails.therapist}</strong></p>
+          </div>
 
-export default PatientData
+          <div className="session-table-container">
+            <PatientInsight sessionData={sessionRawData} displaySessionData={displaySessionData}/>
+
+            <h2 style={{ margin: '2%' }}>Session History</h2>
+            <table className="session-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Date</th>
+                  <th>Game</th>
+                  <th>Hand</th>
+                  <th>Total Reps</th>
+                  <th>Avg Reaction Time (s)</th>
+                  <th>Target Hit Efficiency (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {displaySessionData.length > 0 ? (
+                  displaySessionData.map((session, index) => (
+                    <tr key={session.id} onClick={() => showInsights(session)}>
+                      <td>{index + 1}</td>
+                      <td>{session.date}</td>
+                      <td>{session.gameName}</td>
+                      <td>{session.hand}</td>
+                      <td>{session.totalReps}</td>
+                      <td>{session.avgReaction}</td>
+                      <td>{session.avgEfficiency}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" style={{ textAlign: 'center' }}>
+                      No history present
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : (
+        <Loader />
+      )}
+    </div>
+  );
+};
+
+export default PatientData;

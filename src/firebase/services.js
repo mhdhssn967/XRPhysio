@@ -290,3 +290,36 @@ export const getSelectedPatientData = async (hospitalId, patientId) => {
     return null;
   }
 };
+
+
+/**
+ * Fetches game session history of a patient from Firestore.
+ * 
+ * @param {string} patientId - Firestore patient document ID.
+ * @param {string} hospitalId - Firestore hospital (user/admin) ID.
+ * @returns {Promise<Array>} - Array of session data objects.
+ */
+export async function fetchSessionHistoryOfPatient(patientId, hospitalId) {
+  try {
+    const sessionsRef = collection(
+      db,
+      'hospitalData',
+      hospitalId,
+      'patients',
+      patientId,
+      'gameDatas'
+    );
+
+    const snapshot = await getDocs(sessionsRef);
+
+    const sessionHistory = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return sessionHistory;
+  } catch (error) {
+    console.error('Error fetching session history:', error);
+    return [];
+  }
+}
