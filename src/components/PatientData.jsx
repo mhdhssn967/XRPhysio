@@ -3,6 +3,8 @@ import './PatientData.css';
 import { fetchSessionHistoryOfPatient, getSelectedPatientData } from '../firebase/services';
 import Loader from '../helperComponents/Loader';
 import PatientInsight from './PatientInsight';
+import { Card, CardContent, Typography, Grid, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const PatientData = ({ user, clickedPatientID, setPatientDataPage, setInsightPage }) => {
   const [patientDetails, setPatientDetails] = useState(null);
@@ -61,6 +63,10 @@ const PatientData = ({ user, clickedPatientID, setPatientDataPage, setInsightPag
     fetchPatientDetails();
   }, []);
 
+
+   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <div className="container">
       <button className="sec-btn app-btn action-btn" onClick={() => setPatientDataPage(false)}>
@@ -69,13 +75,30 @@ const PatientData = ({ user, clickedPatientID, setPatientDataPage, setInsightPag
 
       {patientDetails ? (
         <>
-          <div className="patient-detail-head">
-            <p>Name: <strong>{patientDetails.name}</strong></p>
-            <p>Age: <strong>{patientDetails.age}</strong></p>
-            <p>Condition: <strong>{patientDetails.condition}</strong></p>
-            <p>Starting Stage: <strong>{patientDetails.startingStage}</strong></p>
-            <p>Therapist: <strong>{patientDetails.therapist}</strong></p>
-          </div>
+          <Card elevation={2} sx={{ margin: '1rem 0', backgroundColor: 'none' }}>
+      <CardContent>
+        <Typography variant="h6" gutterBottom sx={{ color: '#1976d2' }}>
+          Patient Information
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} md={4}>
+            <Typography variant="body1"><strong>Name:</strong> {patientDetails.name}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Typography variant="body1"><strong>Age:</strong> {patientDetails.age}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Typography variant="body1"><strong>Condition:</strong> {patientDetails.condition}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Typography variant="body1"><strong>Starting Stage:</strong> {patientDetails.startingStage}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Typography variant="body1"><strong>Therapist:</strong> {patientDetails.therapist}</Typography>
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
 
           <div className="session-table-container">
             <PatientInsight sessionData={sessionRawData} displaySessionData={displaySessionData}/>
