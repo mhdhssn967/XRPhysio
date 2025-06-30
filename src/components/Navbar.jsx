@@ -9,6 +9,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import MenuIcon from '@mui/icons-material/Menu';
+import ListItemText from '@mui/material/ListItemText';
+
 
 import home from '../assets/home.png';
 import examination from '../assets/examination.png';
@@ -19,6 +21,8 @@ import settings from '../assets/settings.png';
 import logoutbtn from '../assets/logoutbtn.png';
 import adminImg from '../assets/administrator-developer-icon.png';
 import { logout } from '../firebase/auth';
+
+
 
 const drawerWidth = 240;
 
@@ -120,6 +124,20 @@ const Navbar = ({ user, adminId, setPage, page }) => {
                   >
                     <img src={item.img} alt={item.title} />
                   </ListItemIcon>
+<ListItemText
+  primary={item.title}
+  primaryTypographyProps={{
+    style: {
+      color: 'white',
+    },
+  }}
+  sx={{
+    opacity: open ? 1 : 0,
+    transition: 'opacity 0.3s ease',
+    whiteSpace: 'nowrap',
+  }}
+/>
+
                 </ListItemButton>
               </ListItem>
             </Tooltip>
