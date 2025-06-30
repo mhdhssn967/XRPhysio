@@ -68,7 +68,7 @@ const PatientInsight = ({ displaySessionData = [] }) => {
           <YAxis yAxisId="right" orientation="right" />
           <Tooltip
             formatter={(value, name) =>
-              name === "efficiency"
+              name === "Efficiency"
                 ? [`${value.toFixed(1)}%`, "Efficiency"]
                 : [`${value.toFixed(2)} s`, "Reaction Time"]
             }
