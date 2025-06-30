@@ -1,111 +1,64 @@
-import React from "react";
-import "./ProjectionViews.css";
+import React, { useState } from 'react';
+import ProjectionView from './ProjectionView';
 
-// You can replace these URLs with your actual image paths.
-const planeBackgrounds = {
-  XY: "images/xy.png",
-  YZ: "images/yz.png",
-  XZ: "images/xz.png",
+const AllProjections = ({ enhancedPoints }) => {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, data: null });
+
+
+  return (
+  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+    <ProjectionView
+      title="Top View"
+      plane="top"
+      points={enhancedPoints}
+      hoveredIndex={hoveredIndex}
+      setHoveredIndex={setHoveredIndex}
+      setTooltip={setTooltip}
+    />
+    <ProjectionView
+      title="Front View"
+      plane="front"
+      points={enhancedPoints}
+      hoveredIndex={hoveredIndex}
+      setHoveredIndex={setHoveredIndex}
+      setTooltip={setTooltip}
+    />
+    <ProjectionView
+      title="Side View"
+      plane="side"
+      points={enhancedPoints}
+      hoveredIndex={hoveredIndex}
+      setHoveredIndex={setHoveredIndex}
+      setTooltip={setTooltip}
+    />
+
+    {/* 👇 Tooltip Component Goes Here */}
+    {tooltip.visible && tooltip.data && (
+      <div
+        style={{
+          position: 'fixed',
+          top: tooltip.y + 10,
+          left: tooltip.x + 10,
+          background: 'rgba(255, 255, 255, 0.8)',
+          color: '#fff',
+          padding: '6px 10px',
+          borderRadius: '6px',
+          fontSize: '12px',
+          pointerEvents: 'none',
+          zIndex: 1000,
+          boxShadow:'0px 0px 8px rgba(0,0,0,0.5)',transform:'scale(1.2)'
+        }}
+      >
+        <div>Efficiency:<strong>{tooltip.data.efficiency}%</strong></div>
+        <div>X: {tooltip.data.x} m</div>
+        <div>Y: {tooltip.data.y} m</div>
+        <div>Z: {tooltip.data.z} m</div>
+      </div>
+    )}
+  </div>
+);
+
 };
 
-  
-  const ProjectionViews = ({ enhancedPoints }) => {
-    const scale = 30; // 30px per meter
-    const center = 200; // Centering the grid on the screen
-  
-    // Function to get 2D coordinates based on the plane (XY, YZ, or XZ)
-    const get2DCoords = (plane, position) => {
-      const [x, y, z] = position;
-      switch (plane) {
-        case "XY":
-          return { x: x * scale + center, y: -y * scale + center };
-        case "YZ":
-          return { x: y * scale + center, y: -z * scale + center };
-        case "XZ":
-          return { x: x * scale + center, y: -z * scale + center };
-        default:
-          return { x: center, y: center };
-      }
-    };
-  
-    // Function to generate grid lines
-    const renderGridLines = () => {
-      const gridLines = [];
-      const numLines = 20; // Adjust the number of grid lines
-      const gridSize = 300; // The size of the grid in pixels
-  
-      for (let i = 0; i <= numLines; i++) {
-        const linePosition = (i * gridSize) / numLines;
-  
-        // Vertical lines (in X direction)
-        gridLines.push(
-          <div
-            key={`v-${i}`}
-            className="grid-line vertical"
-            style={{ left: `${linePosition}px` }}
-          />
-        );
-        // Horizontal lines (in Y direction)
-        gridLines.push(
-          <div
-            key={`h-${i}`}
-            className="grid-line horizontal"
-            style={{ top: `${linePosition}px` }}
-          />
-        );
-      }
-      return gridLines;
-    };
-  
-    const projections = ["XY", "YZ", "XZ"];
-  
-    return (
-      <div className="projections-wrapper">
-        {projections.map((plane) => (
-          <div className="projection" key={plane}>
-            <h4>{plane} View</h4>
-            <div
-              className="view-box"
-              style={{
-                backgroundImage: `url(${planeBackgrounds[plane]})`,
-                backgroundSize: "cover", // Optional: Adjust image size if necessary
-                backgroundPosition: "center",
-              }}
-            >
-              {/* Grid lines */}
-              {renderGridLines()}
-  
-              {/* Loop over enhanced points */}
-              {enhancedPoints.map((point, index) => {
-                const coords = get2DCoords(plane, point.position);
-                return (
-                  <div
-                    key={index}
-                    className="dot"
-                    style={{
-                      left: `${coords.x}px`,
-                      top: `${coords.y}px`,
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50%",
-                      backgroundColor:
-                        point.efficiency >= 80
-                          ? "green"
-                          : point.efficiency >= 50
-                          ? "orange"
-                          : "red",
-                      position: "absolute", // Important for correct placement
-                      zIndex: 2, // To ensure dots are on top of the background
-                    }}
-                    title={`${point.name} - Efficiency: ${point.efficiency.toFixed(1)}%`}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  };
-  
-  export default ProjectionViews;
+export default AllProjections;

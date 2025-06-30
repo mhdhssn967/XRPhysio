@@ -1,0 +1,8 @@
+.visual-summary{
+ display: flex;
+ gap: 20px; 
+ background-color: var(--extra-color); 
+ padding: 9px; 
+ width: fit-content;
+ border-radius: 40px;
+}

@@ -17,7 +17,6 @@ const Patients = ({ user, triggerRefresh, setTriggerRefresh }) => {
   const [patients, setPatients] = useState([])
   const [patientDataPage, setPatientDataPage] = useState(false)
   const [clickedPatientId,setClickedPatientID]=useState(null)
-  const [inisghtPage, setInsightPage]=useState(false)
   
 
   const handleAddPatients = () => {
@@ -47,7 +46,7 @@ const Patients = ({ user, triggerRefresh, setTriggerRefresh }) => {
     <>
      <div className='container'>
         {/* Patient Table */}
-        {(!patientDataPage && !inisghtPage) &&
+        {(!patientDataPage) &&
         <div className="patients-container">
           <div className='container-head'>
             
@@ -85,11 +84,8 @@ const Patients = ({ user, triggerRefresh, setTriggerRefresh }) => {
         <div className='patient-details'>
           <div className='container-head'><h2 className='main-heading'>Patient Details </h2>
           </div>
-          <PatientData setInsightPage={setInsightPage} setPatientDataPage={setPatientDataPage} clickedPatientID={clickedPatientId} user={user}/>
+          <PatientData setPatientDataPage={setPatientDataPage} clickedPatientID={clickedPatientId} user={user}/>
         </div>}
-        {(inisghtPage) &&
-          <SessionInsight setInsightPage={setInsightPage} setPatientDataPage={setPatientDataPage}/>
-        }
          </div>
       </>
   );

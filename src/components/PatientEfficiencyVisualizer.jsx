@@ -6,13 +6,13 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import './PatientEfficiencyVisualizer.css';
 import eff from '../assets/efficiency.png';
 
-
-const PatientEfficiencyVisualizer = () => {
+const PatientEfficiencyVisualizer = ({ sessionRawData = [] }) => {
   const [model, setModel] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
   const textRefs = useRef([]);
+  const SCALE_FACTOR = 3;
 
-
+  // Load FBX character model
   useEffect(() => {
     const loader = new FBXLoader();
     loader.load("/models/uploads_files_3915069_male.fbx", (object) => {
@@ -23,44 +23,43 @@ const PatientEfficiencyVisualizer = () => {
       });
       setModel(object);
     });
+  }, []);
 
+  // Process real session data
+  useEffect(() => {
+    if (sessionRawData.length === 0) return;
 
+    // Get last/latest session with proper points
+    const latestSession = sessionRawData[sessionRawData.length - 1];
 
-  
+    const spawnPoints = latestSession.spawnPointsList || [];
+    const hitCounts = latestSession.targetHitCount || [];
+    const totalCounts = latestSession.targetTotalCount || [];
 
+    const calculatedPoints = spawnPoints.map((point, idx) => {
+      const touchCount = hitCounts[idx] || 0;
+      const total = totalCounts[idx] || 1; // Avoid div by 0
+      const efficiency = (touchCount / total) * 100;
 
-    const points = [
-      { name: "Point 1", position: [2, 0, 2] },
-      { name: "Point 2", position: [-2, 0, 2] },
-      { name: "Point 3", position: [2, 0, -2] },
-      { name: "Point 4", position: [-2, 0, -2] },
-      { name: "Point 5", position: [0, 0, 3] },
-      { name: "Point 6", position: [0, 0, -3] },
-      { name: "Point 7", position: [3, 0, 0] },
-      { name: "Point 8", position: [-3, 0, 0] },
-      { name: "Point 9", position: [0, 3, 2] },
-      { name: "Point 10", position: [0, 2, 0] },
-    ];
-    
-
-    const newCoordinates = points.map((point, index) => {
-      const touchCount = Math.floor(Math.random() * 6);
-      const totalSpawns = 5 + Math.floor(Math.random() * 2);
-      const efficiency = (touchCount / totalSpawns) * 100;
       return {
-        ...point,
+        name: `Point ${idx + 1}`,
+        position: [
+      point.x * SCALE_FACTOR,
+      point.y * SCALE_FACTOR,
+      point.z * SCALE_FACTOR,
+    ],
         touchCount,
-        totalSpawns,
+        totalSpawns: total,
         efficiency,
         ref: React.createRef(),
       };
     });
 
-    textRefs.current = newCoordinates.map(c => c.ref);
-    setCoordinates(newCoordinates);
-  }, []);
+    textRefs.current = calculatedPoints.map((p) => p.ref);
+    setCoordinates(calculatedPoints);
+  }, [sessionRawData]);
 
-  const getDotSize = (efficiency) => 1;
+
 
   const LabelsFacingCamera = () => {
     const { camera } = useThree();
@@ -78,7 +77,7 @@ const PatientEfficiencyVisualizer = () => {
     <div className="threeD-container">
       <h2 style={{ marginBottom: '20px' }}>3D Overview</h2>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <img width={'350px'} src={eff} alt="" />
+        <img width={'350px'} src={eff} alt="efficiency info" />
       </div>
 
       <Canvas camera={{ position: [0, 5, 10], fov: 50 }}>
@@ -95,31 +94,29 @@ const PatientEfficiencyVisualizer = () => {
 
         <LabelsFacingCamera />
 
+        {/* Render Efficiency Points */}
         {coordinates.map((part, index) => (
           <group key={index}>
-            <mesh
-              position={part.position}
-              scale={[
-                getDotSize(part.efficiency),
-                getDotSize(part.efficiency),
-                getDotSize(part.efficiency),
-              ]}
+            <group position={[
+  part.position[0],
+  part.position[1] - 3,  // 👈 shift downward by 1 unit
+  part.position[2]+1.5]}
             >
-              <sphereGeometry args={[0.1, 32, 32]} />
-              <meshStandardMaterial
-                color={`hsl(${(1 + part.efficiency / 100) * 120}, 100%, 50%)`}
-                emissive={`hsl(${(1 + part.efficiency / 100) * 120}, 100%, 50%)`}
-                emissiveIntensity={0.5}
-              />
-            </mesh>
+  {/* Animated glowing sphere */}
+  <AnimatedSphere efficiency={part.efficiency} />
+
+  {/* Optional ring for high performance */}
+  {part.efficiency > 80 && (
+    <mesh rotation={[-Math.PI / 2, 0, 0]}>
+      <torusGeometry args={[0.2, 0.015, 16, 100]} />
+      <meshBasicMaterial color="#00ff88" transparent opacity={0.5} />
+    </mesh>
+  )}
+</group>
 
             <Text
               ref={part.ref}
-              position={[
-                part.position[0],
-                part.position[1] + 0.2,
-                part.position[2],
-              ]}
+              position={[part.position[0], part.position[1]-3 + 0.2, part.position[2]+1.5]}
               fontSize={0.2}
               color="#f17f32"
               anchorX="center"
@@ -130,6 +127,7 @@ const PatientEfficiencyVisualizer = () => {
           </group>
         ))}
 
+        {/* Character Model */}
         {model && (
           <primitive
             object={model}
@@ -143,3 +141,30 @@ const PatientEfficiencyVisualizer = () => {
 };
 
 export default PatientEfficiencyVisualizer;
+
+
+const AnimatedSphere = ({ efficiency }) => {
+  const ref = useRef();
+
+  useFrame(({ clock }) => {
+    const scale = 0.12 + Math.sin(clock.getElapsedTime() * 7) * 1;
+    if (ref.current) {
+      ref.current.scale.set(scale, scale, scale);
+    }
+  });
+
+  const colorHue = (efficiency / 100) * 120; // 0 (red) → 120 (green)
+
+  return (
+    <mesh ref={ref}>
+      <sphereGeometry args={[0.1, 32, 32]} />
+      <meshStandardMaterial
+        color={`hsl(${colorHue}, 100%, 50%)`}
+        emissive={`hsl(${colorHue}, 100%, 40%)`}
+        emissiveIntensity={0.6}
+        roughness={0.2}
+        metalness={0.3}
+      />
+    </mesh>
+  );
+};

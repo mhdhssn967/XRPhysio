@@ -2,16 +2,25 @@
     height: 100vh;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     margin-top: -6%;
 }
 .visualizer-heading{
-    padding-top: 5%;
     display: flex;
     gap: 100px;
-    justify-content: center;
+    width: fit-content;
+    background-color: white;
+    margin: 20px 0px;
+    padding: 10px;
+    border-radius: 50px;
+    border: solid 0.5px var(--primary-color);
 }
 .visualizer-heading h2{
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 14px;
+}
+.visualizer-heading span{
+    font-weight: 800;
 }
 .visual-data-div{
     width: 300px;

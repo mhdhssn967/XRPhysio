@@ -1,87 +1,131 @@
-import React, { useEffect, useState } from 'react'
-import './SessionInsight.css'
-import PatientEfficiencyVisualizer from './PatientEfficiencyVisualizer'
-import VisualChart from './VisualChart'
-import ProjectionViews from './ProjectionViews'
+import React, { useEffect, useState } from 'react';
+import './SessionInsight.css';
+import PatientEfficiencyVisualizer from './PatientEfficiencyVisualizer';
+import VisualChart from './VisualChart';
+import ProjectionViews from './ProjectionViews';
 
-const SessionInsight = ({ setInsightPage, setPatientDataPage }) => {
+const SessionInsight = ({ setInsightPage, setPatientDataPage, sessionRawData, displaySessionData, patientDetails, setShowSessionInsight }) => {
+  const [enhancedPoints, setEnhancedPoints] = useState([]);
+  const [session, setSession] = useState(null);
+console.log(sessionRawData)
+  useEffect(() => {
+    window.scrollTo(0, 0);
 
-  const [position, setPosition] = useState({ x: 0, y: 0, z: 0 });
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+    if (!sessionRawData || sessionRawData.length === 0) return;
 
-  const points = [
-    { name: "Point 1", position: [2, 0, 2] },
-    { name: "Point 2", position: [-2, 0, 2] },
-    { name: "Point 3", position: [2, 0, -2] },
-    { name: "Point 4", position: [-2, 0, -2] },
-    { name: "Point 5", position: [0, 0, 3] },
-    { name: "Point 6", position: [0, 0, -3] },
-    { name: "Point 7", position: [3, 0, 0] },
-    { name: "Point 8", position: [-3, 0, 0] },
-    { name: "Point 9", position: [0, 3, 2] },
-    { name: "Point 10", position: [0, 2, 0] },
-  ];
-  
-  const enhancedPoints = points.map((point) => {
-    const touchCount = Math.floor(Math.random() * 6);
-    const totalSpawns = 5 + Math.floor(Math.random() * 2);
-    const efficiency = (touchCount / totalSpawns) * 100;
-    return {
-      ...point,
-      touchCount,
-      totalSpawns,
-      efficiency,
-    };
-  });
+    // Pick the most recent session for now
+    const latest = sessionRawData[sessionRawData.length - 1];
+    setSession(latest);
+
+    // Prepare points
+    const spawnPoints = latest.spawnPointsList || [];
+    const hitCounts = latest.targetHitCount || [];
+    const totalCounts = latest.targetTotalCount || [];
+
+    const computedPoints = spawnPoints.map((point, index) => {
+      const touchCount = hitCounts[index] || 0;
+      const totalSpawns = totalCounts[index] || 0;
+      const efficiency = totalSpawns > 0 ? ((touchCount / totalSpawns) * 100).toFixed(1) : 0;
+      return {
+        name: `Point ${index + 1}`,
+        position: [point.x, point.y, point.z],
+        touchCount,
+        totalSpawns,
+        efficiency,
+      };
+    });
+
+    setEnhancedPoints(computedPoints);
+  }, [sessionRawData]);
+
+  if (!session) return <p>Loading session details...</p>;
+
+  const formattedDate = new Date(session.timestamp.seconds * 1000).toLocaleDateString();
+
+  const totalPoints = enhancedPoints.length;
+  const touchedPoints = enhancedPoints.filter((pt) => pt.touchCount > 0).length;
+  const missedPoints = totalPoints - touchedPoints;
+
+  const efficiencies = enhancedPoints.map((pt) => parseFloat(pt.efficiency));
+  const avgEfficiency = efficiencies.length ? (efficiencies.reduce((a, b) => a + b, 0) / efficiencies.length).toFixed(1) : 'N/A';
+
+  const highest = enhancedPoints.reduce((max, pt) => (parseFloat(pt.efficiency) > parseFloat(max.efficiency) ? pt : max), enhancedPoints[0]);
+  const lowest = enhancedPoints.reduce((min, pt) => (parseFloat(pt.efficiency) < parseFloat(min.efficiency) ? pt : min), enhancedPoints[0]);
+
+  const feedback = avgEfficiency >= 90
+  ? 'Outstanding performance. Excellent spatial accuracy and response control.'
+  : avgEfficiency >= 80
+    ? 'Excellent spatial awareness and motor response.'
+    : avgEfficiency >= 70
+      ? 'Very good effort. Patient shows strong coordination with room for refinement.'
+      : avgEfficiency >= 60
+        ? 'Good performance, continue training for consistency.'
+        : avgEfficiency >= 50
+          ? 'Moderate control observed. Focused sessions may help stabilize performance.'
+          : avgEfficiency >= 40
+            ? 'Below average response. Recommend targeted motor skill drills.'
+            : avgEfficiency >= 30
+              ? 'Low efficiency. Consider adjusting game parameters and supervised therapy.'
+              : 'Severely low performance. Immediate guided physiotherapy intervention advised.';
+
+
+
+const latestSession = sessionRawData[sessionRawData.length - 1];
+const spawnPoints = latestSession?.spawnPointsList || [];
 
   return (
     <div className='container'>
       <div className='visualizer-heading'>
-        <h2>Shamsad P</h2>
-        <h2>Stroke</h2>
-        <h2>Precision Shooter</h2>
+        <h2><span>Patient Name:</span> {patientDetails.name || 'Patient Name'}</h2>
+        <h2><span>Condition</span>: {patientDetails.condition || 'Condition'}</h2>
+        <h2><span>Game:</span> {session.gameName}</h2>
       </div>
-      <button className='sec-btn app-btn action-btn' onClick={() => {setInsightPage(false); setPatientDataPage(true)}}> <i className='fa-solid fa-arrow-left'></i> Back to patient details</button>
-      <div className='visualizer'> <PatientEfficiencyVisualizer />
-      
+
+      <button className='sec-btn app-btn action-btn' onClick={()=>setShowSessionInsight(false)}>
+        <i className='fa-solid fa-arrow-left'></i> Back to patient details
+      </button>
+
+      <div className='visualizer'>
+        <PatientEfficiencyVisualizer sessionRawData={sessionRawData} />
+
         <div className='visual-data-div'>
           <h2 className='main-heading'>Game Session Summary</h2>
           <hr style={{ marginBottom: '6%' }} />
-          <p><strong>Game Name:</strong> Precision Shooter</p>
-          <p><strong>Played On:</strong> July 3, 2025</p>
-          <p><strong>Play Duration:</strong> 3 minutes 45 seconds</p>
+
+          <p><strong>Game Name:</strong> {session.gameName}</p>
+          <p><strong>Played On:</strong> {formattedDate}</p>
+          <p><strong>Hand Selected:</strong> {session.handSelected}</p>
+          <p><strong>Play Duration:</strong> Approx. {session.reactionTime?.length * 3 || 'N/A'} seconds</p>
 
           <hr />
 
-          <p><strong>Total Points:</strong> 10</p>
-          <p><strong>Touched Points:</strong> 6</p>
-          <p><strong>Missed Points:</strong> 4</p>
+          <p><strong>Total Stimuli Points:</strong> {totalPoints}</p>
+          <p><strong>Engaged Points:</strong> {touchedPoints}</p>
+          <p><strong>Missed Points:</strong> {missedPoints}</p>
 
           <hr />
 
-          <p><strong>Highest Efficiency:</strong> Point 5 (92%)</p>
-          <p><strong>Lowest Efficiency:</strong> Point 8 (12%)</p>
+          <p><strong>Highest Efficiency:</strong> {highest.name} ({highest.efficiency}%)</p>
+          <p><strong>Lowest Efficiency:</strong> {lowest.name} ({lowest.efficiency}%)</p>
 
           <hr />
 
-          <p><strong>Average Efficiency:</strong> 65.4%</p>
-          <p><strong>Score:</strong> 785</p>
-          <p><strong>Feedback:</strong> Good precision, consider working on consistency.</p>
+          <p><strong>Average Motor Efficiency:</strong> {avgEfficiency}%</p>
+          <p><strong>Target Response:</strong> {session.reactionTime?.length || 0} targets</p>
+          <p><strong>Feedback:</strong> {feedback}</p>
         </div>
-        </div>
-        <div className='physio-data-div'>
-      <h3 style={{ marginBottom: '10px', color: '#444' }}>Performance Metrics</h3>
-      <hr />
-      <ProjectionViews enhancedPoints={enhancedPoints} />
-    <div>
-      <VisualChart/>
-    </div>
-
-    </div>
       </div>
-  )
-}
 
-export default SessionInsight
+      <div className='physio-data-div'>
+        <h3 style={{ marginBottom: '10px', color: '#444' }}>Performance Metrics</h3>
+        <hr /> 
+        <ProjectionViews enhancedPoints={enhancedPoints} spawnPoints={latestSession?.spawnPointsList || []}/>
+        <div>
+          <VisualChart enhancedPoints={enhancedPoints}/>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SessionInsight;

@@ -1,0 +1,23 @@
+.projection-container {
+  flex: 1 1 320px;
+  max-width: 360px;
+}
+
+.projection-svg {
+  width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  background: #fafafa;
+}
+
+.tooltip {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+g:hover {
+  cursor: pointer;
+}
