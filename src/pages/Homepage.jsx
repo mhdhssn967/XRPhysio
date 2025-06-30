@@ -69,7 +69,7 @@ useEffect(() => {
   return (
     <>
     <div className='body-section'>
-      <Navbar user={user} adminId={adminId} setPage={setPage} page={page}/>  
+      <div className='nav-section'><Navbar user={user} adminId={adminId} setPage={setPage} page={page}/></div>  
           <div className="content">
           {renderPage()}
         </div>
