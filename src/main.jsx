@@ -1,22 +1,22 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import './index.css';
-import App from './App.jsx';
-import { registerSW } from 'virtual:pwa-register';
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
-  </StrictMode>,
-);
+  </StrictMode>
+)
 
-registerSW({
+// 👇 Add this part to enable PWA
+import { registerSW } from 'virtual:pwa-register'
+
+const updateSW = registerSW({
   onNeedRefresh() {
-    if (confirm("New version available. Refresh to update?")) {
-      window.location.reload();
-    }
+    console.log('🔄 New content available. Refresh to update.')
   },
   onOfflineReady() {
-    console.log("App is ready to work offline");
-  },
-});
+    console.log('✅ App ready to work offline.')
+  }
+})
