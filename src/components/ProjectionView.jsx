@@ -35,10 +35,10 @@ const ProjectionView = ({  title,
       : SIZE / 2 + x * SCALE,
   y:
     plane === 'top'
-      ? SIZE * 0.75 - y * SCALE
+      ? SIZE * 0.90 - y * SCALE
       : plane === 'side'
-      ? SIZE - y * SCALE
-      : SIZE - y * SCALE,
+      ? SIZE - y*2 * SCALE
+      : SIZE - y*2 * SCALE,
   efficiency: parseFloat(point.efficiency || '0').toFixed(1),
 };
 

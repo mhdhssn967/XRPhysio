@@ -82,7 +82,22 @@ const Patients = ({ user, triggerRefresh, setTriggerRefresh }) => {
         {/* Patient Details page */}
         {patientDataPage &&  
         <div className='patient-details'>
-          <div className='container-head'><h2 className='main-heading'>Patient Details </h2>
+          <div className='container-head'><Typography
+  component="h1"
+  sx={{
+    fontSize: {
+      xs: '1.5rem', // Mobile
+      sm: '2rem',   // Tablets
+      md: '2.5rem', // Laptops
+    },
+    fontWeight: 600,
+    color: '#505050',  // 👈 set color to black
+    mt: 2,
+    mb: 2
+  }}
+>
+  Patient Data
+</Typography>
           </div>
           <PatientData setPatientDataPage={setPatientDataPage} clickedPatientID={clickedPatientId} user={user}/>
         </div>}

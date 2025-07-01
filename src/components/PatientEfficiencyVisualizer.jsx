@@ -5,29 +5,72 @@ import * as THREE from "three";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import './PatientEfficiencyVisualizer.css';
 import eff from '../assets/efficiency.png';
+import help from '../assets/help.png'
 
 const PatientEfficiencyVisualizer = ({ sessionRawData = [] ,selectedSession}) => {
   
   const [model, setModel] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
+  const [modelPosition,setModelPosition]=useState(true)
   const textRefs = useRef([]);
 
-  
+  const [mixer, setMixer] = useState(null);
+
 
   const SCALE_FACTOR = 3;
 
   // Load FBX character model
   useEffect(() => {
-    const loader = new FBXLoader();
-    loader.load("/models/Breathing Idle.fbx", (object) => {
-      object.traverse((child) => {
-        if (child.isMesh) {
-          child.material.needsUpdate = true;
-        }
-      });
-      setModel(object);
+     const loader = new FBXLoader(); //
+    if(!modelPosition){loader.load("/models/Breathing Idle.fbx", (object) => {
+  const mixer = new THREE.AnimationMixer(object);
+
+  // Play all animations in the file
+  if (object.animations && object.animations.length > 0) {
+    object.animations.forEach((clip) => {
+      mixer.clipAction(clip).play();
     });
-  }, []);
+  }
+
+  object.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+      child.material.needsUpdate = true;
+    }
+  });
+
+  setModel(object);
+  setMixer(mixer);
+});
+
+  }
+else{
+  loader.load("/models/Sitting Idle.fbx", (object) => {
+  const mixer = new THREE.AnimationMixer(object);
+
+  // Play all animations in the file
+  if (object.animations && object.animations.length > 0) {
+    object.animations.forEach((clip) => {
+      mixer.clipAction(clip).play();
+    });
+  }
+
+  object.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+      child.material.needsUpdate = true;
+    }
+  });
+
+  setModel(object);
+  setMixer(mixer);
+});
+}
+}
+  
+  , [modelPosition]);
 
   // Process real session data
   useEffect(() => {
@@ -80,16 +123,35 @@ const PatientEfficiencyVisualizer = ({ sessionRawData = [] ,selectedSession}) =>
     return null;
   };
 
+
+const UpdateAnimation = () => {
+  useFrame((state, delta) => {
+    if (mixer) mixer.update(delta);
+  });
+  return null;
+};
+
+
   return (
     <div className="threeD-container">
-      <h2 style={{ marginBottom: '20px' }}>3D Overview</h2>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <img width={'350px'} src={eff} alt="efficiency info" />
+      <div className="three-top"><h2 style={{ marginBottom: '20px' }}>3D Overview</h2>
+      <div className="help"><img src={help} alt="" />
+      <div className="three-d-help">
+  🖱️ <strong>Controls:</strong><br />
+    <ul>
+      <li>Scroll or Pinch to <strong>Zoom</strong></li>
+      <li>Drag to <strong>Rotate</strong></li>
+      <li><kbd>Ctrl</kbd> + Mouse to <strong>Pan</strong></li>
+    </ul>
+</div> 
       </div>
+      </div>
+      
+<div className="toggle-div"><p>Stand</p><div role="button" style={modelPosition?{justifyContent:'right'}:{justifyContent:'left'}} className="view-toggle-btn" onClick={()=>setModelPosition(!modelPosition)}> <div className="toggle-dot"></div></div><p>Sit</p></div>
 
-      <Canvas camera={{ position: [0, 5, 10], fov: 50 }}>
+      <Canvas camera={{ position: [-4, 2, 10], fov: 60 }}>
         <OrbitControls />
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={1} />
         <directionalLight position={[10, 10, 10]} intensity={1} />
         <spotLight
           position={[5, 5, 5]}
@@ -100,13 +162,14 @@ const PatientEfficiencyVisualizer = ({ sessionRawData = [] ,selectedSession}) =>
         />
 
         <LabelsFacingCamera />
+<UpdateAnimation mixer={mixer} />
 
         {/* Render Efficiency Points */}
         {coordinates.map((part, index) => (
           <group key={index}>
             <group position={[
   part.position[0],
-  part.position[1] - 3,  // 👈 shift downward by 1 unit
+  part.position[1] - 0.8,  // 👈 shift downward by 1 unit
   part.position[2]+1.5]}
             >
   {/* Animated glowing sphere */}
@@ -123,7 +186,7 @@ const PatientEfficiencyVisualizer = ({ sessionRawData = [] ,selectedSession}) =>
 
             <Text
               ref={part.ref}
-              position={[part.position[0], part.position[1]-3 + 0.2, part.position[2]+1.5]}
+              position={[part.position[0], part.position[1]-0.8 + 0.2, part.position[2]+1.5]}
               fontSize={0.2}
               color="#f17f32"
               anchorX="center"
@@ -139,10 +202,12 @@ const PatientEfficiencyVisualizer = ({ sessionRawData = [] ,selectedSession}) =>
           <primitive
             object={model}
             scale={[0.04, 0.04, 0.04]}
-            position={[0, -3, 0]}
+            position={[0, -2, 0]}
           />
         )}
+        
       </Canvas>
+     
     </div>
   );
 };

@@ -1,9 +1,10 @@
 .threeD-container{
     width: 50%;
-    height: 70%;
+    height: 80%;
     border: solid orange 0.5px;
     cursor:grab;
     overflow-y: hidden;
+    margin-top: 50px;
 }
 .threeD-container h2{
     margin: 1%;
@@ -13,4 +14,64 @@
 }
 .threeD-container:active{
     cursor: grabbing;
+}
+.view-toggle-btn{
+    width: 40px;
+    height: 20px;
+    margin: 5px;
+    background: none;
+    display: flex;
+    align-items: center;
+    border: solid var(--primary-color) 0.5px;
+    border-radius: 30px;
+    padding: 2px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.toggle-dot{
+    background-color:var(--primary-color);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+}
+.toggle-div{
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+.toggle-div p{
+    font-weight: 800;
+}
+.three-top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 50px 0px 1px;
+    background-color: var(--extra-color);
+    margin-bottom: 10px;
+}
+.three-top h2{
+    text-align: center;
+    font-weight: 800;
+}
+.three-top img{
+    width: 30px;
+    cursor: pointer;
+    transition: 0.1s;
+}
+.three-top img:hover{
+    transform: scale(1.1);
+}
+.three-d-help{
+    position: absolute;
+    margin-left: -50px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 7px rgba(0,0,0,0.3);
+    display: none;
+    transition: 0.3s;
+}
+.help:hover .three-d-help{
+    display: block;
 }

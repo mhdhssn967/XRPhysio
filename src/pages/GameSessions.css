@@ -12,9 +12,10 @@
     width: 80%;
     margin-top: 3%;
     padding: 2% 5%;
+    flex-wrap: wrap;
 }
 .sessions-container img{
-    width: 30%;
+    width: 300px;
     margin-left: 5%;
 }
 .sessions-body{
