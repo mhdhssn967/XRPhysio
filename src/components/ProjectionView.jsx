@@ -29,10 +29,19 @@ const ProjectionView = ({  title,
     }
 
     return {
-      x: SIZE / 2 + x * SCALE,
-      y: plane === 'top' ? SIZE / 2 - y * SCALE : SIZE - y * SCALE,
-      efficiency: parseFloat(point.efficiency || '0').toFixed(1),
-    };
+  x:
+    plane === 'side'
+      ? SIZE * 0.75 + x * SCALE
+      : SIZE / 2 + x * SCALE,
+  y:
+    plane === 'top'
+      ? SIZE * 0.75 - y * SCALE
+      : plane === 'side'
+      ? SIZE - y * SCALE
+      : SIZE - y * SCALE,
+  efficiency: parseFloat(point.efficiency || '0').toFixed(1),
+};
+
   };
 
   const getBackgroundImage = () => {

@@ -80,6 +80,7 @@ const [selectedSession, setSelectedSession] = useState(null);
     displaySessionData={displaySessionData} patientDetails={patientDetails}
     session={selectedSession}
     setShowSessionInsight={setShowSessionInsight}
+    selectedSession={selectedSession}
   /></>:
       <div className="container">
         <button className="sec-btn app-btn action-btn" onClick={() => setPatientDataPage(false)}>

@@ -6,16 +6,20 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import './PatientEfficiencyVisualizer.css';
 import eff from '../assets/efficiency.png';
 
-const PatientEfficiencyVisualizer = ({ sessionRawData = [] }) => {
+const PatientEfficiencyVisualizer = ({ sessionRawData = [] ,selectedSession}) => {
+  
   const [model, setModel] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
   const textRefs = useRef([]);
+
+  
+
   const SCALE_FACTOR = 3;
 
   // Load FBX character model
   useEffect(() => {
     const loader = new FBXLoader();
-    loader.load("/models/uploads_files_3915069_male.fbx", (object) => {
+    loader.load("/models/Breathing Idle.fbx", (object) => {
       object.traverse((child) => {
         if (child.isMesh) {
           child.material.needsUpdate = true;
@@ -27,12 +31,15 @@ const PatientEfficiencyVisualizer = ({ sessionRawData = [] }) => {
 
   // Process real session data
   useEffect(() => {
-    if (sessionRawData.length === 0) return;
+    if (!selectedSession) return;
 
     // Get last/latest session with proper points
-    const latestSession = sessionRawData[sessionRawData.length - 1];
+    const latestSession = selectedSession;
+    
 
     const spawnPoints = latestSession.spawnPointsList || [];
+    // console.log(spawnPoints);
+    
     const hitCounts = latestSession.targetHitCount || [];
     const totalCounts = latestSession.targetTotalCount || [];
 

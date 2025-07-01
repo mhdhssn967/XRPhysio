@@ -4,23 +4,22 @@ import PatientEfficiencyVisualizer from './PatientEfficiencyVisualizer';
 import VisualChart from './VisualChart';
 import ProjectionViews from './ProjectionViews';
 
-const SessionInsight = ({ setInsightPage, setPatientDataPage, sessionRawData, displaySessionData, patientDetails, setShowSessionInsight }) => {
+const SessionInsight = ({ selectedSession, sessionRawData, patientDetails, setShowSessionInsight }) => {
   const [enhancedPoints, setEnhancedPoints] = useState([]);
   const [session, setSession] = useState(null);
-console.log(sessionRawData)
+  const [realSpawnPoints,setRealSpawnPoints]=useState([])  
+
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    if (!sessionRawData || sessionRawData.length === 0) return;
-
-    // Pick the most recent session for now
-    const latest = sessionRawData[sessionRawData.length - 1];
+    const latest = selectedSession;
     setSession(latest);
 
     // Prepare points
-    const spawnPoints = latest.spawnPointsList || [];
-    const hitCounts = latest.targetHitCount || [];
-    const totalCounts = latest.targetTotalCount || [];
+    const spawnPoints = selectedSession.spawnPointsList || [];
+    setRealSpawnPoints(spawnPoints)
+    const hitCounts = selectedSession.targetHitCount || [];
+    const totalCounts = selectedSession.targetTotalCount || [];
 
     const computedPoints = spawnPoints.map((point, index) => {
       const touchCount = hitCounts[index] || 0;
@@ -36,11 +35,11 @@ console.log(sessionRawData)
     });
 
     setEnhancedPoints(computedPoints);
-  }, [sessionRawData]);
+  }, [selectedSession]);
 
   if (!session) return <p>Loading session details...</p>;
 
-  const formattedDate = new Date(session.timestamp.seconds * 1000).toLocaleDateString();
+  const formattedDate = new Date(selectedSession.timestamp.seconds * 1000).toLocaleDateString();
 
   const totalPoints = enhancedPoints.length;
   const touchedPoints = enhancedPoints.filter((pt) => pt.touchCount > 0).length;
@@ -70,15 +69,14 @@ console.log(sessionRawData)
 
 
 
-const latestSession = sessionRawData[sessionRawData.length - 1];
-const spawnPoints = latestSession?.spawnPointsList || [];
+const spawnPoints = realSpawnPoints;
 
   return (
     <div className='container'>
       <div className='visualizer-heading'>
         <h2><span>Patient Name:</span> {patientDetails.name || 'Patient Name'}</h2>
         <h2><span>Condition</span>: {patientDetails.condition || 'Condition'}</h2>
-        <h2><span>Game:</span> {session.gameName}</h2>
+        <h2><span>Game:</span> {selectedSession.gameName}</h2>
       </div>
 
       <button className='sec-btn app-btn action-btn' onClick={()=>setShowSessionInsight(false)}>
@@ -86,16 +84,16 @@ const spawnPoints = latestSession?.spawnPointsList || [];
       </button>
 
       <div className='visualizer'>
-        <PatientEfficiencyVisualizer sessionRawData={sessionRawData} />
+        <PatientEfficiencyVisualizer sessionRawData={sessionRawData} selectedSession={selectedSession}/>
 
         <div className='visual-data-div'>
           <h2 className='main-heading'>Game Session Summary</h2>
           <hr style={{ marginBottom: '6%' }} />
 
-          <p><strong>Game Name:</strong> {session.gameName}</p>
+          <p><strong>Game Name:</strong> {selectedSession.gameName}</p>
           <p><strong>Played On:</strong> {formattedDate}</p>
-          <p><strong>Hand Selected:</strong> {session.handSelected}</p>
-          <p><strong>Play Duration:</strong> Approx. {session.reactionTime?.length * 3 || 'N/A'} seconds</p>
+          <p><strong>Hand Selected:</strong> {selectedSession.handSelected}</p>
+          <p><strong>Play Duration:</strong> Approx. {selectedSession.reactionTime?.length * 3 || 'N/A'} seconds</p>
 
           <hr />
 
@@ -111,15 +109,15 @@ const spawnPoints = latestSession?.spawnPointsList || [];
           <hr />
 
           <p><strong>Average Motor Efficiency:</strong> {avgEfficiency}%</p>
-          <p><strong>Target Response:</strong> {session.reactionTime?.length || 0} targets</p>
-          <p><strong>Feedback:</strong> {feedback}</p>
+          <p><strong>Target Response:</strong> {selectedSession.reactionTime?.length || 0} targets</p>
+          <p style={{textWrap:'wrap'}}><strong>Feedback:</strong> {feedback}</p>
         </div>
       </div>
 
       <div className='physio-data-div'>
         <h3 style={{ marginBottom: '10px', color: '#444' }}>Performance Metrics</h3>
         <hr /> 
-        <ProjectionViews enhancedPoints={enhancedPoints} spawnPoints={latestSession?.spawnPointsList || []}/>
+        <ProjectionViews enhancedPoints={enhancedPoints} spawnPoints={spawnPoints}/>
         <div>
           <VisualChart enhancedPoints={enhancedPoints}/>
         </div>

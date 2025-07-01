@@ -21,7 +21,7 @@ import settings from '../assets/settings.svg';
 import logoutbtn from '../assets/logoutbtn.svg';
 import adminImg from '../assets/administrator-developer-icon.svg';
 import { logout } from '../firebase/auth';
-
+import logo from '../assets/OQ.png'
 
 
 const drawerWidth = 240;
@@ -75,110 +75,115 @@ const Navbar = ({ user, adminId, setPage, page }) => {
   const toggleDrawer = () => setOpen((prev) => !prev);
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Drawer
-  variant="permanent"
-  open={open}
-  sx={{
-    '& .MuiDrawer-paper': {
-      backgroundColor: 'var(--primary-color)',
-      color: 'white'  // Optional: to make text/icons white
-    }
-  }}
->
-        <Box sx={{ display: 'flex', justifyContent: open ? 'flex-end' : 'center', p: 1 }}>
-          <IconButton onClick={toggleDrawer}>
-            <MenuIcon />
-          </IconButton>
-        </Box>
+    <>
+    
+      <Box sx={{ display: 'flex' }}>
+        <Drawer
+    variant="permanent"
+    open={open}
+    sx={{
+      '& .MuiDrawer-paper': {
+        backgroundColor: 'var(--primary-color)',
+        color: 'white'  // Optional: to make text/icons white
+      }
+    }}
+  >
+          <Box sx={{ display: 'flex',flexDirection:'column',gap:'50px', justifyContent: open ? 'flex-end' : 'center', p: 1 }}>
+                    <img src={logo} alt="" width={'100%'} style={{filter:'brightness(100)'}}/>
 
-        <List>
-          {menuItems.map((item, index) => (
-            <Tooltip title={!open ? item.title : ''} placement="right" key={index}>
-              <ListItem disablePadding sx={{ display: 'block' }}>
-                <ListItemButton
-                  onClick={() => {
-                    if (item.action) item.action();
-                    else setPage(index);
-                  }}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                    '& img': {
-                      filter: page === index ? 'invert(1)' : 'invert(0)',
-                      backgroundColor: page === index ? 'black' : 'transparent',
-                      padding: '4px',
-                      borderRadius: '8px',
-                      width: 24,
-                      height: 24,
-                    },
-                  }}
-                >
-                  <ListItemIcon
+            <IconButton onClick={toggleDrawer}>
+              <MenuIcon />
+            </IconButton>
+          </Box>
+  
+          <List>
+            {menuItems.map((item, index) => (
+              <Tooltip title={!open ? item.title : ''} placement="right" key={index}>
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                  <ListItemButton
+                    onClick={() => {
+                      if (item.action) item.action();
+                      else setPage(index);
+                    }}
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 2 : 'auto',
-                      justifyContent: 'center',
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                      '& img': {
+                        filter: page === index ? 'invert(1)' : 'invert(0)',
+                        backgroundColor: page === index ? 'black' : 'transparent',
+                        padding: '4px',
+                        borderRadius: '8px',
+                        width: 24,
+                        height: 24,
+                      },
                     }}
                   >
-                    <img src={item.img} alt={item.title} />
-                  </ListItemIcon>
-<ListItemText
-  primary={item.title}
-  primaryTypographyProps={{
-    style: {
-      color: 'white',
-    },
-  }}
-  sx={{
-    opacity: open ? 1 : 0,
-    transition: 'opacity 0.3s ease',
-    whiteSpace: 'nowrap',
-  }}
-/>
-
-                </ListItemButton>
-              </ListItem>
-            </Tooltip>
-          ))}
-
-          {user === adminId && (
-            <Tooltip title={!open ? 'Admin Settings' : ''} placement="right">
-              <ListItem disablePadding sx={{ display: 'block' }}>
-                <ListItemButton
-                  onClick={() => setPage(6)}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
-                    backgroundColor: page === 6 ? 'white' : 'inherit',
-                    '& img': {
-                      filter: page === 6 ? 'invert(0)' : 'invert(1)',
-                      backgroundColor: page === 6 ? 'white' : 'transparent',
-                      padding: '4px',
-                      borderRadius: '8px',
-                      width: 24,
-                      height: 24,
-                    },
-                  }}
-                >
-                  <ListItemIcon
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 2 : 'auto',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <img src={item.img} alt={item.title} />
+                    </ListItemIcon>
+  <ListItemText
+    primary={item.title}
+    primaryTypographyProps={{
+      style: {
+        color: 'white',
+      },
+    }}
+    sx={{
+      opacity: open ? 1 : 0,
+      transition: 'opacity 0.3s ease',
+      whiteSpace: 'nowrap',
+    }}
+  />
+  
+                  </ListItemButton>
+                </ListItem>
+              </Tooltip>
+            ))}
+  
+            {user === adminId && (
+              <Tooltip title={!open ? 'Admin Settings' : ''} placement="right">
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                  <ListItemButton
+                    onClick={() => setPage(6)}
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 2 : 'auto',
-                      justifyContent: 'center',
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                      backgroundColor: page === 6 ? 'white' : 'inherit',
+                      '& img': {
+                        filter: page === 6 ? 'invert(0)' : 'invert(1)',
+                        backgroundColor: page === 6 ? 'white' : 'transparent',
+                        padding: '4px',
+                        borderRadius: '8px',
+                        width: 24,
+                        height: 24,
+                      },
                     }}
                   >
-                    <img src={adminImg} alt="Admin Settings" />
-                  </ListItemIcon>
-                </ListItemButton>
-              </ListItem>
-            </Tooltip>
-          )}
-        </List>
-      </Drawer>
-    </Box>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 2 : 'auto',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <img src={adminImg} alt="Admin Settings" />
+                    </ListItemIcon>
+                  </ListItemButton>
+                </ListItem>
+              </Tooltip>
+            )}
+          </List>
+        </Drawer>
+      </Box>
+    </>
   );
 };
 
