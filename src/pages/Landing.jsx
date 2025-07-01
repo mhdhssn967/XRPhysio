@@ -70,7 +70,8 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
       </tr>
     </thead>
     <tbody>
-      {latestSessions.map((session, index) => (
+      {latestSessions.length>0?
+      latestSessions.map((session, index) => (
         <tr key={index}>
           <td>{session.patientName}</td>
           <td>{session.gameName}</td>
@@ -79,7 +80,9 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
           <td>{session.efficiency}</td>
           <td>{session.date}</td>
         </tr>
-      ))}
+      )):
+      <td colSpan={'5'}>No recent activity</td>
+      }
     </tbody>
   </table>
 </div>
