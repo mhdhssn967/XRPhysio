@@ -9,7 +9,7 @@ import PatientData from '../components/PatientData';
 import Loader from '../helperComponents/Loader';
 import SessionInsight from '../components/SessionInsight';
 import Typography from '@mui/material/Typography';
-
+import LoaderComponent from './LoaderComponent';
 
 const Patients = ({ user, triggerRefresh, setTriggerRefresh }) => {
 
@@ -75,7 +75,7 @@ const Patients = ({ user, triggerRefresh, setTriggerRefresh }) => {
           }
           {patients.length>0?
             <PatientsTable patients={patients} setTriggerRefresh={setTriggerRefresh} triggerRefresh={triggerRefresh} setPatientDataPage={setPatientDataPage} setClickedPatientID={setClickedPatientID}/>
-          :<Loader/>
+          :<div className='loadScreen'><LoaderComponent/></div>
           }
         </div>
   }
