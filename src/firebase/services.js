@@ -1,4 +1,4 @@
-import { getFirestore, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, getDocs, setDoc, orderBy, query } from 'firebase/firestore';
 import { auth, db, firebaseConfig } from '../../firebaseConfig'; // adjust path as needed
 import { collection, addDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -60,9 +60,13 @@ export const addPatientToHospital = async (hospitalId, patientData) => {
 // Fetch patient data
 
 export const getPatientData = async (hospitalId) => {
-    try {
+  try {
     const patientsRef = collection(db, 'hospitalData', hospitalId, 'patients');
-    const snapshot = await getDocs(patientsRef);
+
+    // 🔽 Order by 'name' in ascending (alphabetical) order
+    const q = query(patientsRef, orderBy('name'));
+
+    const snapshot = await getDocs(q);
 
     const patients = snapshot.docs.map(doc => ({
       id: doc.id,
@@ -75,6 +79,7 @@ export const getPatientData = async (hospitalId) => {
     return [];
   }
 };
+
 
 // Get hosp details for admin
 
@@ -242,6 +247,32 @@ export const fetchHospitalData = async (user, hospitalID) => {
   }
 };
 
+export const fetchHospitalDataForAll = async (user) => {
+  
+    const db = getFirestore();
+    const hospitalDocRef = doc(db, 'hospitalData', user); // direct reference to the doc
+  console.log(hospitalDocRef);
+  
+    try {
+      const docSnap = await getDoc(hospitalDocRef);
+
+      if (docSnap.exists()) {
+        return {
+          id: docSnap.id,
+          ...docSnap.data()
+        };
+      } else {
+        console.log("No such hospital data document!");
+        return null;
+      }
+
+    } catch (error) {
+      console.error('Error fetching hospital data:', error);
+      throw error;
+    }
+  } 
+
+
 // to fetch deviceIds
 export const fetchDeviceIds = async (user, hospitalId) => {
   if (user === adminId) {
@@ -299,6 +330,7 @@ export const getSelectedPatientData = async (hospitalId, patientId) => {
  * @param {string} hospitalId - Firestore hospital (user/admin) ID.
  * @returns {Promise<Array>} - Array of session data objects.
  */
+
 export async function fetchSessionHistoryOfPatient(patientId, hospitalId) {
   try {
     const sessionsRef = collection(
@@ -310,7 +342,9 @@ export async function fetchSessionHistoryOfPatient(patientId, hospitalId) {
       'gameDatas'
     );
 
-    const snapshot = await getDocs(sessionsRef);
+    const q = query(sessionsRef, orderBy('timestamp', 'desc')); // or 'asc' for oldest first
+
+    const snapshot = await getDocs(q);
 
     const sessionHistory = snapshot.docs.map((doc) => ({
       id: doc.id,

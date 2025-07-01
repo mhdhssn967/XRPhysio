@@ -13,7 +13,6 @@
   .content{
     max-width: 100vw;
     overflow-x: hidden;
-    overflow-y: scroll;
     margin-left: 5rem;
   }
   .nav-section{

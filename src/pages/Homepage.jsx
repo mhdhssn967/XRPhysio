@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Homepage.css';
 import Navbar from '../components/Navbar';
 import { getUserId } from '../firebase/getUserID';
-import { fetchHospitalName } from '../firebase/services';
+import { fetchHospitalData, fetchHospitalDataForAll, fetchHospitalName } from '../firebase/services';
 import Patients from './Patients';
 import Landing from './Landing';
 import AdminPage from './AdminPage';
@@ -17,6 +17,7 @@ const Homepage = () => {
   console.log(user);
    
   const [hospName, setHospName]=useState(null)
+  const [fetchedHospitalData,setFetchedHospitalData]=useState({})
   // const [page, setPage]=useState(0)
   const [triggerRefresh, setTriggerRefresh]=useState(false) 
 
@@ -34,7 +35,9 @@ useEffect(() => {
       try {
         const currentUser =  await getUserId();        
         setUser(currentUser); // Set the user ID in the state
-        const name = await fetchHospitalName(currentUser);       
+        const name = await fetchHospitalName(currentUser);  
+        const detailsRef=await fetchHospitalDataForAll(currentUser)
+        setFetchedHospitalData(detailsRef)     
         setHospName(name)
       } catch (error) {
         console.error('Error fetching user ID:', error);
@@ -49,7 +52,7 @@ useEffect(() => {
   const renderPage = () => {
     switch (page) {
       case 0:
-        return <Landing hospName={hospName}/>
+        return <Landing hospName={hospName} triggerRefresh={triggerRefresh} fetchedHospitalData={fetchedHospitalData} user={user}/>
       case 1:
         return <Patients user={user} triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh}/>
       case 2:

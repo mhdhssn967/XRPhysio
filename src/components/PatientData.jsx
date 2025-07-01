@@ -83,7 +83,7 @@ const [selectedSession, setSelectedSession] = useState(null);
     selectedSession={selectedSession}
   /></>:
       <div className="container">
-        <button className="sec-btn app-btn action-btn" onClick={() => setPatientDataPage(false)}>
+        <button className="sec-btn app-btn action-btn back-button" onClick={() => setPatientDataPage(false)}>
           <i className="fa-solid fa-arrow-left"></i> Back to all patients
         </button>
   

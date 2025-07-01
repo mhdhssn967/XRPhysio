@@ -1,36 +1,113 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import man from '../assets/man.png';
 import './Landing.css'
+import gamepad from '../assets/gamepad.png'
+import examination from '../assets/examination.png'
+import vrglass from '../assets/virtual-reality-glasses.png'
+import vrr from '../assets/vrr.png'
+import { fetchActiveSessions } from '../firebase/helpers';
+import { fetchLatestGameSessions } from '../firebase/processData';
+
+const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
+  const subscribedSince = fetchedHospitalData?.createdAt?.toDate().toLocaleDateString();
+
+  console.log(fetchedHospitalData);
+  
+  const [sessions, setSessions] = useState([]);
+  const [latestSessions,setLatestSessions]=useState([])
+  console.log(latestSessions);
+  
 
 
+    
+  
+    useEffect(() => {
+      const getSessions = async () => {        
+          const activeSessions = await fetchActiveSessions(user);   
+          setSessions(activeSessions);
+          const recentDataRef=await fetchLatestGameSessions(user)
+          setLatestSessions(recentDataRef)
+      };
+  
+      getSessions();
+    }, [user,triggerRefresh]);
 
-const Landing = ({hospName}) => {
+  const version =2.6
+
   return (
-    <div className='landing-main'>
-      <p>Happy Moves V 2.2</p>
-          <div className="homepage-wrapper">
-            <div className="dashboard-home">
-              <div className="dashboard-info">
-                <h2> <br /> <span className="highlight"><strong>{hospName}</strong></span></h2>
-                <p className="tagline">Monitoring VR Therapy Sessions with <strong>Happy Moves</strong></p>
-                <div className="stats-grid">
-                  <div className="stat-card"><i className="fa-solid fa-bed-pulse"></i> <h4>Total Patients: <strong>128</strong></h4></div>
-                  <div className="stat-card"><i class="fa-solid fa-gamepad"></i> <h4>Sessions Played: <strong>452</strong></h4></div>
-                  <div className="stat-card"><i class="fa-solid fa-vr-cardboard"></i><h4> Devices Connected: <strong>6</strong></h4></div>
-                </div>  
-              </div>
-            </div>  
+    <div className="container">
+      <div className='dash-head'>
+        <div>
+          <p>Happy Moves v{version}</p>
+          <h3>{hospName}</h3>
+        </div>
+        <p><strong>Subscribed since :</strong> {subscribedSince}</p>
+         </div>
+         <div className='main-cards'>
+          <div className='main-card'>
+            <img src={vrglass} alt="" />
+              <h2><strong>VR Devices :</strong> {fetchedHospitalData?.VRDeviceCount}</h2>
           </div>
-          <section className="quick-actions">
-        <h3>Quick Actions</h3>
-        <div className="action-buttons">
-          <button className="action-btn quick"><i class="fa-solid fa-user-plus"></i> Add New Patient</button>
-          <button className="action-btn quick"><i class="fa-solid fa-chart-simple"></i> View Reports</button>
-          <button className="action-btn quick"><i class="fa-solid fa-gear"></i>  Device Settings</button>
-          <button className='action-btn quick'><i class="fa-solid fa-headset"></i> Contact Support</button>
-        </div>
-      </section>
-        </div>
+          <div className='main-card'>
+            <img src={examination} alt="" />
+              <h2><strong>Patients :</strong> {fetchedHospitalData?.patientCount}</h2>
+          </div>
+          <div className='main-card'>
+            <img src={gamepad} alt="" />
+              <h2><strong>Total Games Played :</strong> {fetchedHospitalData?.totalGamePlayCount}</h2>
+          </div>
+          <div className='recent-data'>
+            <h2 className='dash-headings'>Recent Game data</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Patient Name</th>
+        <th>Game Name</th>
+        <th>Hand</th>
+        <th>Average Reaction Time (s)</th>
+        <th>Efficiency (%)</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {latestSessions.map((session, index) => (
+        <tr key={index}>
+          <td>{session.patientName}</td>
+          <td>{session.gameName}</td>
+          <td>{session.hand}</td>
+          <td>{session.avgReaction}</td>
+          <td>{session.efficiency}</td>
+          <td>{session.date}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+         </div>
+
+         <div className='session-card'>
+          <h2 className='dash-headings'>Game session</h2>
+          <div className='session-card-content'><img width={'550px'} src={vrr} alt="" />
+            
+             <div className='card-dets'>
+                {sessions && sessions.length>0?
+                sessions.map((session,index)=>(
+                <div className='card-ss' key={session.id}>
+                 <div style={{display:'flex',alignItems:'center'}}>
+                    <h2 style={{fontWeight:'900',color:'var(--secondary-color)'}}>{session.deviceName}</h2>
+                    <div className='device-info'><p>View Device id</p><p className='session-device-id'><strong>Device id : </strong>{session.deviceId}</p></div>
+                 </div>
+                  <h3><strong>Patient Name :</strong> {session.patientName}</h3>
+                  <h3><strong>Game Status :</strong>{session.gameStatus}</h3>
+                  <h3><strong>Started at :</strong>{session.startedAt.toDate().toLocaleString()}</h3>
+                  </div>)):
+                  <p>No devices yet</p>
+                  }
+             </div>
+            </div>
+         </div>
+    </div>
   )
 }
 

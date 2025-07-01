@@ -4,7 +4,6 @@ import {
   Legend,
 } from "recharts";
 import './PatientInsight.css';
-
 const PatientInsight = ({ displaySessionData = [] }) => {
   const sortedSessions = useMemo(() => {
     return [...displaySessionData]

@@ -73,15 +73,16 @@ const spawnPoints = realSpawnPoints;
 
   return (
     <div className='container'>
+      <button className='sec-btn app-btn action-btn back-button' onClick={()=>setShowSessionInsight(false)}>
+        <i className='fa-solid fa-arrow-left'></i> Back to patient details
+      </button>
       <div className='visualizer-heading'>
         <h2><span>Patient Name:</span> {patientDetails.name || 'Patient Name'}</h2>
         <h2><span>Condition</span>: {patientDetails.condition || 'Condition'}</h2>
         <h2><span>Game:</span> {selectedSession.gameName}</h2>
       </div>
 
-      <button className='sec-btn app-btn action-btn' onClick={()=>setShowSessionInsight(false)}>
-        <i className='fa-solid fa-arrow-left'></i> Back to patient details
-      </button>
+      
 
       <div className='visualizer'>
         <PatientEfficiencyVisualizer sessionRawData={sessionRawData} selectedSession={selectedSession}/>
