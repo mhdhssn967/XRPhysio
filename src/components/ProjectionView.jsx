@@ -37,8 +37,8 @@ const ProjectionView = ({  title,
     plane === 'top'
       ? SIZE * 0.90 - y * SCALE
       : plane === 'side'
-      ? SIZE - y*2 * SCALE
-      : SIZE - y*2 * SCALE,
+      ? SIZE - y*1.75 * SCALE
+      : SIZE - y*1.75 * SCALE,
   efficiency: parseFloat(point.efficiency || '0').toFixed(1),
 };
 
@@ -193,6 +193,7 @@ const ProjectionView = ({  title,
         textAnchor="middle"
         fontWeight="bold"
         fill="#333"
+        cursor="pointer"
       >
         {efficiency}%
       </text>
