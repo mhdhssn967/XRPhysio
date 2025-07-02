@@ -12,7 +12,7 @@ const PatientsTable = ({patientData, patients,setPatientDataPage, setClickedPati
     
   return (
     <>
-      <div><table className="patients-table">
+      <div className='patient-display-div'><table className="patients-table">
       <thead>
         <tr>
           <th>#</th>

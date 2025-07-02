@@ -1,8 +1,14 @@
+.patient-display-div{
+  max-width: 100vw;
+  overflow-x: scroll;
+}
 .patients-table {
     width: 100%;
+    /* max-width: 97vw; */
     margin-top: 2%;
     border-collapse: collapse;
     animation: openUp .3s;
+    /* overflow-x: scroll; */
   }
   
   .patients-table th,

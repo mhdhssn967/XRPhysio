@@ -59,58 +59,68 @@ const Addpatient = ({addPatients, setAddPatients, user, triggerRefresh, setTrigg
       <form onSubmit={handleSubmit} className='add-patient-form'>
         <div className='form-div'>
             <div className='inputs'>
-                <label>Name</label>
-                <input
-                  type='text'
-                  name='name'
-                  value={patient.name}
-                  onChange={handleChange}
-                  required
-                  placeholder='Add Patient Name'
-                />
+                <div>
+                  <label>Name</label>
+                  <input
+                    type='text'
+                    name='name'
+                    value={patient.name}
+                    onChange={handleChange}
+                    required
+                    placeholder='Add Patient Name'
+                  />
+                </div>
         
-                <label>Age</label>
-                <input
-                  type='number'
-                  name='age'
-                  value={patient.age}
-                  onChange={handleChange}
-                  required
-                  placeholder='Add patient age'
-                />
+                <div>
+                  <label>Age</label>
+                  <input
+                    type='number'
+                    name='age'
+                    value={patient.age}
+                    onChange={handleChange}
+                    required
+                    placeholder='Add patient age'
+                  />
+                </div>
         
-                <label>Condition</label>
-                <input
-                  type='text'
-                  name='condition'
-                  value={patient.condition}
-                  onChange={handleChange}
-                  required
-                  placeholder='Add Patient Condition'
-                />
+                <div>
+                  <label>Condition</label>
+                  <input
+                    type='text'
+                    name='condition'
+                    value={patient.condition}
+                    onChange={handleChange}
+                    required
+                    placeholder='Add Patient Condition'
+                  />
+                </div>
         
-                <label>Starting Stage</label>
-                <input
-                  type='text'
-                  name='startingStage'
-                  value={patient.startingStage}
-                  onChange={handleChange}
-                  required
-                  placeholder='Add Starting stage of patient'
-                />
+                <div>
+                  <label>Starting Stage</label>
+                  <input
+                    type='text'
+                    name='startingStage'
+                    value={patient.startingStage}
+                    onChange={handleChange}
+                    required
+                    placeholder='Add Starting stage of patient'
+                  />
+                </div>
         
-                <label>Therapist</label>
-                <input
-                  type='text'
-                  name='therapist'
-                  value={patient.therapist}
-                  onChange={handleChange}
-                  required
-                  placeholder='Add therapist of patient'
-                />
+                <div>
+                  <label>Therapist</label>
+                  <input
+                    type='text'
+                    name='therapist'
+                    value={patient.therapist}
+                    onChange={handleChange}
+                    required
+                    placeholder='Add therapist of patient'
+                  />
+                </div>
             </div>
             <div className='form-btns'>
-                <button className='form-btn' onClick={()=>setAddPatients(!addPatients)}>Close</button>
+                <button className='form-btn close-btn' onClick={()=>setAddPatients(!addPatients)}>Close</button>
                 <button type='submit' className='sec-btn form-btn'>Add Patient</button>
             </div>
         </div>

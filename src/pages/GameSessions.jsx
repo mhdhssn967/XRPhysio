@@ -5,12 +5,14 @@ import { fetchDeviceIdsForHospitals, getPatientDataforHospitals, initiateSession
 import ActiveSessions from '../components/ActiveSessions'
 import Swal from 'sweetalert2';
 import Typography from '@mui/material/Typography';
+import LoaderComponent from './LoaderComponent'
 
 
 
 const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     const [deviceIds, setDeviceIds] = useState([])
     const [allPatients, setAllPatients] = useState([])
+    const [loading,setLoading]=useState(true)
     const [selected, setSelected] = useState({ activeDevice: '', activePatient: '', activeDeviceName: '', activePatientName: '' })
 
 
@@ -21,6 +23,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
             setDeviceIds(deviceIdsRef)
             const patientsRef = await getPatientDataforHospitals(user)
             setAllPatients(patientsRef)
+            setLoading(false)
         }; getDeviceIds(user);
     }, [user])
 
@@ -51,7 +54,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
 
     return (
         <>
-            <div className='game-sessions-page'>
+           {!loading?<div className='game-sessions-page'>
                 <div className='container-head'>
 <Typography
   component="h1"
@@ -126,7 +129,9 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
                 
                 {/* <ActiveSessions triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} user={user}/> */}
                 </div>
-                </div>
+                </div>:
+                <div className='loadScreen'><LoaderComponent/></div>
+                }
         </>
     )
 }

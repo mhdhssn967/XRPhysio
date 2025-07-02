@@ -1,4 +1,4 @@
-import { getFirestore, doc, getDoc, getDocs, setDoc, orderBy, query } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, getDocs, setDoc, orderBy, query, increment, updateDoc } from 'firebase/firestore';
 import { auth, db, firebaseConfig } from '../../firebaseConfig'; // adjust path as needed
 import { collection, addDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -6,7 +6,6 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from "firebase/auth";
 import { initiateSession } from './helpers';
 const adminId = import.meta.env.VITE_ADMIN_ID
-
 
 // Function to fetch the hospital name using the userID
 export const fetchHospitalName = async (userID) => {
@@ -43,15 +42,22 @@ export const addPatientToHospital = async (hospitalId, patientData) => {
       'patients'
     );
 
+    // Add the new patient
     await addDoc(patientsCollectionRef, {
       ...patientData,
-      createdAt: new Date()
+      createdAt: new Date(),
     });
 
-    console.log('✅ Patient added successfully!');
+    // Increment patientCount in the hospital document
+    const hospitalDocRef = doc(db, 'hospitalData', hospitalId);
+    await updateDoc(hospitalDocRef, {
+      patientCount: increment(1),
+    });
+
+    console.log('✅ Patient added and hospital patient count updated!');
     return { success: true };
   } catch (error) {
-    console.error('❌ Error adding patient:', error);
+    console.error('❌ Error adding patient or updating count:', error);
     return { success: false, error };
   }
 };
