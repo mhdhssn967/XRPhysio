@@ -25,7 +25,7 @@ const PatientsTable = ({patientData, patients,setPatientDataPage, setClickedPati
       </thead>
       <tbody>
         {patients.map((patient, index) => (
-          <tr key={patient.id} onClick={()=>handlePatientRowClicked(patient.id)}>
+          <tr role='button' key={patient.id} onClick={()=>handlePatientRowClicked(patient.id)}>
             <td>{index+1}</td>
             <td>{patient.name}</td>
             <td>{patient.age}</td>
