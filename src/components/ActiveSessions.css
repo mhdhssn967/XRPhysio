@@ -1,22 +1,55 @@
 .active-session {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
     gap: 16px;
     width: 100%;
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
   }
-  .active-session table{
-    width: 100%;
+  .session-row{
+    border: solid 1px var(--extra-color);
+    padding: 10px;
+    border-radius: 10px;
+    gap: 50px;
+  }
+  .session-info{
+    display:flex ;
+    gap: 40px;
+  }
+  .session-info p{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-wrap: nowrap;
     text-align: center;
   }
-  .active-session table tbody tr{
-    background-color: var(--extra-color);
-    text-wrap: nowrap;
+ .game-name-btn{
+    width: 250px;
+    background: var(--primary-color);
+    border: solid 1px var(--secondary-color);
+    padding:10px 5px ;
+    color: white;
+    border-radius: 10px;
+    filter: drop-shadow(2px 8px 1px rgb(94, 48, 6));
+    cursor: pointer;
+    transition: 0.1s;
+ }
+ 
+ .game-name-btn:active{
+  filter: drop-shadow(0px 0px 1px rgb(94, 48, 6));
+  transform: translateX(2px) translateY(8px);
+ }
+  .session-controls{
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    border-radius: 6px;
+    flex-direction: column;
+    padding: 10px;
+    width: 350px;
   }
-  .active-session table tbody tr td{
-    padding:10px 20px;
-    /* font-weight: 800; */
-  }
+.controls-heading{
+  color: var(--secondary-color);
+}
   .end-btn{
     background-color: rgb(255, 81, 81);
     border: none;
@@ -52,3 +85,8 @@
   .stop-btn{
     color: rgb(204, 23, 23);
   }
+
+
+
+
+  

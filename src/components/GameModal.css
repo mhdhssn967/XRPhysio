@@ -1,0 +1,40 @@
+.game-modal{
+    max-height: 80vh;
+    overflow-y: scroll;
+}
+.games-modal-div h2{
+    font-size: 20px;
+    color: var(--secondary-color);
+    margin: 10px auto 5px auto;
+}
+.game-modal-button{
+    background-color: white;
+    border: solid 1px;
+    padding:14px 20px;
+    color: rgb(46, 46, 45);
+    font-weight: 900;
+    transition: 0.2s;
+}
+.games-modal-items{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.game-modal-main-div{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 10px;
+}
+.game-modal-button{
+    border-radius: 70px;
+    cursor: pointer;
+    filter: drop-shadow(2px 2px 1px black);
+}
+.game-modal-button:hover{
+    filter: drop-shadow(5px 5px 1px black);
+    transform: translateX(-3px) translateY(-3px);
+}
+.game-modal-button:active{
+    filter: drop-shadow(0px 0px 1px black);
+    transform: translateX(5px) translateY(5px);
+}

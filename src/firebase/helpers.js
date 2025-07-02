@@ -43,7 +43,7 @@ export const getPatientDataforHospitals = async (hospitalId) => {
 };
 
 // To initiate a session
-export const initiateSession = async (deviceId,patientId,deviceName,patientName,gameName,SceneName,hospitalId ) => {
+export const initiateSession = async (deviceId,patientId,deviceName,patientName,hospitalId ) => {
     
   try {
     if (!deviceId || !patientId || !hospitalId) {
@@ -56,9 +56,9 @@ export const initiateSession = async (deviceId,patientId,deviceName,patientName,
       hospitalId,
       deviceName,
       patientName,
-      gameName,
-      SceneName,
       gameStatus:'idle',
+      SceneName: "ActivitySelection",
+      gameName: "Home Screen",
       startedAt: serverTimestamp()
     };
 
@@ -107,6 +107,29 @@ export const endActiveSession = async (sessionId) => {
     console.error('Error ending session:', error);
   }
 };
+
+// update game
+
+export const updateSessionGameInfo = async (hospitalId, deviceId, gameName, sceneName) => {
+  try {
+    if (!hospitalId || !deviceId || !gameName || !sceneName) {
+      throw new Error("Missing required parameters to update session.");
+    }
+
+    const sessionRef = doc(db, 'hospitalData', hospitalId, 'activeDeviceSessions', deviceId);
+
+    await updateDoc(sessionRef, {
+      gameName: gameName,
+      SceneName: sceneName,
+      startedAt: serverTimestamp(),
+    });
+
+    console.log(`Session updated with game "${gameName}" and scene "${sceneName}".`);
+  } catch (error) {
+    console.error("Error updating session game info:", error.message);
+  }
+};
+
 
 
 // update gameplay status

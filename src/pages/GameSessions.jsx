@@ -16,9 +16,9 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     const [deviceIds, setDeviceIds] = useState([])
     const [allPatients, setAllPatients] = useState([])
     const [loading,setLoading]=useState(true)
-    const [selected, setSelected] = useState({ activeDevice: '', activePatient: '', activeDeviceName: '', activePatientName: '',SceneName:'',gameName:'' })
+    const [selected, setSelected] = useState({ activeDevice: '', activePatient: '', activeDeviceName: '', activePatientName: ''})
     const [allGames,setAllGames]=useState([])
-    console.log(selected);
+
     
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     }, [])
 
     const handleStartSession = async () => {
-        const { activeDevice, activePatient, activeDeviceName, activePatientName,gameName,SceneName } = selected;
+        const { activeDevice, activePatient, activeDeviceName, activePatientName } = selected;
         if (!activeDevice || !activePatient || !user) {
             console.error("Missing info to start session");
             return;
@@ -47,7 +47,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     
         const result = await Swal.fire({
             title: 'Change?',
-            html: `Change <strong>${activePatientName}</strong> to playing <strong>${gameName}<strong/> using <strong>${activeDeviceName}</strong>?`,
+            html: `Change <strong>${activePatientName}</strong> to using <strong>${activeDeviceName}</strong>?`,
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Yes',
@@ -57,7 +57,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
         });
     
         if (result.isConfirmed) {
-            await initiateSession(activeDevice, activePatient, activeDeviceName, activePatientName,gameName,SceneName, user);
+            await initiateSession(activeDevice, activePatient, activeDeviceName, activePatientName, user);
             setTriggerRefresh(!triggerRefresh);
             Swal.fire('Edited!', 'Patient and device is edited.', 'success');
         }
@@ -156,33 +156,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
                       </div>
 
                       <div className='input-sessions'>
-                        <p style={{textWrap:'nowrap',marginRight:'10px'}}>Select Game </p>
-                        <FormControl fullWidth variant="outlined" size="small">
-  <InputLabel>Game</InputLabel>
-  <Select
-    sx={{ width: '300px' }}
-    label="Select Game"
-    onChange={(e) => {
-      const selectedGame = allGames?.find(p => p.gameName === e.target.value);
-      setSelected({
-        ...selected,
-        SceneName: selectedGame.gameName,
-        gameName: selectedGame.gameDisplayName
-      });
-    }}
-    defaultValue=""
-  >
-    <MenuItem value="" disabled>
-      Select Game
-    </MenuItem>
-    {allGames &&
-      allGames.map((game) => (
-        <MenuItem key={game.gameName} value={game.gameName}>
-          {game.gameDisplayName}
-        </MenuItem>
-      ))}
-  </Select>
-</FormControl>
+                      
 
                       </div>
         <button className='main-btn app-btn' onClick={handleStartSession}>Edit</button>             

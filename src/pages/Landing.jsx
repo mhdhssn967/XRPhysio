@@ -5,7 +5,7 @@ import gamepad from '../assets/gamepad.png'
 import examination from '../assets/examination.png'
 import vrglass from '../assets/virtual-reality-glasses.png'
 import vrr from '../assets/vrr.png'
-import { fetchActiveSessions, getPatientDataforHospitals, uploadGameDetails } from '../firebase/helpers';
+import { fetchActiveSessions, getPatientDataforHospitals } from '../firebase/helpers';
 import { fetchLatestGameSessions } from '../firebase/processData';
 import LoaderComponent from './LoaderComponent';
 

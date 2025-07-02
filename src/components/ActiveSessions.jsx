@@ -8,9 +8,20 @@ import {
 import "./ActiveSessions.css";
 import Swal from "sweetalert2";
 import LoaderSmall from "../helperComponents/LoaderSmall";
+import GameModal from "./GameModal";
 
 const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
   const [sessions, setSessions] = useState([]);
+
+  const [open, setOpen] = useState(false);
+  const [selectedDeviceId,setSelectedDeviceId]=useState(null)
+  const [selectedGame,setSelectedgame]=useState({})
+  const handleOpen = (deviceId) => {
+    setOpen(true)
+    setSelectedDeviceId(deviceId)
+  }
+  const handleClose = () => setOpen(false);
+
   const [loadingStatus, setLoadingStatus] = useState(false);
 
   useEffect(() => {
@@ -34,73 +45,80 @@ const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     setTriggerRefresh(!triggerRefresh)
   }
 
+
+
   return (
     <div >
-      
+      <GameModal selectedDeviceId={selectedDeviceId} setSelectedgame={setSelectedgame} open={open} setOpen={setOpen} handleOpen={handleOpen} handleClose={handleClose} user={user} triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh}/> 
       <div className="active-session">
-        <table>
-          <thead>
-            <tr>
-              <th>Device Name</th>
-              <th>Patient Name</th>
-              <th>Game Name</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {sessions && sessions.length > 0 ? (
-              sessions.map((session, index) => (
-                <tr key={session.id}>
-                  <td>{session.deviceName || session.deviceId}</td>
-                  <td>{session.patientName}</td>
-                  <td>{session.gameName}</td>
+        <p style={{fontWeight:'800', fontSize:'20px',marginTop:'30px'}}>Game sessions</p>
+  {sessions && sessions.length > 0 ? (
+    sessions.map((session) => (
+      <div key={session.id} className="session-row">
+        <div className="session-info">
+          <p> {session.deviceName || session.deviceId}</p>
+          <p> {session.patientName}</p>
+        </div>
 
-                  {
-                    <td>
-                      {!loadingStatus ? (
-                        <>
-                          {session.gameStatus == "idle" ? (
-                            <i role="button" title="Play"
-                              class="ri-play-circle-fill game-btn play-btn"
-                              onClick={() =>
-                                handleEditStatus(
-                                  session.hospitalId,
-                                  session.deviceId,
-                                  "playing"
-                                )
-                              }
-                            ></i>
-                          ) : (
-                            <i role="button" title="Stop"
-                              className="ri-stop-circle-fill game-btn stop-btn"
-                              onClick={() =>
-                                handleEditStatus(
-                                  session.hospitalId,
-                                  session.deviceId,
-                                  "idle"
-                                )
-                              }
-                            ></i>
-                          )}
-                        </>
-                      ) : (
-                        <LoaderSmall />
-                      )}
-                    </td>
-                  }
-                  <td><i role="button" onClick={()=>goToHomeScreen(session.hospitalId,session.deviceId)} title="Go to homepage" style={{color:'brown',cursor:'pointer'}} class="ri-home-4-fill game-btn"></i></td>
-                </tr>
-              ))
+        <div className="session-controls">
+          {/* <p className="controls-heading" style={{fontWeight:'800'}}>Controls</p> */}
+          <div className="controls">
+            <button style={{textWrap:'nowrap',fontWeight:'800'}} className="game-name-btn" onClick={()=>handleOpen(session.deviceId)}>
+              {session.gameName || 'No game selected'}
+            </button>
+  
+            {!loadingStatus ? (
+              <>
+                {session.gameStatus === "idle" ? (
+                  <i
+                    role="button"
+                    title="Play"
+                    className="ri-play-circle-fill game-btn play-btn"
+                    onClick={() =>
+                      handleEditStatus(
+                        session.hospitalId,
+                        session.deviceId,
+                        "playing"
+                      )
+                    }
+                  />
+                ) : (
+                  <i
+                    role="button"
+                    title="Stop"
+                    className="ri-stop-circle-fill game-btn stop-btn"
+                    onClick={() =>
+                      handleEditStatus(
+                        session.hospitalId,
+                        session.deviceId,
+                        "idle"
+                      )
+                    }
+                  />
+                )}
+              </>
             ) : (
-              <tr>
-                <td colSpan="5" style={{ textAlign: "center" }}>
-                  No Active Sessions!!!
-                </td>
-              </tr>
+              <LoaderSmall />
             )}
-          </tbody>
-        </table>
+  
+            <i
+              role="button"
+              onClick={() =>
+                goToHomeScreen(session.hospitalId, session.deviceId)
+              }
+              title="Go to homepage"
+              style={{ color: "brown", cursor: "pointer" }}
+              className="ri-home-4-fill game-btn"
+            ></i>
+          </div>
+        </div>
       </div>
+    ))
+  ) : (
+    <p className="no-sessions">No Active Sessions!!!</p>
+  )}
+</div>
+
     </div>
   );
 };
