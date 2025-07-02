@@ -1,36 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { endActiveSession, fetchActiveSessions, updateGameStatus } from '../firebase/helpers'; // adjust path if needed
-import './ActiveSessions.css'
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from "react";
+import {
+  endActiveSession,
+  fetchActiveSessions,
+  updateGameStatus,
+} from "../firebase/helpers"; // adjust path if needed
+import "./ActiveSessions.css";
+import Swal from "sweetalert2";
+import LoaderSmall from "../helperComponents/LoaderSmall";
 
-const ActiveSessions = ({ user,triggerRefresh, setTriggerRefresh }) => {
-
+const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
   const [sessions, setSessions] = useState([]);
-  
+  const [loadingStatus, setLoadingStatus] = useState(false);
 
   useEffect(() => {
-    const getSessions = async () => {        
-        const activeSessions = await fetchActiveSessions(user);   
-        setSessions(activeSessions);
+    const getSessions = async () => {
+      const activeSessions = await fetchActiveSessions(user);
+      setSessions(activeSessions);
     };
 
     getSessions();
-  }, [user,triggerRefresh]);
+  }, [user, triggerRefresh]);
 
- const handleEditStatus=async(hospitalId,deviceId, status)=>{
-    await updateGameStatus(hospitalId, deviceId, status)
-    setTriggerRefresh(!triggerRefresh)
- }
-
+  const handleEditStatus = async (hospitalId, deviceId, status) => {
+    setLoadingStatus(true);
+    await updateGameStatus(hospitalId, deviceId, status);
+    setTriggerRefresh(!triggerRefresh);
+    setLoadingStatus(false);
+  };
 
   return (
-    <div style={{padding:'2rem'}}>
-      <div className='active-session'>
+    <div >
+      <div className="active-session">
         <table>
           <thead>
             <tr>
               <th>Device Name</th>
               <th>Patient Name</th>
+              <th>Game Name</th>
               <th></th>
             </tr>
           </thead>
@@ -40,13 +46,48 @@ const ActiveSessions = ({ user,triggerRefresh, setTriggerRefresh }) => {
                 <tr key={session.id}>
                   <td>{session.deviceName || session.deviceId}</td>
                   <td>{session.patientName}</td>
-                  {<td>{session.gameStatus=='idle'?<i class="fa-solid fa-circle-play game-btn" onClick={()=>handleEditStatus(session.hospitalId,session.deviceId,'playing')}></i>:<i className="fa-solid fa-circle-stop game-btn" onClick={()=>handleEditStatus(session.hospitalId,session.deviceId,'idle')}></i>}
-                 </td>}
+                  <td>{session.gameName}</td>
+
+                  {
+                    <td>
+                      {!loadingStatus ? (
+                        <>
+                          {session.gameStatus == "idle" ? (
+                            <i
+                              class="ri-play-circle-fill game-btn play-btn"
+                              onClick={() =>
+                                handleEditStatus(
+                                  session.hospitalId,
+                                  session.deviceId,
+                                  "playing"
+                                )
+                              }
+                            ></i>
+                          ) : (
+                            <i
+                              className="ri-stop-circle-fill game-btn stop-btn"
+                              onClick={() =>
+                                handleEditStatus(
+                                  session.hospitalId,
+                                  session.deviceId,
+                                  "idle"
+                                )
+                              }
+                            ></i>
+                          )}
+                        </>
+                      ) : (
+                        <LoaderSmall />
+                      )}
+                    </td>
+                  }
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="5" style={{ textAlign: 'center' }}>No Active Sessions!!!</td>
+                <td colSpan="5" style={{ textAlign: "center" }}>
+                  No Active Sessions!!!
+                </td>
               </tr>
             )}
           </tbody>
@@ -54,7 +95,7 @@ const ActiveSessions = ({ user,triggerRefresh, setTriggerRefresh }) => {
       </div>
     </div>
   );
-}
-  
+};
 
 export default ActiveSessions;
+

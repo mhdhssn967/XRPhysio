@@ -5,9 +5,8 @@ import gamepad from '../assets/gamepad.png'
 import examination from '../assets/examination.png'
 import vrglass from '../assets/virtual-reality-glasses.png'
 import vrr from '../assets/vrr.png'
-import { fetchActiveSessions, getPatientDataforHospitals } from '../firebase/helpers';
+import { fetchActiveSessions, getPatientDataforHospitals, uploadGameDetails } from '../firebase/helpers';
 import { fetchLatestGameSessions } from '../firebase/processData';
-import load from '../assets/load2.gif'
 import LoaderComponent from './LoaderComponent';
 
 const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
@@ -43,15 +42,19 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
 
   const version =2.8
 
+
+
   return (
     <>{!loading?
       <div className="container">
+        
         <div className='dash-head'>
           <div>
-            <p>Happy Moves v{version}</p>
+            <p>Happy Moves v{version} </p>
             <h3>{hospName}</h3>
           </div>
           <p><strong>Subscribed since :</strong> {subscribedSince}</p>
+          
            </div>
            <div className='main-cards'>
             <div className='main-card'>

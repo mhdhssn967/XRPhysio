@@ -1,14 +1,11 @@
-import React from 'react'
-import loader from '../assets/loadcustom2.png'
+import * as React from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
-const Loader = () => {
+export default function CircularIndeterminate() {
   return (
-    <div style={{width:'80vw',height:'80vh',display:'flex',alignItems:'center',justifyContent:'center'}}>
-        <img className='custom-loader' width={'100px'} src={loader} alt="" />
-    </div>
-
-    
-  )
+    <Box sx={{ display: 'flex' }}>
+      <CircularProgress />
+    </Box>
+  );
 }
-
-export default Loader

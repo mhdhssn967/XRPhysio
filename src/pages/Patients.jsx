@@ -65,7 +65,8 @@ const Patients = ({ user, triggerRefresh, setTriggerRefresh }) => {
   }}
 >
   Patients
-</Typography> <i title='Add a new patient' className="fa-solid fa-user-plus" onClick={handleAddPatients}></i>
+</Typography>
+<i title='Add a new patient' onClick={handleAddPatients} class="ri-file-add-fill"></i>
 
           </div>
           {addPatients ?

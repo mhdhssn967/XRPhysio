@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import './GameSessions.css'
 import meta from '../assets/meta.png'
-import { fetchDeviceIdsForHospitals, getPatientDataforHospitals, initiateSession } from '../firebase/helpers'
+import { fetchDeviceIdsForHospitals, fetchGameDetails, getPatientDataforHospitals, initiateSession } from '../firebase/helpers'
 import ActiveSessions from '../components/ActiveSessions'
 import Swal from 'sweetalert2';
 import Typography from '@mui/material/Typography';
 import LoaderComponent from './LoaderComponent'
+import {FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
+import { div } from 'three/tsl'
+
 
 
 
@@ -13,9 +16,10 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     const [deviceIds, setDeviceIds] = useState([])
     const [allPatients, setAllPatients] = useState([])
     const [loading,setLoading]=useState(true)
-    const [selected, setSelected] = useState({ activeDevice: '', activePatient: '', activeDeviceName: '', activePatientName: '' })
-
-
+    const [selected, setSelected] = useState({ activeDevice: '', activePatient: '', activeDeviceName: '', activePatientName: '',SceneName:'',gameName:'' })
+    const [allGames,setAllGames]=useState([])
+    console.log(selected);
+    
 
     useEffect(() => {
         const getDeviceIds = async (user) => {
@@ -27,8 +31,15 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
         }; getDeviceIds(user);
     }, [user])
 
+    useEffect(() => {
+        const getGamesDetails = async () => {
+            const gamesRef=await fetchGameDetails()
+            setAllGames(gamesRef)
+        }; getGamesDetails(user);
+    }, [])
+
     const handleStartSession = async () => {
-        const { activeDevice, activePatient, activeDeviceName, activePatientName } = selected;
+        const { activeDevice, activePatient, activeDeviceName, activePatientName,gameName,SceneName } = selected;
         if (!activeDevice || !activePatient || !user) {
             console.error("Missing info to start session");
             return;
@@ -36,7 +47,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     
         const result = await Swal.fire({
             title: 'Change?',
-            html: `Change <strong>${activePatientName}</strong> to using <strong>${activeDeviceName}</strong>?`,
+            html: `Change <strong>${activePatientName}</strong> to playing <strong>${gameName}<strong/> using <strong>${activeDeviceName}</strong>?`,
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Yes',
@@ -46,7 +57,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
         });
     
         if (result.isConfirmed) {
-            await initiateSession(activeDevice, activePatient, activeDeviceName, activePatientName, user);
+            await initiateSession(activeDevice, activePatient, activeDeviceName, activePatientName,gameName,SceneName, user);
             setTriggerRefresh(!triggerRefresh);
             Swal.fire('Edited!', 'Patient and device is edited.', 'success');
         }
@@ -54,86 +65,180 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
 
     return (
         <>
-           {!loading?<div className='game-sessions-page'>
-                <div className='container-head'>
-<Typography
-  component="h1"
-  sx={{
-    fontSize: {
-      xs: '1.5rem', // Mobile
-      sm: '2rem',   // Tablets
-      md: '2.5rem', // Laptops
-    },
-    fontWeight: 600,
-    color: '#505050',  // 👈 set color to black
-    mt: 2,
-    mb: 2
-  }}
->
-  Game Sessions
-</Typography>               </div>
-                <div  className='sessions-container'>
+  {!loading ? (
+    <div>
+        <div>
+          <div className='container-head'>
+            <Typography
+              component="h1"
+              sx={{
+                fontSize: {
+                  xs: '1.5rem',
+                  sm: '2rem',
+                  md: '2.5rem',
+                },
+                fontWeight: 600,
+                color: '#505050',
+                mt: 2,
+                mb: 2,
+              }}
+            >
+              Game Sessions
+            </Typography>
+          </div>
+          <div className='game-sessions-page'>
+              <div className='sessions-container'>
                 <img src={meta} alt="" />
-                    <div className='sessions-body'>
-                        <h2 style={{ fontWeight: '400' }}>Assign Device to patient</h2>
-                        <div style={{ display: 'flex' }}>
-                            <div style={{ display: 'flex' }}>
-                                {/* <img src={meta} alt="" /> */}
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'column',alignItems:'center' }}>
-    
-                                <div className='input-sessions'>
-                                    <p>Select Device</p>
-                                    <select name="" id="" onChange={(e) => {
-                                        const selectedIndex = e.target.selectedIndex - 1; 
-                                        setSelected({
-                                            ...selected,
-                                            activeDevice: e.target.value,
-                                            activeDeviceName: `Device ${selectedIndex + 1}`,
-                                        });
-                                    }}>
-                                        <option selected disabled>Select Device</option>
-                                        {deviceIds &&
-                                            deviceIds.map((id, index) => (
-                                                <option key={index} value={id}>Device {index + 1}</option>
-                                            ))
-    
-                                        }
-                                    </select>
-                                </div >
-                                <div className='input-sessions'>
-                                    <p>Select Patient</p>
-                                    <select name="" id="" onChange={(e) => {
-                                        const selectedPatient = allPatients.find(p => p.id === e.target.value);
-                                        setSelected({
-                                            ...selected,
-                                            activePatient: selectedPatient.id,
-                                            activePatientName: selectedPatient.name,
-                                        });
-                                    }}>
-                                        <option selected disabled>Select Pateint</option>
-                                        {
-                                            allPatients &&
-                                            allPatients.map((patient) => (
-                                                <option value={patient.id}>{patient.name}</option>
-                                            ))
-                                        }
-                                    </select>
-                                </div>
-                                <button className='main-btn app-btn' onClick={handleStartSession}>Edit</button>
-                            </div>
-                        </div>
-                        <ActiveSessions triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} user={user}/>
+                <div className='sessions-body'>
+                  <h2 style={{ fontWeight: '400' }}>Assign Device to patient</h2>
+                  <div style={{ display: 'flex' }}>
+                    <div style={{ display: 'flex' }}>{/* Placeholder */}</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
+                      <div className='input-sessions'>
+                        <p style={{textWrap:'nowrap',marginRight:'10px'}}>Select Device</p>
+                        <FormControl fullWidth variant="outlined" size="small" >
+          <InputLabel >Device</InputLabel>
+          <Select sx={{ width: '300px' }}
+            label="Select Device"
+            onChange={(e) => {
+              const selectedValue = e.target.value;
+              const selectedIndex = deviceIds.indexOf(selectedValue)+1;
+              console.log(selectedIndex);
+              
+              setSelected({
+                ...selected,
+                activeDevice: selectedValue,
+                activeDeviceName: `Device ${selectedIndex}`,
+              });
+            }}
+            defaultValue=""
+          >
+            <MenuItem value="" disabled>
+              Select Device
+            </MenuItem>
+            {deviceIds &&
+              deviceIds.map((id, index) => (
+                <MenuItem key={index} value={id}>
+                  Device {index + 1}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+        
+                      </div>
+                      <div className='input-sessions'>
+                        <p style={{textWrap:'nowrap',marginRight:'10px'}}>Select Patient </p>
+                        <FormControl fullWidth variant="outlined" size="small">
+                          <InputLabel>Patient</InputLabel>
+                          <Select sx={{ width: '300px' }}
+                            label="Select Patient"
+                            onChange={(e) => {
+                              const selectedPatient = allPatients.find(p => p.id === e.target.value);
+                              setSelected({
+                                ...selected,
+                                activePatient: selectedPatient.id,
+                                activePatientName: selectedPatient.name,
+                              });
+                            }}
+                            defaultValue=""
+                          >
+                            <MenuItem value="" disabled>
+                              Select Patient
+                            </MenuItem>
+                            {allPatients &&
+                              allPatients.map((patient) => (
+                                <MenuItem key={patient.id} value={patient.id}>
+                                  {patient.name}
+                                </MenuItem>
+                              ))}
+                          </Select>
+                        </FormControl>
+                      </div>
 
+                      <div className='input-sessions'>
+                        <p style={{textWrap:'nowrap',marginRight:'10px'}}>Select Game </p>
+                        <FormControl fullWidth variant="outlined" size="small">
+  <InputLabel>Game</InputLabel>
+  <Select
+    sx={{ width: '300px' }}
+    label="Select Game"
+    onChange={(e) => {
+      const selectedGame = allGames?.find(p => p.gameName === e.target.value);
+      setSelected({
+        ...selected,
+        SceneName: selectedGame.gameName,
+        gameName: selectedGame.gameDisplayName
+      });
+    }}
+    defaultValue=""
+  >
+    <MenuItem value="" disabled>
+      Select Game
+    </MenuItem>
+    {allGames &&
+      allGames.map((game) => (
+        <MenuItem key={game.gameName} value={game.gameName}>
+          {game.gameDisplayName}
+        </MenuItem>
+      ))}
+  </Select>
+</FormControl>
+
+                      </div>
+        <button className='main-btn app-btn' onClick={handleStartSession}>Edit</button>             
                     </div>
-                
-                {/* <ActiveSessions triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} user={user}/> */}
+                  </div>
+                  <ActiveSessions triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} user={user} />
                 </div>
-                </div>:
-                <div className='loadScreen'><LoaderComponent/></div>
-                }
-        </>
+              </div>
+    
+    
+              {/* game details */}
+              
+      <div className="game-details-page">   
+                <h1 style={{fontWeight:'900',marginBottom:'20px'}}>Therapy Games by Focus Area</h1>
+
+      <div className='game-dets-grid'>
+          {Object.entries(
+            allGames
+              ?.filter(game => game.gameName !== "ActivitySelection")
+              ?.reduce((groups, game) => {
+                const key = game.focus || "Other";
+                if (!groups[key]) groups[key] = [];
+                groups[key].push(game);
+                return groups;
+              }, {})
+          ).map(([focus, games]) => (
+            <div key={focus} className="focus-group">
+              <h2>{focus}</h2>
+              <div className='game-item-div'>
+                  {games.map((game, index) => (
+                    <div key={game.gameName || index} className="game-item">
+                      <p>{game.gameDisplayName}</p>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          ))}
+      </div>
+   
+
+
+    </div>
+          </div>
+        </div>
+    
+        
+
+    </div>
+  ) : (
+    <div className='loadScreen'>
+      <LoaderComponent />
+    </div>
+  )}
+</>
     )
 }
 
 export default GameSessions
+

@@ -43,7 +43,7 @@ export const getPatientDataforHospitals = async (hospitalId) => {
 };
 
 // To initiate a session
-export const initiateSession = async (deviceId,patientId,deviceName,patientName,hospitalId ) => {
+export const initiateSession = async (deviceId,patientId,deviceName,patientName,gameName,SceneName,hospitalId ) => {
     
   try {
     if (!deviceId || !patientId || !hospitalId) {
@@ -56,6 +56,8 @@ export const initiateSession = async (deviceId,patientId,deviceName,patientName,
       hospitalId,
       deviceName,
       patientName,
+      gameName,
+      SceneName,
       gameStatus:'idle',
       startedAt: serverTimestamp()
     };
@@ -124,3 +126,78 @@ export const updateGameStatus = async (hospitalId,deviceId, newStatus) => {
       console.error("Error updating game status:", error.message);
     }
   };
+
+
+
+// uploadGameDetails.js
+
+//________________________________Game details_______________________________________________
+/**
+ * Uploads the list of game details to Firestore (one-time use).
+ * @param {import('firebase/app').FirebaseApp} firebaseApp - Initialized Firebase app
+ */
+// export const uploadGameDetails = async (firebaseApp) => {
+//   const db = getFirestore(firebaseApp);
+//   const gameCollectionRef = collection(db, "gameDetails");
+
+//   const games = [
+//     { gameName: "ActivitySelection", gameDisplayName: "Activity Selection", focus: "General" },
+//     { gameName: "MosqKillHandGross", gameDisplayName: "Mosquito Kill", focus: "Hand Gross" },
+//     { gameName: "FruitCutHandGross", gameDisplayName: "Fruit Cut", focus: "Hand Gross" },
+//     { gameName: "BaloonCutHandGross", gameDisplayName: "Balloon Cut", focus: "Hand Gross" },
+//     { gameName: "BlossomHandGross", gameDisplayName: "Blossom", focus: "Hand Gross" },
+//     { gameName: "ButterflyHandGross", gameDisplayName: "Butterfly Catch", focus: "Hand Gross" },
+//     { gameName: "BaloonpopHandgross", gameDisplayName: "Balloon Pop", focus: "Hand Gross" },
+//     { gameName: "BaloonpopHandFine", gameDisplayName: "Balloon Pop", focus: "Hand Fine" },
+//     { gameName: "LightHandFine", gameDisplayName: "Light Tap", focus: "Hand Fine" },
+//     { gameName: "NeckHorizontal", gameDisplayName: "Neck Horizontal Movement", focus: "Neck" },
+//     { gameName: "NeckVertical", gameDisplayName: "Neck Vertical Movement", focus: "Neck" },
+//     { gameName: "TrunkRotation", gameDisplayName: "Trunk Rotation", focus: "Trunk" },
+//     { gameName: "TrunkSideCrunches", gameDisplayName: "Trunk Side Crunches", focus: "Trunk" },
+//     { gameName: "LegStaticBalancing", gameDisplayName: "Leg Static Balancing", focus: "Leg Balance" },
+//     { gameName: "LegDynamicBalancing", gameDisplayName: "Leg Dynamic Balancing", focus: "Leg Balance" },
+//     { gameName: "ColorPen", gameDisplayName: "Color Pen", focus: "Concentration" },
+//     { gameName: "Concentration", gameDisplayName: "Concentration Task", focus: "Concentration" },
+//     { gameName: "LegSideMarches", gameDisplayName: "Leg Side Marches", focus: "Leg Movement" },
+//     { gameName: "LegFrontMarches", gameDisplayName: "Leg Front Marches", focus: "Leg Movement" },
+//     { gameName: "LegKicks", gameDisplayName: "Leg Kicks", focus: "Leg Movement" },
+//     { gameName: "ShoulderMaxHeight", gameDisplayName: "Shoulder Max Height", focus: "Shoulder Movement" }
+//   ];
+
+//   try {
+//     for (const game of games) {
+//       await addDoc(gameCollectionRef, game);
+//       console.log(`✅ Added: ${game.gameDisplayName}`);
+//     }
+//     console.log("🎉 All games uploaded successfully.");
+//   } catch (error) {
+//     console.error("❌ Error uploading games:", error);
+//   }
+// };
+// __________________________________________________________________________________________________________________ 
+
+
+// Fetch game name and details
+/**
+ * Fetches all game details from the "gameDetails" collection in Firestore.
+ * @param {import('firebase/app').FirebaseApp} firebaseApp - Initialized Firebase app
+ * @returns {Promise<Array>} Array of game objects with gameName, gameDisplayName, focus, etc.
+ */
+export const fetchGameDetails = async (firebaseApp) => {
+  const db = getFirestore(firebaseApp);
+  const gameCollectionRef = collection(db, "gameDetails");
+
+  try {
+    const snapshot = await getDocs(gameCollectionRef);
+    const games = snapshot.docs.map(doc => ({
+      id: doc.id, // Firestore document ID
+      ...doc.data()
+    }));
+
+    console.log("✅ Fetched games:", games);
+    return games;
+  } catch (error) {
+    console.error("❌ Error fetching game details:", error);
+    return [];
+  }
+};
