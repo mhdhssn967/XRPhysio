@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   endActiveSession,
   fetchActiveSessions,
+  setSceneToActivitySelection,
   updateGameStatus,
 } from "../firebase/helpers"; // adjust path if needed
 import "./ActiveSessions.css";
@@ -28,8 +29,14 @@ const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     setLoadingStatus(false);
   };
 
+  const goToHomeScreen=async(hospitalId,deviceId)=>{
+    await setSceneToActivitySelection(hospitalId,deviceId)
+    setTriggerRefresh(!triggerRefresh)
+  }
+
   return (
     <div >
+      
       <div className="active-session">
         <table>
           <thead>
@@ -53,7 +60,7 @@ const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
                       {!loadingStatus ? (
                         <>
                           {session.gameStatus == "idle" ? (
-                            <i
+                            <i role="button" title="Play"
                               class="ri-play-circle-fill game-btn play-btn"
                               onClick={() =>
                                 handleEditStatus(
@@ -64,7 +71,7 @@ const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
                               }
                             ></i>
                           ) : (
-                            <i
+                            <i role="button" title="Stop"
                               className="ri-stop-circle-fill game-btn stop-btn"
                               onClick={() =>
                                 handleEditStatus(
@@ -81,6 +88,7 @@ const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
                       )}
                     </td>
                   }
+                  <td><i role="button" onClick={()=>goToHomeScreen(session.hospitalId,session.deviceId)} title="Go to homepage" style={{color:'brown',cursor:'pointer'}} class="ri-home-4-fill game-btn"></i></td>
                 </tr>
               ))
             ) : (

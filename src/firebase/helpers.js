@@ -127,7 +127,25 @@ export const updateGameStatus = async (hospitalId,deviceId, newStatus) => {
     }
   };
 
+  // go to homescreen
+export const setSceneToActivitySelection = async (hospitalId, deviceId) => {
+  try {
+    if (!hospitalId || !deviceId) {
+      throw new Error("Hospital ID and Device ID are required.");
+    }
 
+    const sessionRef = doc(db, 'hospitalData', hospitalId, 'activeDeviceSessions', deviceId);
+
+    await updateDoc(sessionRef, {
+      SceneName: "ActivitySelection",
+      gameName: "Home Screen"
+    });
+
+    console.log(`SceneName set to "ActivitySelection" and gameName to "Home Screen" for device ${deviceId}`);
+  } catch (error) {
+    console.error("Error updating scene and game name:", error.message);
+  }
+};
 
 // uploadGameDetails.js
 
