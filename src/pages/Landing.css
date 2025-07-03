@@ -1,5 +1,5 @@
 .dash-head{
-  background-color: white;
+  background-color: var(--card-color);
   margin-top: 20px;
   padding: 10px;
   display: flex;
@@ -24,7 +24,7 @@
 
 }
 .main-cards .main-card{
-  background-color: white;
+  background-color: var(--card-color);
   border-radius: 10px;
   padding: 20px;
   height: 100px;
@@ -42,7 +42,7 @@
   max-width: 100%;
 }
 .session-card{
-  background-color: white;
+  background-color: var(--card-color);
   padding: 20px;
   border-radius: 15px;
 }
@@ -82,12 +82,12 @@
   font-weight: 400;
 }
 .card-ss{
-  background-color: whitesmoke;
+  background-color: var(--card-color);
   padding: 20px;
   border-radius: 15px
 }
 .recent-data{
-  background-color: white;
+  background-color: var(--card-color);
   border-radius: 10px;
   padding: 20px;
   height: 100px;
@@ -115,7 +115,7 @@ text-align: center;
   padding: 8px; /* optional for spacing */
 }
 .patients-table-div{
-  background-color: white;
+  background-color: var(--card-color);
   border-radius: 10px;
   margin-top: 20px;
   padding: 10px;

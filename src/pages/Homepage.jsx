@@ -49,6 +49,23 @@ useEffect(() => {
 
   }, [page]); 
 
+  // const [theme, setTheme] = useState('light');
+
+  // On initial load, set the saved theme
+  // useEffect(() => {
+  //   const savedTheme = localStorage.getItem('theme') || 'light';
+  //   document.documentElement.setAttribute('data-theme', savedTheme);
+  //   setTheme(savedTheme);
+  // }, []);
+
+  // const toggleTheme = () => {
+  //   const newTheme = theme === 'dark' ? 'light' : 'dark';
+  //   document.documentElement.setAttribute('data-theme', newTheme);
+  //   localStorage.setItem('theme', newTheme);
+  //   setTheme(newTheme);
+  // };
+
+
   const renderPage = () => {
     switch (page) {
       case 0:
@@ -77,8 +94,13 @@ useEffect(() => {
           {renderPage()}
         </div>
     </div>
+    {/* <button onClick={toggleTheme}>
+      Switch to {theme === 'dark' ? 'Light' : 'Dark'} Mode
+    </button> */}
     </>
   );
 };
 
 export default Homepage;
+// ThemeToggle.jsx
+

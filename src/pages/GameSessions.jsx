@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import Typography from '@mui/material/Typography';
 import LoaderComponent from './LoaderComponent'
 import {FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
-import { div } from 'three/tsl'
+import { div, log } from 'three/tsl'
 
 
 
@@ -16,6 +16,8 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     const [deviceIds, setDeviceIds] = useState([])
     const [allPatients, setAllPatients] = useState([])
     const [loading,setLoading]=useState(true)
+    console.log(loading);
+    
     const [selected, setSelected] = useState({ activeDevice: '', activePatient: '', activeDeviceName: '', activePatientName: ''})
     const [allGames,setAllGames]=useState([])
 

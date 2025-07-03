@@ -34,7 +34,9 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
           setLatestSessions(recentDataRef)
           const patientsRef=await getPatientDataforHospitals(user)
           setPatients(patientsRef)
+          if(fetchedHospitalData && sessions && patients){
           setLoading(false)
+          }
       };
   
       getSessions();
