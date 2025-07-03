@@ -149,7 +149,7 @@ const UpdateAnimation = () => {
       
 <div className="toggle-div"><p>Stand</p><div role="button" style={modelPosition?{justifyContent:'right'}:{justifyContent:'left'}} className="view-toggle-btn" onClick={()=>setModelPosition(!modelPosition)}> <div className="toggle-dot"></div></div><p>Sit</p></div>
 
-      <Canvas camera={{ position: [-4, 2, 10], fov: 60 }}>
+      <Canvas camera={{ position: [-6, 2, 12], fov: 60 }}>
         <OrbitControls />
         <ambientLight intensity={1} />
         <directionalLight position={[10, 10, 10]} intensity={1} />
@@ -169,7 +169,7 @@ const UpdateAnimation = () => {
           <group key={index}>
             <group position={[
   part.position[0],
-  part.position[1] - 1,  // 👈 shift downward by 1 unit
+  part.position[1] - 3,  // 👈 shift downward by 1 unit
   part.position[2]+1.5]}
             >
   {/* Animated glowing sphere */}
@@ -186,7 +186,7 @@ const UpdateAnimation = () => {
 
             <Text
               ref={part.ref}
-              position={[part.position[0], part.position[1]-0.8 + 0.2, part.position[2]+1.5]}
+              position={[part.position[0], part.position[1]-3 + 0.2, part.position[2]+1.5]}
               fontSize={0.2}
               color="#f17f32"
               anchorX="center"
@@ -202,7 +202,7 @@ const UpdateAnimation = () => {
           <primitive
             object={model}
             scale={[0.04, 0.04, 0.04]}
-            position={[0, -2, 0]}
+            position={[0, -4, 0]}
           />
         )}
         
@@ -218,12 +218,12 @@ export default PatientEfficiencyVisualizer;
 const AnimatedSphere = ({ efficiency }) => {
   const ref = useRef();
 
-  useFrame(({ clock }) => {
-    const scale = 0.12 + Math.sin(clock.getElapsedTime() * 7) * 1;
-    if (ref.current) {
-      ref.current.scale.set(scale, scale, scale);
-    }
-  });
+  // useFrame(({ clock }) => {
+  //   const scale = 0.12 + Math.sin(clock.getElapsedTime() * 7) * 1;
+  //   if (ref.current) {
+  //     ref.current.scale.set(scale, scale, scale);
+  //   }
+  // });
 
   const colorHue = (efficiency / 100) * 120; // 0 (red) → 120 (green)
 

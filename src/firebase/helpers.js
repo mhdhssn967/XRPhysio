@@ -122,7 +122,7 @@ export const updateSessionGameInfo = async (hospitalId, deviceId, gameName, scen
     await updateDoc(sessionRef, {
       gameName: gameName,
       SceneName: sceneName,
-      sceneChange:true,
+      changeScene:true,
       startedAt: serverTimestamp(),
     });
 
@@ -165,7 +165,7 @@ export const setSceneToActivitySelection = async (hospitalId, deviceId) => {
       SceneName: "ActivitySelection",
       gameName: "Home Screen",
       gameStatus:"idle",
-      sceneChange:true
+      changeScene:true
     });
 
     console.log(`SceneName set to "ActivitySelection" and gameName to "Home Screen" for device ${deviceId}`);

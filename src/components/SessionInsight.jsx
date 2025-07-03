@@ -74,7 +74,7 @@ const spawnPoints = realSpawnPoints;
   return (
     <div className='container'>
       <button className='sec-btn app-btn action-btn back-button' onClick={()=>setShowSessionInsight(false)}>
-        <i className='fa-solid fa-arrow-left'></i> Back to patient details
+        <i class="ri-arrow-left-circle-fill" style={{fontSize:'25px',color:'white'}}></i> Back to patient details
       </button>
       <div className='visualizer-heading'>
         <h2><span>Patient Name:</span> {patientDetails.name || 'Patient Name'}</h2>

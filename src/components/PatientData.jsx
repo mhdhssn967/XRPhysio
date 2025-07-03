@@ -84,7 +84,7 @@ const [selectedSession, setSelectedSession] = useState(null);
   /></>:
       <div className="container">
         <button className="sec-btn app-btn action-btn back-button" onClick={() => setPatientDataPage(false)}>
-          <i className="fa-solid fa-arrow-left"></i> Back to all patients
+          <i class="ri-arrow-left-circle-fill" style={{fontSize:'25px',color:'white'}}></i> Back to all patients
         </button>
   
         {patientDetails ? (

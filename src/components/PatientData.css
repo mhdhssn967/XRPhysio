@@ -3,6 +3,7 @@
     font-size: 15px;
     padding: 0.5%;
     gap: 10px;
+    margin-left: 5px;
 }
 .patient-detail-head{
     display: flex;
