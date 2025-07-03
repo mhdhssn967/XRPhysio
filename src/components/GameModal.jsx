@@ -19,6 +19,8 @@ const style = {
   borderRadius:'10px',
   boxShadow: 24,
   p: 4,
+  maxHeight:'80vh',
+  overflowY:'scroll'
 };
 
 const GameModal = ({open,setOpen,handleOpen,handleClose,user,setSelectedGame,selectedDeviceId,setTriggerRefresh, triggerRefresh}) => {
