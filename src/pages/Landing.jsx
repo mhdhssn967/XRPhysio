@@ -42,7 +42,7 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
       getSessions();
     }, [user,triggerRefresh]);
 
-  const version =2.8
+  const version =3.1
 
 
 
