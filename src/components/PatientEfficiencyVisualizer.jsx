@@ -169,7 +169,7 @@ const UpdateAnimation = () => {
           <group key={index}>
             <group position={[
   part.position[0],
-  part.position[1] - 3,  // 👈 shift downward by 1 unit
+  part.position[1] - 4,  // 👈 shift downward by 1 unit
   part.position[2]+1.5]}
             >
   {/* Animated glowing sphere */}
@@ -186,7 +186,7 @@ const UpdateAnimation = () => {
 
             <Text
               ref={part.ref}
-              position={[part.position[0], part.position[1]-3 + 0.2, part.position[2]+1.5]}
+              position={[part.position[0], part.position[1]-4 + 0.2, part.position[2]+1.5]}
               fontSize={0.2}
               color="#f17f32"
               anchorX="center"

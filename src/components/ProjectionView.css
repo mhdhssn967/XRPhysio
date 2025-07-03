@@ -21,3 +21,8 @@
 g:hover {
   cursor: pointer;
 }
+.view-img{
+  position: fixed;
+  left: 0px;
+  background-size: ;
+}
