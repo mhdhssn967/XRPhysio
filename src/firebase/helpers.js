@@ -164,7 +164,8 @@ export const setSceneToActivitySelection = async (hospitalId, deviceId) => {
     await updateDoc(sessionRef, {
       SceneName: "ActivitySelection",
       gameName: "Home Screen",
-      gameStatus:"idle"
+      gameStatus:"idle",
+      sceneChange:true
     });
 
     console.log(`SceneName set to "ActivitySelection" and gameName to "Home Screen" for device ${deviceId}`);
