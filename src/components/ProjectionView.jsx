@@ -3,21 +3,19 @@ import frontView from '../assets/1.png';
 import topView from '../assets/2.png';
 import sideView from '../assets/3.png';
 
+
 const SIZE = 300;
 const SCALE = 100; // 1 meter = 100px
 
-const ProjectionView = ({
-  title,
+const ProjectionView = ({  title,
   plane,
   points = [],
   hoveredIndex,
   setHoveredIndex,
-  setTooltip,
-}) => {
+  setTooltip }) => {
   const getCoordinates = (point) => {
     const [xVal, yVal, zVal] = point.position || [0, 0, 0];
-    let x = 0,
-      y = 0;
+    let x = 0, y = 0;
 
     if (plane === 'top') {
       x = xVal;
@@ -31,73 +29,57 @@ const ProjectionView = ({
     }
 
     return {
-      x:
-        plane === 'side'
-          ? SIZE * 0.6 + x * SCALE
-          : SIZE / 2 + x * SCALE,
-      y:
-        plane === 'top'
-          ? SIZE * 1 - y * SCALE
-          : plane === 'side'
-          ? SIZE - y * 1.75 * SCALE+100
-          : SIZE - y * 1.75 * SCALE+100,
-      efficiency: parseFloat(point.efficiency || '0').toFixed(1),
-    };
+  x:
+    plane === 'side'
+      ? SIZE * 0.75 + x * SCALE
+      : SIZE / 2 + x * SCALE,
+  y:
+    plane === 'top'
+      ? SIZE * 0.90 - y * SCALE
+      : plane === 'side'
+      ? SIZE - y*1.75 * SCALE
+      : SIZE - y*1.75 * SCALE,
+  efficiency: parseFloat(point.efficiency || '0').toFixed(1),
+};
+
   };
 
   const getBackgroundImage = () => {
-    if (plane === 'front') return frontView;
-    if (plane === 'top') return topView;
-    if (plane === 'side') return sideView;
-    return null;
-  };
+  if (plane === 'front') return `url(${frontView})`;
+  if (plane === 'top') return `url(${topView})`;
+  if (plane === 'side') return `url(${sideView})`;
+  return 'none';
+};
+
 
   return (
+    
     <div
       style={{
-        margin: '10px 60px',
+        margin: '10px',
         flex: '1 1 320px',
-        maxWidth: '500px',
-        position: 'relative',
-        height: '700px', // Adjust height as needed
-        border:'solid 1px gray'
+        maxWidth: '400px',
       }}
     >
       <h4 style={{ textAlign: 'center', marginBottom: '8px' }}>{title}</h4>
-
-      {/* Background image as a separate element */}
-      <img
-        src={getBackgroundImage()}
-        
-        alt=""
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          height: '50%',
-          width: '100%',
-          objectFit: 'contain',
-          zIndex: 0,
-          opacity: 0.3,
-          filter:'invert(1)',
-          marginTop:'280px',
-        }}
-      />
-
       <svg
-        width="100%"
-        height="100%"
-        viewBox={`0 0 ${SIZE} ${SIZE}`}
-        style={{
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
+  width="100%"
+  height={SIZE}
+  viewBox={`0 0 ${SIZE} ${SIZE}`}
+  style={{
+    border: '1px solid #ccc',
+    backgroundImage: getBackgroundImage(),
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+  }}
+>
+        {/* Axes */}
         <line
           x1={0}
-          y1={plane === 'top' ? SIZE / 2 : SIZE+50}
+          y1={plane === 'top' ? SIZE / 2 : SIZE}
           x2={SIZE}
-          y2={plane === 'top' ? SIZE / 2 : SIZE+50}
+          y2={plane === 'top' ? SIZE / 2 : SIZE}
           stroke="#aaa"
           strokeDasharray="4"
         />
@@ -110,27 +92,30 @@ const ProjectionView = ({
           strokeDasharray="4"
         />
 
+        {/* Axis scale markers */}
         {[...Array(6)].map((_, i) => {
-          const offset = (i - 4) * SCALE;
+          const offset = (i - 3) * SCALE;
           return (
             <g key={i}>
+              {/* X-axis scale */}
               <line
                 x1={SIZE / 2 + offset}
-                y1={SIZE + 5}
+                y1={SIZE - 5}
                 x2={SIZE / 2 + offset}
-                y2={SIZE +5}
+                y2={SIZE}
                 stroke="#999"
               />
               <text
                 x={SIZE / 2 + offset}
-                y={SIZE +65}
+                y={SIZE - 10}
                 fontSize="10"
                 textAnchor="middle"
                 fill="#666"
               >
-                {i -3}
+                {i - 3}m
               </text>
 
+              {/* Y-axis scale */}
               <line
                 x1={5}
                 y1={SIZE / 2 - offset}
@@ -145,71 +130,79 @@ const ProjectionView = ({
                 textAnchor="start"
                 fill="#666"
               >
-                {i -2}
+                {i - 3}m
               </text>
             </g>
           );
         })}
 
+        {/* Points */}
         {points.map((point, idx) => {
-          const { x, y, efficiency } = getCoordinates(point);
-          const isHovered = hoveredIndex === idx;
+  const { x, y, efficiency } = getCoordinates(point);
+  const isHovered = hoveredIndex === idx;
 
-          return (
-            <g
-              key={idx}
-              onMouseEnter={(e) => {
-                setHoveredIndex(idx);
-                setTooltip({
-                  visible: true,
-                  x: e.clientX,
-                  y: e.clientY,
-                  data: {
-                    efficiency: point.efficiency,
-                    x: point.position?.[0]?.toFixed(2),
-                    y: point.position?.[1]?.toFixed(2),
-                    z: point.position?.[2]?.toFixed(2),
-                  },
-                });
-              }}
-              onMouseMove={(e) => {
-                setTooltip((prev) => ({
-                  ...prev,
-                  x: e.clientX,
-                  y: e.clientY,
-                }));
-              }}
-              onMouseLeave={() => {
-                setHoveredIndex(null);
-                setTooltip({ visible: false, x: 0, y: 0, data: null });
-              }}
-            >
-              <line x1={x} y1={plane === 'top' ? SIZE / 2 : SIZE} x2={x} y2={y} stroke="rgb(224, 89, 27)" />
-              <line x1={SIZE / 2} y1={y} x2={x} y2={y} stroke="rgb(224, 89, 27)" />
-              <circle
-                cx={x}
-                cy={y}
-                r={isHovered ? 8 : 4}
-                fill={getEfficiencyColor(efficiency)}
-                stroke={isHovered ? '#000' : 'none'}
-                strokeWidth="1"
-                style={{ transition: 'r 0.2s ease-in-out, stroke 0.2s ease-in-out', cursor: 'pointer' }}
-              />
-              <text
-                x={x}
-                y={y - 8}
-                fontSize="11"
-                textAnchor="middle"
-                fontWeight="bold"
-                fill="#333"
-                cursor="pointer"
-              >
-                {efficiency}%
-              </text>
-            </g>
-          );
-        })}
+  return (
+    <g
+  key={idx}
+  onMouseEnter={(e) => {
+    setHoveredIndex(idx);
+    setTooltip({
+      visible: true,
+      x: e.clientX,
+      y: e.clientY,
+      data: {
+        efficiency: point.efficiency,
+        x: point.position?.[0]?.toFixed(2),
+        y: point.position?.[1]?.toFixed(2),
+        z: point.position?.[2]?.toFixed(2),
+      },
+    });
+  }}
+  onMouseMove={(e) => {
+    setTooltip((prev) => ({
+      ...prev,
+      x: e.clientX,
+      y: e.clientY,
+    }));
+  }}
+  onMouseLeave={() => {
+    setHoveredIndex(null);
+    setTooltip({ visible: false, x: 0, y: 0, data: null });
+  }}
+>
+      {/* Projection lines */}
+      <line x1={x} y1={plane === 'top' ? SIZE / 2 : SIZE} x2={x} y2={y} stroke="rgb(224, 89, 27)" />
+      <line x1={SIZE / 2} y1={y} x2={x} y2={y} stroke="rgb(224, 89, 27)" />
 
+      {/* Dot */}
+      <circle
+        cx={x}
+        cy={y}
+        r={isHovered ? 8 : 4} // 👈 Bigger when hovered
+        fill={getEfficiencyColor(efficiency)}
+        stroke={isHovered ? '#000' : 'none'}
+        strokeWidth="1"
+        style={{ transition: 'r 0.2s ease-in-out, stroke 0.2s ease-in-out' ,cursor:'pointer'}}
+      />
+
+      {/* Label */}
+      <text
+        x={x}
+        y={y - 8}
+        fontSize="11"
+        textAnchor="middle"
+        fontWeight="bold"
+        fill="#333"
+        cursor="pointer"
+      >
+        {efficiency}%
+      </text>
+    </g>
+  );
+})}
+
+
+        {/* Scale bar */}
         <line
           x1={SIZE - 110}
           y1={SIZE - 10}
@@ -234,9 +227,17 @@ const ProjectionView = ({
 
 const getEfficiencyColor = (effStr) => {
   const eff = parseFloat(effStr);
+
+  // Clamp between 0 and 100
   const clampedEff = Math.max(0, Math.min(eff, 100));
+
+  // Map efficiency (0–100) to hue (0–120), where:
+  // 0 = red, 60 = yellow, 120 = green
   const hue = (clampedEff / 100) * 120;
+
+  // Return as HSL string for smooth gradient transition
   return `hsl(${hue}, 85%, 45%)`;
 };
+
 
 export default ProjectionView;
