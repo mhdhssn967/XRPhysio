@@ -120,3 +120,31 @@ text-align: center;
   margin-top: 20px;
   padding: 10px;
 }
+@media (min-width: 600px) and (max-width: 900px) {
+  .session-card-content{
+    flex-direction: row;
+  }
+  .session-card-content img{
+    width: 380px;
+  }
+  .main-cards .main-card{
+  background-color: var(--card-color);
+  border-radius: 10px;
+  padding: 10px;
+  height:60px;
+    display: flex;
+  align-items: left;
+  flex-direction: column;
+  gap: 20px;
+}
+.card-ss h3{
+  font-size: 12px;
+}
+.card-ss h2{
+  font-size: 16px;
+}
+.card-dets{
+  flex-direction: column;
+  gap: 6px;
+}
+}
