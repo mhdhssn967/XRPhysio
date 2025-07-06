@@ -32,25 +32,29 @@ const Login = () => {
 
         {/* ✅ Assign handleLogin to form's onSubmit */}
         <form className="login-form" onSubmit={handleLogin}>
-          <label>Email</label>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={credentials.email}
-            onChange={(e) =>
-              setCredentials({ ...credentials, email: e.target.value })
-            }
-          />
+          <div>
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={credentials.email}
+              onChange={(e) =>
+                setCredentials({ ...credentials, email: e.target.value })
+              }
+            />
+          </div>
 
-          <label>Password</label>
-          <input
-            type="password"
-            placeholder="Enter your password"
-            value={credentials.password}
-            onChange={(e) =>
-              setCredentials({ ...credentials, password: e.target.value })
-            }
-          />
+          <div>
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={credentials.password}
+              onChange={(e) =>
+                setCredentials({ ...credentials, password: e.target.value })
+              }
+            />
+          </div>
 
           {/* ✅ Button type="submit" */}
           <button type="submit" className="app-btn">

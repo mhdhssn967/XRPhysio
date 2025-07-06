@@ -64,11 +64,11 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
                 <img src={vrglass} alt="" />
                   <h2><strong>VR Devices :</strong> {fetchedHospitalData?.VRDeviceCount}</h2>
               </div>
-              <div className='main-card'>
+              <div className='main-card mc-card'>
                 <img src={examination} alt="" />
                   <h2><strong>Patients :</strong> {fetchedHospitalData?.patientCount}</h2>
               </div>
-              <div className='main-card'>
+              <div className='main-card mc-card'>
                 <img src={gamepad} alt="" />
                   <h2><strong>Total Games Played :</strong> {fetchedHospitalData?.totalGamePlayCount}</h2>
               </div>

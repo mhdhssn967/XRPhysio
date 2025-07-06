@@ -5,14 +5,26 @@
     animation: openUp .4s;
     color: var(--text-color);
 }
-:root {
+/* Default themse */
+/* :root {
   --primary-color: #fd8f45;
   --secondary-color: #f17f32;
   --extra-color: #f8c080;
   --background-color: #f5e9de;
   --text-color: #4d4c4c;
   --card-color:white;
+} */
+:root {
+  --primary-color: #4d8fac;
+  --secondary-color: #88cde7;
+  --extra-color: #d2ecf6;
+  --background-color: #e3f3f7;
+  --text-color: #2c3e50;
+  --text-colordark: #6a8fa5;
+  --card-color: #ffffff;
 }
+
+
 [data-theme="dark"] {
   --primary-color: #ff784e;       /* a vibrant pop of orange */
   --secondary-color: #ff5722;     /* deeper burnt orange */

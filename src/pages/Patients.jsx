@@ -30,6 +30,7 @@ const Patients = ({triggerRefresh, setTriggerRefresh }) => {
     const fetchPatientData = async () => {
       try {
         const currentUser =  await getUserId();  
+        setUser(currentUser)
         const data = await getPatientData(currentUser);
         setPatients(data);
       } catch (error) {
