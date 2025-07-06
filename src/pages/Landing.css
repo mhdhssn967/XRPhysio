@@ -143,6 +143,13 @@ text-align: center;
 }
 .main-cards div .main-card{
   height: fit-content;
-
+}
+.main-cards-top{
+  display: flex;
+}
+.main-cards-top .main-card{
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
 }
 }

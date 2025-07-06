@@ -59,7 +59,7 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
           
            </div>
            <div className='main-cards'>
-            <div style={{display:'flex',gap:'10px'}}>
+            <div style={{display:'flex',gap:'10px'}} className='main-cards-top'>
               <div className='main-card'>
                 <img src={vrglass} alt="" />
                   <h2><strong>VR Devices :</strong> {fetchedHospitalData?.VRDeviceCount}</h2>
