@@ -150,6 +150,5 @@ text-align: center;
 .main-cards-top .main-card{
   flex: 1;
   flex-direction: row;
-  align-items: center;
 }
 }

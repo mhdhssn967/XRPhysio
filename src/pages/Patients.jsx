@@ -4,20 +4,23 @@ import Navbar from '../components/Navbar';
 import PatientsTable from '../components/PatientsTable';
 import Addpatient from '../components/Addpatient';
 import { getUserId } from '../firebase/getUserID';
-import { fetchHospitalName, getPatientData } from '../firebase/services';
+import { fetchHospitalDataForAll, fetchHospitalName, getPatientData } from '../firebase/services';
 import PatientData from '../components/PatientData';
 import Loader from '../helperComponents/Loader';
 import SessionInsight from '../components/SessionInsight';
 import Typography from '@mui/material/Typography';
 import LoaderComponent from './LoaderComponent';
 
-const Patients = ({ user, triggerRefresh, setTriggerRefresh }) => {
+const Patients = ({triggerRefresh, setTriggerRefresh }) => {
 
   const [addPatients, setAddPatients] = useState(false)
   const [patients, setPatients] = useState([])
   const [patientDataPage, setPatientDataPage] = useState(false)
   const [clickedPatientId,setClickedPatientID]=useState(null)
+  const [user,setUser]=useState(null)
   
+  
+
 
   const handleAddPatients = () => {
     setAddPatients(!addPatients)
@@ -26,8 +29,8 @@ const Patients = ({ user, triggerRefresh, setTriggerRefresh }) => {
   useEffect(() => {
     const fetchPatientData = async () => {
       try {
-
-        const data = await getPatientData(user);
+        const currentUser =  await getUserId();  
+        const data = await getPatientData(currentUser);
         setPatients(data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -37,7 +40,7 @@ const Patients = ({ user, triggerRefresh, setTriggerRefresh }) => {
 
     fetchPatientData(); // Call the function inside useEffect
 
-  }, [triggerRefresh]);
+  }, [triggerRefresh,user]);
 
 
 

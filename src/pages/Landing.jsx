@@ -50,7 +50,7 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
     <>{!loading?
       <div className="container">
         
-        <div className='dash-head'>
+        <div className='dash-head mc-card'>
           <div>
             <p>Happy Moves v{version} </p>
             <h3>{hospName}</h3>
@@ -60,7 +60,7 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
            </div>
            <div className='main-cards'>
             <div style={{display:'flex',gap:'10px'}} className='main-cards-top'>
-              <div className='main-card'>
+              <div className='main-card mc-card'>
                 <img src={vrglass} alt="" />
                   <h2><strong>VR Devices :</strong> {fetchedHospitalData?.VRDeviceCount}</h2>
               </div>
@@ -73,7 +73,7 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
                   <h2><strong>Total Games Played :</strong> {fetchedHospitalData?.totalGamePlayCount}</h2>
               </div>
             </div>
-            <div className='recent-data'>
+            <div className='recent-data mc-card'>
               <h2 className='dash-headings'>Recent Game data</h2>
     <table>
       <thead>
@@ -106,11 +106,11 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
   
            </div>
   
-           <div className='session-card'>
+           <div className='session-card mc-card'>
             <h2 className='dash-headings'>Game session</h2>
-            <div className='session-card-content'><img width={'550px'} src={vrr} alt="" />
+            <div className='session-card-content '><img width={'550px'} src={vrr} alt="" />
               
-               <div className='card-dets'>
+               <div className='card-dets mc-card'>
                   {sessions && sessions.length>0?
                   sessions.map((session,index)=>(
                   <div className='card-ss' key={session.id}>
@@ -128,7 +128,7 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
               </div>
            </div>
   
-           <div className='patients-table-div'>
+           <div className='patients-table-div mc-card'>
             <h2 className='dash-headings'>Patients</h2>
             <div><table className="patients-table">
         <thead>
