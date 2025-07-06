@@ -59,17 +59,19 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
           
            </div>
            <div className='main-cards'>
-            <div className='main-card'>
-              <img src={vrglass} alt="" />
-                <h2><strong>VR Devices :</strong> {fetchedHospitalData?.VRDeviceCount}</h2>
-            </div>
-            <div className='main-card'>
-              <img src={examination} alt="" />
-                <h2><strong>Patients :</strong> {fetchedHospitalData?.patientCount}</h2>
-            </div>
-            <div className='main-card'>
-              <img src={gamepad} alt="" />
-                <h2><strong>Total Games Played :</strong> {fetchedHospitalData?.totalGamePlayCount}</h2>
+            <div style={{display:'flex',gap:'10px'}}>
+              <div className='main-card'>
+                <img src={vrglass} alt="" />
+                  <h2><strong>VR Devices :</strong> {fetchedHospitalData?.VRDeviceCount}</h2>
+              </div>
+              <div className='main-card'>
+                <img src={examination} alt="" />
+                  <h2><strong>Patients :</strong> {fetchedHospitalData?.patientCount}</h2>
+              </div>
+              <div className='main-card'>
+                <img src={gamepad} alt="" />
+                  <h2><strong>Total Games Played :</strong> {fetchedHospitalData?.totalGamePlayCount}</h2>
+              </div>
             </div>
             <div className='recent-data'>
               <h2 className='dash-headings'>Recent Game data</h2>
