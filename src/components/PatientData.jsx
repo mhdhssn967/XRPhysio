@@ -6,17 +6,38 @@ import PatientInsight from './PatientInsight';
 import { Card, CardContent, Typography, Grid, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import SessionInsight from './SessionInsight';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+dayjs.extend(customParseFormat);
 
 const PatientData = ({ user, clickedPatientID, setPatientDataPage, setInsightPage }) => {
   const [patientDetails, setPatientDetails] = useState(null);
   const [sessionRawData, setSessionRawData] = useState([]);           // 🔴 Raw data
   const [displaySessionData, setDisplaySessionData] = useState([]);   // 🟢 Processed data
+  const [sessionData,setSessionData]=useState([])
 
 
   const showInsights = () => {
     setPatientDataPage(false);
     setInsightPage(true);
   };
+
+  useEffect(() => {
+  const result = displaySessionData.map(item => {
+  const [month, day, year] = item.date.split('/');
+  const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+
+  return {
+    date: formattedDate,
+    efficiency: parseFloat(item.avgEfficiency),
+    reaction: parseFloat(item.avgReaction)
+  };
+});
+
+  setSessionData(result);
+}, [patientDetails, displaySessionData]);
+  
+  
 
   useEffect(() => {
     const getSessionHistory = async () => {
@@ -115,7 +136,7 @@ const [selectedSession, setSelectedSession] = useState(null);
       </Card>
   
             <div className="session-table-container">
-              <PatientInsight sessionData={sessionRawData} displaySessionData={displaySessionData}/>
+              <PatientInsight sessionRawData={sessionRawData} sessionData={sessionData} displaySessionData={displaySessionData}/>
   
               <h2 style={{ margin: '2%' }}>Session History</h2>
               <table className="session-table">

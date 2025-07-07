@@ -1,146 +1,143 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
-  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer,
-  CartesianGrid, Legend
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
 } from 'recharts';
-import './PatientInsight.css'
+import './PatientInsight.css';
 
 
-const PatientInsight = ({ displaySessionData }) => {
-  const parsedData = useMemo(() => {
-  return (displaySessionData || []).map((session) => {
-    const [month, day, year] = (session.date || '').split('/');
-
-    let fullYear = year;
-    if (year && year.length === 2) {
-      fullYear = parseInt(year, 10) < 50 ? '20' + year : '19' + year;
-    }
-
-    const isoDate =
-      fullYear && month && day
-        ? `${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-        : null;
-
-    const dateObj = isoDate ? new Date(isoDate) : null;
-
-    return {
-      ...session,
-      dateStr: isoDate,     // for UI & date pickers
-      dateObj,              // actual Date object for sorting
-      efficiency: parseFloat(session.avgEfficiency) || 0,
-      reaction: parseFloat(session.avgReaction) || 0,
-    };
-  });
-}, [displaySessionData]);
+const PatientInsight = ({sessionRawData,sessionData }) => {
+  console.log(sessionRawData);
+  
+  // Sort input
+  const sorted = [...sessionRawData].sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
+const minTimestamp = Math.min(...sessionRawData.map(item => item.timestamp.seconds));
+const minDate = new Date(minTimestamp * 1000).toISOString().split('T')[0];
+const today = new Date();
+const maxDate = today.toISOString().split('T')[0];
 
 
-  // 🟡 Get min and max dates
-  const sorted = [...parsedData].sort((a, b) => new Date(a.dateStr) - new Date(b.dateStr));
-  const minDate = sorted[0]?.dateStr || '';
-  const maxDate = sorted[sorted.length - 1]?.dateStr || '';
-
-  // 🟡 State for filters
   const [fromDate, setFromDate] = useState(minDate);
   const [toDate, setToDate] = useState(maxDate);
-  console.log(fromDate,toDate);
+console.log(fromDate,toDate);
+
   
 
-  // 🟡 Filter data
+const average = (arr) =>
+  Array.isArray(arr) && arr.length
+    ? arr.reduce((a, b) => a + b, 0) / arr.length
+    : 0;
+
+
+ const parsedData = sorted.map((item) => {
+  const timestampDate = new Date(item.timestamp.seconds * 1000); // convert to JS Date
+  const dateStr = timestampDate.toISOString().split('T')[0];     // get YYYY-MM-DD
+  
+
+  return {
+    ...item,
+    date: dateStr,
+    efficiency: average(item.targetEfficiency),
+    reaction: average(item.reactionTime),
+  };
+});
+console.log(parsedData);
+
+
 const filteredData = useMemo(() => {
-  return parsedData
-    .filter((session) => session.dateStr >= fromDate && session.dateStr <= toDate)
-    .sort((a, b) => a.dateObj - b.dateObj); // ✅ this avoids string misinterpretation
+  return parsedData.filter((session) => {
+    return session.date >= fromDate && session.date <= toDate;
+  });
 }, [parsedData, fromDate, toDate]);
+console.log(filteredData);
 
-const sampleData = [
-  { date: '2025-06-25', value: 45 },
-  { date: '2025-06-26', value: 52 },
-  { date: '2025-06-27', value: 48 },
-  { date: '2025-06-28', value: 60 },
-  { date: '2025-06-29', value: 55 },
-  { date: '2025-06-30', value: 58 },
-  { date: '2025-07-01', value: 63 },
-  { date: '2025-07-02', value: 59 },
-  { date: '2025-07-03', value: 66 },
-  { date: '2025-07-04', value: 70 },
-];
-
-
-
-
-  console.log("Filtered Data:", filteredData);
 
   return (
-    <>
-      {/* Date Filter UI */}
+    <div className="patient-insight-container">
+      <h2 style={{ textAlign: 'center' }}>Patient Insight</h2>
+
+      {/* ✅ Date Filters */}
       <div className="date-filters">
-  <div>
-    <label>From:</label>
-    <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
-  </div>
-  <div>
-    <label>To:</label>
-    <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
-  </div>
-  <div>
-    <button onClick={()=>{setFromDate(minDate); setToDate(maxDate)}}>Reset</button>
-  </div>
-</div>
+        <div className="date-field">
+          <label htmlFor="from-date">From:</label>
+          <input
+            id="from-date"
+            type="date"
+            value={fromDate}
+            onChange={(e) => setFromDate(e.target.value)}
+          />
+        </div>
+        <div className="date-field">
+          <label htmlFor="to-date">To:</label>
+          <input
+            id="to-date"
+            type="date"
+            value={toDate}
+            onChange={(e) => setToDate(e.target.value)}
+          />
+        </div>
+        <button onClick={()=>{setFromDate(minDate); setToDate(maxDate)}}>Reset</button>
+      </div>
 
-
-      {/*Chart */}
+      {/* ✅ Line Chart */}
       <h3 style={{ textAlign: 'center' }}>Session Progress</h3>
-<ResponsiveContainer width="100%" height={300}>
-  <LineChart
-    data={filteredData}
-    margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
-  >
-    <XAxis
-      dataKey="dateStr"
-      angle={-45}
-      textAnchor="end"
-    />
-    <YAxis
-      yAxisId="left"
-      domain={[0, 100]}
-      tickFormatter={(v) => `${v}%`}
-    />
-    <YAxis
-      yAxisId="right"
-      orientation="right"
-      tickFormatter={(v) => `${v}s`}
-    />
-    <Tooltip
-      formatter={(value, name) =>
-        name === "Efficiency"
-          ? [`${value.toFixed(1)}%`, "Efficiency"]
-          : [`${value.toFixed(2)} s`, "Reaction Time"]
-      }
-    />
-    <CartesianGrid strokeDasharray="3 3" />
-    <Legend verticalAlign="top" height={36} />
-    <Line
-      yAxisId="left"
-      type="monotone"
-      dataKey="efficiency"
-      stroke="red"
-      strokeWidth={2}
-      dot={{ r: 4 }}
-      name="Efficiency"
-    />
-    <Line
-      yAxisId="right"
-      type="monotone"
-      dataKey="reaction"
-      stroke="green"
-      strokeWidth={2}
-      dot={{ r: 4 }}
-      name="Reaction Time"
-    />
-  </LineChart>
-</ResponsiveContainer>
-
-    </>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart
+          data={filteredData}
+          margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey="date"
+            angle={-45}
+            textAnchor="end"
+            tick={{ fontSize: 12 }}
+          />
+          <YAxis
+            yAxisId="left"
+            domain={[0, 100]}
+            tickFormatter={(v) => `${v}%`}
+          />
+          <YAxis
+            yAxisId="right"
+            orientation="right"
+            tickFormatter={(v) => `${v}s`}
+          />
+          <Tooltip
+            formatter={(value, name) =>
+              name === 'Efficiency'
+                ? [`${value.toFixed(1)}%`, 'Efficiency']
+                : [`${value.toFixed(2)} s`, 'Reaction Time']
+            }
+          />
+          <Legend verticalAlign="top" height={36} />
+          <Line
+            yAxisId="left"
+            type="monotone"
+            dataKey="efficiency"
+            stroke="#527faf"
+            strokeWidth={2}
+            dot={{ r: 4 }}
+            name="Efficiency"
+          />
+          <Line
+            yAxisId="right"
+            type="monotone"
+            dataKey="reaction"
+            stroke="#39ce90"
+            strokeWidth={2}
+            dot={{ r: 4 }}
+            name="Reaction Time"
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
