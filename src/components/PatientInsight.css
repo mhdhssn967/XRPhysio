@@ -65,3 +65,8 @@
   border: solid black 1px;
   border-radius: 10px;
 }
+.focus-points{
+  display: flex;
+  justify-content: center;
+  margin: 30px 5px;
+}

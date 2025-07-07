@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './PatientData.css';
-import { fetchSessionHistoryOfPatient, getSelectedPatientData } from '../firebase/services';
+import { fetchSessionHistoryOfPatient, getSelectedPatientData, getUniqueGameNames } from '../firebase/services';
 import Loader from '../helperComponents/Loader';
 import PatientInsight from './PatientInsight';
 import { Card, CardContent, Typography, Grid, useMediaQuery } from '@mui/material';
@@ -15,6 +15,7 @@ const PatientData = ({ user, clickedPatientID, setPatientDataPage, setInsightPag
   const [sessionRawData, setSessionRawData] = useState([]);           // 🔴 Raw data
   const [displaySessionData, setDisplaySessionData] = useState([]);   // 🟢 Processed data
   const [sessionData,setSessionData]=useState([])
+  const [focus,setFocus]=useState([])
 
 
   const showInsights = () => {
@@ -93,6 +94,14 @@ const [selectedSession, setSelectedSession] = useState(null);
    const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+ useEffect(()=>{
+  const getFocusPoints=async()=>{
+    const focusRef=await getUniqueGameNames(user,clickedPatientID)
+    setFocus(focusRef)
+    
+  };getFocusPoints();
+ },[])
+
   return (
     
     <>
@@ -136,7 +145,7 @@ const [selectedSession, setSelectedSession] = useState(null);
       </Card>
   
             <div className="session-table-container">
-              <PatientInsight sessionRawData={sessionRawData} sessionData={sessionData} displaySessionData={displaySessionData}/>
+              <PatientInsight focus={focus} sessionRawData={sessionRawData} />
   
               <h2 style={{ margin: '2%' }}>Session History</h2>
               <table className="session-table">

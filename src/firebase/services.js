@@ -363,3 +363,44 @@ export async function fetchSessionHistoryOfPatient(patientId, hospitalId) {
     return [];
   }
 }
+
+
+// utils/getUniqueGameNames.js
+
+
+/**
+ * Fetch unique game names from a specific patient's gameDatas collection
+ * @param {string} hospitalId - ID of the hospital
+ * @param {string} patientId - ID of the patient
+ * @returns {Promise<string[]>} - Array of unique game names
+ */
+
+export const getUniqueGameNames = async (hospitalId, patientId) => {
+  const gameDatasRef = collection(
+    db,
+    `hospitalData/${hospitalId}/patients/${patientId}/gameDatas`
+  );
+
+  try {
+    const snapshot = await getDocs(gameDatasRef);
+    const gameNamesSet = new Set();
+
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      if (data.gameName) {
+        gameNamesSet.add(data.gameName);
+      }
+    });
+
+    // Convert Set to array of objects with gameName and focus
+    const gameNamesArray = Array.from(gameNamesSet).map((name) => {
+      const focus = name.includes(" - ") ? name.split(" - ")[0].trim() : name;
+      return { gameName: name, focus };
+    });
+
+    return gameNamesArray;
+  } catch (error) {
+    console.error("Error fetching game names:", error);
+    return [];
+  }
+};

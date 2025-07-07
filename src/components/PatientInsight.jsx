@@ -10,22 +10,32 @@ import {
   Legend,
 } from 'recharts';
 import './PatientInsight.css';
+import { Button, Stack } from '@mui/material';
 
+const PatientInsight = ({focus,sessionRawData }) => {
 
-const PatientInsight = ({sessionRawData,sessionData }) => {
-  console.log(sessionRawData);
-  
-  // Sort input
-  const sorted = [...sessionRawData].sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
-const minTimestamp = Math.min(...sessionRawData.map(item => item.timestamp.seconds));
-const minDate = new Date(minTimestamp * 1000).toISOString().split('T')[0];
+  const [activeFocus, setActiveFocus] = useState("");
+const sorted = [...(sessionRawData || [])].sort(
+  (a, b) => a.timestamp?.seconds - b.timestamp?.seconds
+);
+
+// 🛡️ Check if data exists before calculating minDate
+const minTimestamp = sessionRawData?.length
+  ? Math.min(...sessionRawData.map(item => item.timestamp?.seconds || Infinity))
+  : null;
+
+const minDate = minTimestamp && isFinite(minTimestamp)
+  ? new Date(minTimestamp * 1000).toISOString().split('T')[0]
+  : ""; // fallback empty or some default like "2023-01-01"
+
 const today = new Date();
 const maxDate = today.toISOString().split('T')[0];
 
+// 🛡️ Use sensible default/fallback
+const [fromDate, setFromDate] = useState(minDate || maxDate);
+const [toDate, setToDate] = useState(maxDate);
 
-  const [fromDate, setFromDate] = useState(minDate);
-  const [toDate, setToDate] = useState(maxDate);
-console.log(fromDate,toDate);
+
 
   
 
@@ -43,19 +53,36 @@ const average = (arr) =>
   return {
     ...item,
     date: dateStr,
+    gameName:item.gameName,
     efficiency: average(item.targetEfficiency),
     reaction: average(item.reactionTime),
   };
 });
-console.log(parsedData);
+
 
 
 const filteredData = useMemo(() => {
   return parsedData.filter((session) => {
-    return session.date >= fromDate && session.date <= toDate;
+    const isWithinDateRange =
+      session.date >= fromDate && session.date <= toDate;
+
+    const matchesFocus = activeFocus
+      ? session.gameName.startsWith(activeFocus)
+      : true;
+
+    return isWithinDateRange && matchesFocus;
   });
-}, [parsedData, fromDate, toDate]);
-console.log(filteredData);
+}, [parsedData, fromDate, toDate, activeFocus]);
+
+
+
+  const uniqueFocuses = Array.from(new Set(focus.map((g) => g.focus)));
+
+  const handleClick = (focus) => {
+    const newValue = focus === activeFocus ? "" : focus;
+    setActiveFocus(newValue);
+    onFilter(newValue); // return the selected focus value
+  };
 
 
   return (
@@ -82,7 +109,30 @@ console.log(filteredData);
             onChange={(e) => setToDate(e.target.value)}
           />
         </div>
-        <button onClick={()=>{setFromDate(minDate); setToDate(maxDate)}}>Reset</button>
+        <button onClick={()=>{setFromDate(minDate); setToDate(maxDate); setActiveFocus("")}}>Reset</button>
+      </div>
+      <div className='focus-points'>
+        <Stack direction="row" flexWrap="wrap" spacing={1}>
+        {uniqueFocuses.map((focus, index) => (
+          <Button
+  key={index}
+  variant={activeFocus === focus ? "contained" : "outlined"}
+  size="small"
+  onClick={() => handleClick(focus)}
+  sx={{
+    bgcolor: activeFocus === focus ? "var(--primary-color)" : "var(--background-color)",
+    color: activeFocus === focus ? "#fff" : "var(--primary-color)",
+    border: "1px solid var(--primary-color)",
+    "&:hover": {
+      bgcolor: activeFocus === focus ? "var(--primary-color)" : "#f0f0f0",
+    },
+  }}
+>
+  {focus}
+</Button>
+
+        ))}
+      </Stack>
       </div>
 
       {/* ✅ Line Chart */}
