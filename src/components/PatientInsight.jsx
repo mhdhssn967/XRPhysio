@@ -8,27 +8,31 @@ import './PatientInsight.css'
 
 const PatientInsight = ({ displaySessionData }) => {
   const parsedData = useMemo(() => {
-    return (displaySessionData || []).map((session) => {
-      const [month, day, year] = (session.date || '').split('/');
+  return (displaySessionData || []).map((session) => {
+    const [month, day, year] = (session.date || '').split('/');
 
-      let fullYear = year;
-      if (year && year.length === 2) {
-        fullYear = parseInt(year, 10) < 50 ? '20' + year : '19' + year;
-      }
+    let fullYear = year;
+    if (year && year.length === 2) {
+      fullYear = parseInt(year, 10) < 50 ? '20' + year : '19' + year;
+    }
 
-      const dateStr =
-        fullYear && month && day
-          ? `${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-          : 'N/A';
+    const isoDate =
+      fullYear && month && day
+        ? `${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+        : null;
 
-      return {
-        ...session,
-        dateStr,
-        efficiency: parseFloat(session.avgEfficiency) || 0,
-        reaction: parseFloat(session.avgReaction) || 0,
-      };
-    });
-  }, [displaySessionData]);
+    const dateObj = isoDate ? new Date(isoDate) : null;
+
+    return {
+      ...session,
+      dateStr: isoDate,     // for UI & date pickers
+      dateObj,              // actual Date object for sorting
+      efficiency: parseFloat(session.avgEfficiency) || 0,
+      reaction: parseFloat(session.avgReaction) || 0,
+    };
+  });
+}, [displaySessionData]);
+
 
   // 🟡 Get min and max dates
   const sorted = [...parsedData].sort((a, b) => new Date(a.dateStr) - new Date(b.dateStr));
@@ -38,13 +42,30 @@ const PatientInsight = ({ displaySessionData }) => {
   // 🟡 State for filters
   const [fromDate, setFromDate] = useState(minDate);
   const [toDate, setToDate] = useState(maxDate);
+  console.log(fromDate,toDate);
+  
 
   // 🟡 Filter data
 const filteredData = useMemo(() => {
   return parsedData
     .filter((session) => session.dateStr >= fromDate && session.dateStr <= toDate)
-    .sort((a, b) => new Date(a.dateStr) - new Date(b.dateStr)); // 👈 sort ascending
+    .sort((a, b) => a.dateObj - b.dateObj); // ✅ this avoids string misinterpretation
 }, [parsedData, fromDate, toDate]);
+
+const sampleData = [
+  { date: '2025-06-25', value: 45 },
+  { date: '2025-06-26', value: 52 },
+  { date: '2025-06-27', value: 48 },
+  { date: '2025-06-28', value: 60 },
+  { date: '2025-06-29', value: 55 },
+  { date: '2025-06-30', value: 58 },
+  { date: '2025-07-01', value: 63 },
+  { date: '2025-07-02', value: 59 },
+  { date: '2025-07-03', value: 66 },
+  { date: '2025-07-04', value: 70 },
+];
+
+
 
 
   console.log("Filtered Data:", filteredData);
@@ -61,6 +82,9 @@ const filteredData = useMemo(() => {
     <label>To:</label>
     <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
   </div>
+  <div>
+    <button onClick={()=>{setFromDate(minDate); setToDate(maxDate)}}>Reset</button>
+  </div>
 </div>
 
 
@@ -75,7 +99,6 @@ const filteredData = useMemo(() => {
       dataKey="dateStr"
       angle={-45}
       textAnchor="end"
-      
     />
     <YAxis
       yAxisId="left"
