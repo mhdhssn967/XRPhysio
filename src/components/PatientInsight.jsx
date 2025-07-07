@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   ResponsiveContainer,
   LineChart,
@@ -14,7 +14,7 @@ import { Button, Stack } from '@mui/material';
 
 const PatientInsight = ({focus,sessionRawData }) => {
 
-  const [activeFocus, setActiveFocus] = useState("");
+const [activeFocus, setActiveFocus] = useState("");
 const sorted = [...(sessionRawData || [])].sort(
   (a, b) => a.timestamp?.seconds - b.timestamp?.seconds
 );
@@ -74,14 +74,22 @@ const filteredData = useMemo(() => {
   });
 }, [parsedData, fromDate, toDate, activeFocus]);
 
-
-
   const uniqueFocuses = Array.from(new Set(focus.map((g) => g.focus)));
 
+useEffect(() => {
+  if (uniqueFocuses.length && !activeFocus) {
+    setActiveFocus(uniqueFocuses[0]);
+  }
+}, [uniqueFocuses]);
+
+
+
   const handleClick = (focus) => {
-    const newValue = focus === activeFocus ? "" : focus;
-    setActiveFocus(newValue);
-    onFilter(newValue); // return the selected focus value
+    if (focus !== activeFocus) {
+  setActiveFocus(focus);
+  onFilter(focus);
+}
+
   };
 
 
@@ -112,14 +120,14 @@ const filteredData = useMemo(() => {
         <button onClick={()=>{setFromDate(minDate); setToDate(maxDate); setActiveFocus("")}}>Reset</button>
       </div>
       <div className='focus-points'>
-        <Stack direction="row" flexWrap="wrap" spacing={1}>
+        <Stack direction="row" flexWrap="nowrap" spacing={1}>
         {uniqueFocuses.map((focus, index) => (
           <Button
   key={index}
   variant={activeFocus === focus ? "contained" : "outlined"}
   size="small"
   onClick={() => handleClick(focus)}
-  sx={{
+  sx={{fontSize:'10px',
     bgcolor: activeFocus === focus ? "var(--primary-color)" : "var(--background-color)",
     color: activeFocus === focus ? "#fff" : "var(--primary-color)",
     border: "1px solid var(--primary-color)",

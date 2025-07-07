@@ -119,9 +119,9 @@ const [selectedSession, setSelectedSession] = useState(null);
   
         {patientDetails ? (
           <>
-            <Card elevation={2} sx={{ margin: '1rem 0', backgroundColor: 'none' }}>
+            <Card elevation={2} sx={{ margin: '1rem 0', background: 'none',boxShadow:'none' }}>
         <CardContent>
-          <Typography variant="h6" gutterBottom sx={{ color: '#1976d2' }}>
+          <Typography variant="h6" gutterBottom sx={{ color: '#1976d2',fontWeight:'900' }}>
             Patient Information
           </Typography>
           <Grid container spacing={2}>
@@ -143,6 +143,7 @@ const [selectedSession, setSelectedSession] = useState(null);
           </Grid>
         </CardContent>
       </Card>
+      
   
             <div className="session-table-container">
               <PatientInsight focus={focus} sessionRawData={sessionRawData} />
