@@ -24,10 +24,14 @@
     background-color: var(--primary-color);
 }
 .session-table thead tr th{
-    padding: 1.5%;
+    padding: 5px;
+    font-weight: 900;
+    color: white;
+    font-size: 12px;
 }
 .session-table tr td{
-    padding: 1.5%;
+    padding: 12px 10px;
+    font-size: 13px;
 }
 .session-table-container {
     margin: 20px;

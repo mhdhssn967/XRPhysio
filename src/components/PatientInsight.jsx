@@ -1,71 +1,92 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo, useState } from 'react';
 import {
-  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
-  Legend,
-} from "recharts";
-import './PatientInsight.css';
-const PatientInsight = ({ displaySessionData = [] }) => {
-  const sortedSessions = useMemo(() => {
-    return [...displaySessionData]
-      .map((s) => ({
-        ...s,
-        dateStr: s.date || 'N/A',
-        efficiency: parseFloat(s.avgEfficiency) || 0,
-        reaction: parseFloat(s.avgReaction) || 0,
-      }))
-      .sort((a, b) => a.dateStr.localeCompare(b.dateStr));
+  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  CartesianGrid, Legend
+} from 'recharts';
+import './PatientInsight.css'
+
+
+const PatientInsight = ({ displaySessionData }) => {
+  const parsedData = useMemo(() => {
+    return (displaySessionData || []).map((session) => {
+      const [month, day, year] = (session.date || '').split('/');
+
+      let fullYear = year;
+      if (year && year.length === 2) {
+        fullYear = parseInt(year, 10) < 50 ? '20' + year : '19' + year;
+      }
+
+      const dateStr =
+        fullYear && month && day
+          ? `${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+          : 'N/A';
+
+      return {
+        ...session,
+        dateStr,
+        efficiency: parseFloat(session.avgEfficiency) || 0,
+        reaction: parseFloat(session.avgReaction) || 0,
+      };
+    });
   }, [displaySessionData]);
 
-  const minDate = sortedSessions[0]?.dateStr || '';
-  const maxDate = sortedSessions[sortedSessions.length - 1]?.dateStr || '';
+  // 🟡 Get min and max dates
+  const sorted = [...parsedData].sort((a, b) => new Date(a.dateStr) - new Date(b.dateStr));
+  const minDate = sorted[0]?.dateStr || '';
+  const maxDate = sorted[sorted.length - 1]?.dateStr || '';
 
+  // 🟡 State for filters
   const [fromDate, setFromDate] = useState(minDate);
   const [toDate, setToDate] = useState(maxDate);
 
-  const filteredData = useMemo(() => {
-    return sortedSessions.filter((s) => {
-      return s.dateStr >= fromDate && s.dateStr <= toDate;
-    });
-  }, [sortedSessions, fromDate, toDate]);
+  // 🟡 Filter data
+const filteredData = useMemo(() => {
+  return parsedData
+    .filter((session) => session.dateStr >= fromDate && session.dateStr <= toDate)
+    .sort((a, b) => new Date(a.dateStr) - new Date(b.dateStr)); // 👈 sort ascending
+}, [parsedData, fromDate, toDate]);
 
-  const totalSessions = filteredData.length;
-  const averageEfficiency = totalSessions
-    ? (filteredData.reduce((sum, s) => sum + s.efficiency, 0) / totalSessions).toFixed(1)
-    : 0;
+
+  console.log("Filtered Data:", filteredData);
 
   return (
-    <div className="insight-container">
-      {/* Filters */}
-      <div className="filters">
-        <div>
-          <label>From Date: </label>
-          <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
-        </div>
-        <div>
-          <label>To Date: </label>
-          <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
-        </div>
-      </div>
+    <>
+      {/* Date Filter UI */}
+      <div className="date-filters">
+  <div>
+    <label>From:</label>
+    <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
+  </div>
+  <div>
+    <label>To:</label>
+    <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
+  </div>
+</div>
 
-      {/* Stats Summary */}
-      <div className="overview">
-        <div className="card">
-          <h4>Total Sessions:</h4>
-          <p>{totalSessions}</p>
-        </div>
-        <div className="card">
-          <h4>Average Efficiency:</h4>
-          <p>{averageEfficiency}%</p>
-        </div>
-      </div>
 
-      {/* Combined Line Chart */}
-      <h3 style={{ margin: '2%', textAlign: 'center' }}>Session Progress</h3>
-      <ResponsiveContainer width="100%" height={300}>
-  <LineChart data={filteredData}>
-    <XAxis dataKey="dateStr" />
-    <YAxis yAxisId="left" domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
-    <YAxis yAxisId="right" orientation="right" />
+      {/*Chart */}
+      <h3 style={{ textAlign: 'center' }}>Session Progress</h3>
+<ResponsiveContainer width="100%" height={300}>
+  <LineChart
+    data={filteredData}
+    margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
+  >
+    <XAxis
+      dataKey="dateStr"
+      angle={-45}
+      textAnchor="end"
+      
+    />
+    <YAxis
+      yAxisId="left"
+      domain={[0, 100]}
+      tickFormatter={(v) => `${v}%`}
+    />
+    <YAxis
+      yAxisId="right"
+      orientation="right"
+      tickFormatter={(v) => `${v}s`}
+    />
     <Tooltip
       formatter={(value, name) =>
         name === "Efficiency"
@@ -81,7 +102,7 @@ const PatientInsight = ({ displaySessionData = [] }) => {
       dataKey="efficiency"
       stroke="red"
       strokeWidth={2}
-      dot={{ r: 5 }}
+      dot={{ r: 4 }}
       name="Efficiency"
     />
     <Line
@@ -90,13 +111,13 @@ const PatientInsight = ({ displaySessionData = [] }) => {
       dataKey="reaction"
       stroke="green"
       strokeWidth={2}
-      dot={{ r: 5 }}
+      dot={{ r: 4 }}
       name="Reaction Time"
     />
   </LineChart>
 </ResponsiveContainer>
 
-    </div>
+    </>
   );
 };
 
