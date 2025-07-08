@@ -72,3 +72,11 @@
 .reg-accept{
     background-color: rgb(80, 172, 80) ;
 }
+.end-reg-btn{
+    background-color: rgb(255, 60, 60);
+    border: none;
+    padding: 4px;
+    border-radius: 10px;
+    font-weight: 800;
+    color: white;
+}

@@ -33,6 +33,20 @@ export const fetchHospitalName = async (userID) => {
 
 
 // To add patient details to database
+export const generatePatientId = () => {
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  // Random two-letter prefix
+  const letterPart =
+    letters[Math.floor(Math.random() * 26)] +
+    letters[Math.floor(Math.random() * 26)];
+
+  // Last 4 digits of timestamp (changes every millisecond)
+  const timestampSuffix = String(Date.now()).slice(-4);
+
+  return `${letterPart}-${timestampSuffix}`;
+};
+
 export const addPatientToHospital = async (hospitalId, patientData) => {
   try {
     const patientsCollectionRef = collection(
@@ -42,26 +56,25 @@ export const addPatientToHospital = async (hospitalId, patientData) => {
       'patients'
     );
 
-    // Add the new patient
-    await addDoc(patientsCollectionRef, {
+    const customId = generatePatientId(); // Short ID
+    const newPatientDocRef = doc(patientsCollectionRef, customId); // Create doc ref with custom ID
+
+    await setDoc(newPatientDocRef, {
       ...patientData,
       createdAt: new Date(),
-    });
+    }); // ✅ Use setDoc, not addDoc
 
-    // Increment patientCount in the hospital document
-    const hospitalDocRef = doc(db, 'hospitalData', hospitalId);
-    await updateDoc(hospitalDocRef, {
+    await updateDoc(doc(db, 'hospitalData', hospitalId), {
       patientCount: increment(1),
     });
 
-    console.log('✅ Patient added and hospital patient count updated!');
-    return { success: true };
+    console.log('✅ Patient added with ID:', customId);
+    return { success: true, id: customId };
   } catch (error) {
-    console.error('❌ Error adding patient or updating count:', error);
+    console.error('❌ Error adding patient:', error);
     return { success: false, error };
   }
 };
-
 
 // Fetch patient data
 
@@ -181,12 +194,18 @@ const secondaryAuth = getAuth(secondaryApp);
          name: "Guest",
          age: "N/A",
          condition: "Test Mode",
-         startingStage: "Beginner",
+         startingStage: "N/A",
          therapist: "System",
          isGuest: true
        };
  
-       const patientResult = await addPatientToHospital(uid, guestPatient);
+       await setDoc(
+  doc(db, "hospitalData", uid, "patients", "GUEST001"),
+  {
+    ...guestPatient,
+    createdAt: new Date(),
+  }
+);
  
        // Get the guest patient ID (if needed)
        const patientsRef = collection(db, "hospitalData", uid, "patients");

@@ -96,20 +96,7 @@ const AddHospital = ({user,triggerRefresh,setTriggerRefresh, setRegisterHospital
               <input type="number" name="VRDeviceCount" min="0" value={formData.VRDeviceCount} onChange={handleDeviceCountChange} required />
             </label>
     
-            {formData.deviceIds.map((_, idx) => (
-              <div style={{display:'flex',flexDirection:'column'}}>
-                  <label key={idx}>
-                    Device {idx + 1} id
-                    <input
-                      type="text"
-                      name="deviceIds"
-                      value={formData.deviceIds[idx]}
-                      onChange={(e) => handleChange(e, idx)}
-                      required
-                    />
-                  </label>
-              </div>
-            ))}
+           
     </div>
             <div style={{display:'flex'}}>
                 <label className="checkbox-label">

@@ -150,7 +150,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
                             {allPatients &&
                               allPatients.map((patient) => (
                                 <MenuItem key={patient.id} value={patient.id}>
-                                  {patient.name}
+                                  <p className="drop-down-patient-id">{patient.id}</p>{patient.name} 
                                 </MenuItem>
                               ))}
                           </Select>

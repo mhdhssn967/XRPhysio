@@ -52,7 +52,7 @@ const RegisterDevice = () => {
         <div style={{ margin: '50px' }} className='success-reg'>
           <h2 style={{ color: 'rgb(4, 173, 4)' }}><i style={{ color: 'rgb(4, 173, 4)' }} className="fa-solid fa-circle-check"></i> Device registered</h2>
           <h3>Try log-in on the VR device to continue</h3>
-          <button onClick={handleEndRegister}>End Register session</button>
+          <button onClick={handleEndRegister} className='end-reg-btn'>End Register session</button>
         </div>
 
       }

@@ -93,7 +93,15 @@
 .game-item-div{
     display: grid;
     grid-template-columns: auto auto;
-    gap: 0px 10px;
-    
+    gap: 0px 10px;  
+}
+.drop-down-patient-id{
+    font-size: 12px;
+    font-weight: 300;
+    padding:1px 3px;
+    border-radius: 10px;
+    transform: scale(0.9);
+    color: white;
+    background-color: var(--primary-color);
 }
   

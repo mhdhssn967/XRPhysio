@@ -7,10 +7,13 @@
     /* margin-top: 1rem; */
   }
   .session-row{
-    border: solid 1px var(--extra-color);
+    border: solid 1px var(--primary-color);
     padding: 10px;
     border-radius: 10px;
     gap: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
   .session-info{
     display:flex ;

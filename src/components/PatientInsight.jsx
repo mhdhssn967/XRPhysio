@@ -8,7 +8,9 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  BarChart,Bar
 } from 'recharts';
+
 import './PatientInsight.css';
 import { Button, Stack } from '@mui/material';
 
@@ -59,6 +61,7 @@ const average = (arr) =>
   };
 });
 
+console.log(parsedData);
 
 
 const filteredData = useMemo(() => {
@@ -95,7 +98,7 @@ useEffect(() => {
 
   return (
     <div className="patient-insight-container">
-      <h2 style={{ textAlign: 'center' }}>Patient Insight</h2>
+      {/* <pre>{JSON.stringify(parsedData, null, 2)}</pre> */}
 
       {/* ✅ Date Filters */}
       <div className="date-filters">
@@ -117,7 +120,7 @@ useEffect(() => {
             onChange={(e) => setToDate(e.target.value)}
           />
         </div>
-        <button onClick={()=>{setFromDate(minDate); setToDate(maxDate); setActiveFocus("")}}>Reset</button>
+        <button onClick={()=>{setFromDate(minDate); setToDate(maxDate)}}>Reset</button>
       </div>
       <div className='focus-points'>
         <Stack direction="row" flexWrap="nowrap" spacing={1}>
@@ -195,6 +198,56 @@ useEffect(() => {
           />
         </LineChart>
       </ResponsiveContainer>
+
+      {/* Bar chart */}
+      <ResponsiveContainer width="100%" height={300}>
+  <BarChart
+    data={parsedData}
+    margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
+    barGap={8}
+  >
+    <CartesianGrid strokeDasharray="3 3" />
+    <XAxis
+      dataKey="date"
+      angle={-45}
+      textAnchor="end"
+      tick={{ fontSize: 12 }}
+    />
+    <YAxis
+      yAxisId="left"
+      domain={[0, 100]}
+      tickFormatter={(v) => `${v}%`}
+    />
+    <YAxis
+      yAxisId="right"
+      orientation="right"
+      tickFormatter={(v) => `${v}s`}
+    />
+    <Tooltip
+      formatter={(value, name) =>
+        name === "Efficiency"
+          ? [`${value.toFixed(1)}%`, "Efficiency"]
+          : [`${value.toFixed(2)} s`, "Reaction Time"]
+      }
+    />
+    <Legend verticalAlign="top" height={36} />
+    <Bar
+      yAxisId="left"
+      dataKey="efficiency"
+      fill="#527faf"
+      name="Efficiency"
+      barSize={16}
+    />
+    <Bar
+      yAxisId="right"
+      dataKey="reaction"
+      fill="#39ce90"
+      name="Reaction Time"
+      barSize={16}
+    />
+  </BarChart>
+</ResponsiveContainer>
+
     </div>
   );
 };

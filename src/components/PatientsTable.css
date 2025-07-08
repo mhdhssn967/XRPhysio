@@ -34,10 +34,10 @@
   background-color: var(--card-color);
   color: var(--text-colordark);
   cursor: pointer;
-  color: black;
+  color: rgb(94, 94, 94);
   transition: background-color 0.2s ease;
   border-bottom: 1px solid #eee;
-  font-weight: 200;
+  font-weight: 800;
 }
 
 .patients-table tbody tr {
