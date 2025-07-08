@@ -169,11 +169,12 @@ const UpdateAnimation = () => {
           <group key={index}>
             <group position={[
   part.position[0],
-  part.position[1] - 3.3,  // 👈 shift downward by 1 unit
+  part.position[1] - 2.3,  // 👈 shift downward by 1 unit
   part.position[2]+1.5]}
             >
   {/* Animated glowing sphere */}
   <AnimatedSphere efficiency={part.efficiency} />
+  
 
   {/* Optional ring for high performance */}
   {part.efficiency > 80 && (
@@ -184,11 +185,30 @@ const UpdateAnimation = () => {
   )}
 </group>
 
+{/* Lines */}
+{/* {coordinates.map((part, index) => {
+  const start = new THREE.Vector3(0, 2, 0);
+  const end = new THREE.Vector3(
+    part.position[5],
+    part.position[1] - 2.3,
+    part.position[2] + 1.5
+  );
+
+  const points = [start, end];
+
+  const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+
+  return (
+    <line key={`line-${index}`} geometry={lineGeometry}>
+      <lineBasicMaterial attach="material" color="rgb(95, 176, 243)" linewidth={1} />
+    </line>
+  );
+})} */}
             <Text
               ref={part.ref}
-              position={[part.position[0], part.position[1]-3.3 + 0.2, part.position[2]+1.5]}
+              position={[part.position[0], part.position[1]-2.3 + 0.2, part.position[2]+1.5]}
               fontSize={0.2}
-              color="#f17f32"
+              color="rgb(44, 53, 61)"
               anchorX="center"
               anchorY="middle"
             >
@@ -202,7 +222,7 @@ const UpdateAnimation = () => {
           <primitive
             object={model}
             scale={[0.04, 0.04, 0.04]}
-            position={[0, -4, 0]}
+            position={[0, -3, 0]}
           />
         )}
         

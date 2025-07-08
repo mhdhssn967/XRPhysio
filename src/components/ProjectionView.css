@@ -25,3 +25,8 @@ g:hover {
   position: fixed;
   left: 0px;
 }
+.projection-view-div{
+  display: flex;
+  justify-content: center;
+  height: 500px;
+}

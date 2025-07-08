@@ -1,7 +1,7 @@
 .threeD-container{
-    width: 50%;
-    height: 80%;
-    border: solid orange 0.5px;
+    width: 800px;
+    height: 600px;
+    border: solid var(--primary-color) 2px;
     cursor:grab;
     overflow-y: hidden;
     margin-top: 50px;
@@ -27,6 +27,9 @@
     padding: 2px;
     cursor: pointer;
     transition: 0.2s;
+}
+.d{
+    color: rgb(31, 142, 233);
 }
 .toggle-dot{
     background-color:var(--primary-color);

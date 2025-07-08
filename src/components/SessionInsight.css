@@ -1,9 +1,8 @@
 .visualizer{
-    height: 100vh;
+    /* height: 100vh; */
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    margin-top: -6%;
 }
 .visualizer-heading{
     display: flex;

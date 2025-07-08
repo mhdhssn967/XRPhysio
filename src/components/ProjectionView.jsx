@@ -2,10 +2,11 @@ import React from 'react';
 import frontView from '../assets/1.png';
 import topView from '../assets/2.png';
 import sideView from '../assets/3.png';
+import './ProjectionView.css'
 
 
-const SIZE = 300;
-const SCALE = 100; // 1 meter = 100px
+const SIZE = 600;
+const SCALE = 120; // 1 meter = 100px
 
 const ProjectionView = ({  title,
   plane,
@@ -44,37 +45,46 @@ const ProjectionView = ({  title,
 
   };
 
-  const getBackgroundImage = () => {
-  if (plane === 'front') return `url(${frontView})`;
-  if (plane === 'top') return `url(${topView})`;
-  if (plane === 'side') return `url(${sideView})`;
-  return 'none';
+const getBackgroundImage = () => {
+  if (plane === 'front') return frontView;
+  if (plane === 'top') return topView;
+  if (plane === 'side') return sideView;
+  return null;
 };
+
 
 
   return (
     
-    <div
-      style={{
-        margin: '10px',
-        flex: '1 1 320px',
-        maxWidth: '400px',
+    <div 
+      style={{ 
+        margin: '5px',
+        width: '90vw',
       }}
     >
       <h4 style={{ textAlign: 'center', marginBottom: '8px' }}>{title}</h4>
-      <svg
+      <svg className='projection-view-div'
   width="100%"
   height={SIZE}
   viewBox={`0 0 ${SIZE} ${SIZE}`}
   style={{
     border: '1px solid #ccc',
-    backgroundImage: getBackgroundImage(),
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+    // boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
   }}
 >
-        {/* Axes */}
+{getBackgroundImage() && (
+  <image
+    href={getBackgroundImage()}
+    x="60"
+    y="180"
+    width="480px"
+    height="480px"
+    preserveAspectRatio="xMidYMid slice"
+  />
+)}
+       {/* Axes */}
         <line
           x1={0}
           y1={plane === 'top' ? SIZE / 2 : SIZE}
@@ -171,8 +181,8 @@ const ProjectionView = ({  title,
   }}
 >
       {/* Projection lines */}
-      <line x1={x} y1={plane === 'top' ? SIZE / 2 : SIZE} x2={x} y2={y} stroke="rgb(224, 89, 27)" />
-      <line x1={SIZE / 2} y1={y} x2={x} y2={y} stroke="rgb(224, 89, 27)" />
+      <line x1={x} y1={plane === 'top' ? SIZE / 2 : SIZE} x2={x} y2={y} stroke="var(--primary-color)" />
+      <line x1={SIZE / 2} y1={y} x2={x} y2={y} stroke="var(--primary-color)" />
 
       {/* Dot */}
       <circle

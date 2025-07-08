@@ -26,6 +26,7 @@
     animation: closeAddPatient .2s;
   }
   .metric-info-div{
+    margin-top: -40px;
     width: fit-content;
     max-height: fit-content;
     position: absolute;

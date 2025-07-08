@@ -40,7 +40,7 @@ const MetricInfoPanel = () => {
         Efficiency Metrics
       </Typography>
       <InfoBlock title="Average Efficiency" icon="bar-chart-line">
-        Percentage (%) of successful target touches. Higher values (>75%) reflect better performance.
+        {`Percentage (%) of successful target touches. Higher values (>75%) reflect better performance.`}
       </InfoBlock>
       <InfoBlock title="Efficiency Consistency" icon="stack-line">
         Stability of efficiency across targets. Lower variation means consistent effort and focus.
@@ -69,7 +69,7 @@ const MetricInfoPanel = () => {
         Increase in reaction time over session (in seconds). Higher drop = more fatigue or mental slowing.
       </InfoBlock>
       <InfoBlock title="Efficiency Drop" icon="arrow-down-s-line">
-        % decrease in efficiency from first to last rep. Significant drop (>20%) may indicate early fatigue.
+        {`% decrease in efficiency from first to last rep. Significant drop (>20%) may indicate early fatigue.`}
       </InfoBlock>
     </Box>
   );
