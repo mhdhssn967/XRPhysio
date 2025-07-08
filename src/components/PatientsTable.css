@@ -37,7 +37,7 @@
   color: rgb(94, 94, 94);
   transition: background-color 0.2s ease;
   border-bottom: 1px solid #eee;
-  font-weight: 800;
+  font-weight: 300;
 }
 
 .patients-table tbody tr {

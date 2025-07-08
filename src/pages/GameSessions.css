@@ -62,10 +62,7 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
-.game-details-page{
-    /* margin: 40px; */
-    /* padding: 40px; */
-}
+
 .focus-group h2{
     color: var(--secondary-color);
     font-weight: 800;

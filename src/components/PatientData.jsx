@@ -121,9 +121,7 @@ const [selectedSession, setSelectedSession] = useState(null);
           <>
             <Card elevation={2} sx={{ margin: '1rem 0', background: 'none',boxShadow:'none' }}>
         <CardContent>
-          <Typography variant="h6" gutterBottom sx={{ color: '#1976d2',fontWeight:'900' }}>
-            Patient Information
-          </Typography>
+
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={4}>
               <Typography variant="body1"><strong>Name:</strong> {patientDetails.name}</Typography>

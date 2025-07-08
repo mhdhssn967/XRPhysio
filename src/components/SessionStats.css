@@ -1,0 +1,11 @@
+.stat-card{
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.stat-container{
+    display: flex;
+    justify-self: center;
+    margin-bottom: 50px;
+    gap: 60px;
+}

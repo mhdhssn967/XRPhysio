@@ -10,6 +10,7 @@ import Loader from '../helperComponents/Loader';
 import SessionInsight from '../components/SessionInsight';
 import Typography from '@mui/material/Typography';
 import LoaderComponent from './LoaderComponent';
+import MetricInfoPanel from '../components/MetricInfoPanel';
 
 const Patients = ({triggerRefresh, setTriggerRefresh }) => {
 
@@ -42,12 +43,13 @@ const Patients = ({triggerRefresh, setTriggerRefresh }) => {
     fetchPatientData(); // Call the function inside useEffect
 
   }, [triggerRefresh,user]);
-
+const [showMetricInfo,setShowMetricInfo]=useState(false)
 
 
   return (
 
     <>
+    
      <div className='container'>
         {/* Patient Table */}
         {(!patientDataPage) &&
@@ -68,7 +70,7 @@ const Patients = ({triggerRefresh, setTriggerRefresh }) => {
     mb: 2
   }}
 >
-  Patients
+  Patients 
 </Typography>
 <i title='Add a new patient' onClick={handleAddPatients} class="ri-file-add-fill"></i>
 
@@ -95,13 +97,17 @@ const Patients = ({triggerRefresh, setTriggerRefresh }) => {
       sm: '2rem',   // Tablets
       md: '2.5rem', // Laptops
     },
-    fontWeight: 600,
+    fontWeight: 800,
     color: '#505050',  // 👈 set color to black
     mt: 2,
     mb: 2
   }}
 >
-  Patient Data
+  Patient Data {showMetricInfo&&<div className='metric-info-div'>
+       <MetricInfoPanel/>
+    </div>}  <button style={{background:'none',border:'none'}} onMouseEnter={()=>setShowMetricInfo(true)} onMouseLeave={()=>setShowMetricInfo(false)}><i className="ri-information-fill"></i></button>
+ 
+  
 </Typography>
           </div>
           <PatientData setPatientDataPage={setPatientDataPage} clickedPatientID={clickedPatientId} user={user}/>

@@ -13,6 +13,8 @@ import {
 
 import './PatientInsight.css';
 import { Button, Stack } from '@mui/material';
+import { analyzeGameData } from '../firebase/processData';
+import SessionStats from './SessionStats';
 
 const PatientInsight = ({focus,sessionRawData }) => {
 
@@ -36,7 +38,7 @@ const maxDate = today.toISOString().split('T')[0];
 // 🛡️ Use sensible default/fallback
 const [fromDate, setFromDate] = useState(minDate || maxDate);
 const [toDate, setToDate] = useState(maxDate);
-
+const [processedPhysioData,setProcessedPhysioData]=useState({})
 
 
   
@@ -47,21 +49,22 @@ const average = (arr) =>
     : 0;
 
 
- const parsedData = sorted.map((item) => {
-  const timestampDate = new Date(item.timestamp.seconds * 1000); // convert to JS Date
-  const dateStr = timestampDate.toISOString().split('T')[0];     // get YYYY-MM-DD
-  
+const parsedData = useMemo(() => {
+  return sorted.map((item) => {
+    const timestampDate = new Date(item.timestamp.seconds * 1000);
+    const dateStr = timestampDate.toISOString().split('T')[0];
+    return {
+      ...item,
+      date: dateStr,
+      gameName: item.gameName,
+      efficiency: average(item.targetEfficiency),
+      reaction: average(item.reactionTime),
+    };
+  });
+}, []);
 
-  return {
-    ...item,
-    date: dateStr,
-    gameName:item.gameName,
-    efficiency: average(item.targetEfficiency),
-    reaction: average(item.reactionTime),
-  };
-});
 
-console.log(parsedData);
+
 
 
 const filteredData = useMemo(() => {
@@ -90,15 +93,19 @@ useEffect(() => {
   const handleClick = (focus) => {
     if (focus !== activeFocus) {
   setActiveFocus(focus);
-  onFilter(focus);
+  // onFilter(focus);
 }
-
   };
+
+  useEffect(()=>{
+      const processedPhysioDataRef=analyzeGameData(filteredData)
+      setProcessedPhysioData(processedPhysioDataRef)
+    },[filteredData])
 
 
   return (
     <div className="patient-insight-container">
-      {/* <pre>{JSON.stringify(parsedData, null, 2)}</pre> */}
+      <SessionStats processedPhysioData={processedPhysioData} />
 
       {/* ✅ Date Filters */}
       <div className="date-filters">
