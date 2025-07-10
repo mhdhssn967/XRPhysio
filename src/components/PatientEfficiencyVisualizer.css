@@ -1,6 +1,6 @@
 .threeD-container{
     width: 800px;
-    height: 600px;
+    height: 750px;
     border: solid var(--primary-color) 2px;
     cursor:grab;
     overflow-y: hidden;
@@ -40,7 +40,7 @@
 .toggle-div{
     display: flex;
     align-items: center;
-    margin-left: 20px;
+    margin:0px 20px;
 }
 .toggle-div p{
     font-weight: 800;
@@ -77,4 +77,18 @@
 }
 .help:hover .three-d-help{
     display: block;
+}
+.three-d-btns-div{
+    display: flex;
+    justify-content: space-between;
+}
+@media (min-width: 600px) and (max-width: 1200px) and (orientation: landscape) {
+  .threeD-container{
+    width: 500px;
+    height: 650px;
+    border: solid var(--primary-color) 2px;
+    cursor:grab;
+    overflow-y: hidden;
+    margin-top: 50px;
+}
 }

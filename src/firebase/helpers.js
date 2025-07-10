@@ -246,3 +246,47 @@ export const fetchGameDetails = async (firebaseApp) => {
     return [];
   }
 };
+
+/**
+ * Updates the specified activeDeviceSession document by merging new data
+ * @param {string} hospitalId - Hospital document ID
+ * @param {string} sessionId - Active device session document ID
+ * @param {Object} newData - New fields to add/update in the document
+ */
+export const updateGameSettings = async (hospitalId, deviceId, newData) => {
+  try {
+    const sessionDocRef = doc(
+      db,
+      "hospitalData",
+      hospitalId,
+      "activeDeviceSessions",
+      deviceId
+    );
+    await updateDoc(sessionDocRef, newData); // Merges fields by default
+
+    console.log("✅ Document updated successfully!");
+  } catch (error) {
+    console.error("❌ Error updating document:", error);
+  }
+};
+
+
+export const setApplyPositionsTrue = async (hospitalId, deviceId) => {
+  try {
+    const sessionDocRef = doc(
+      db,
+      "hospitalData",
+      hospitalId,
+      "activeDeviceSessions",
+      deviceId
+    );
+
+    await updateDoc(sessionDocRef, {
+      applyPositions: true,
+    });
+
+    console.log("✅ 'applyPositions' updated to true successfully!");
+  } catch (error) {
+    console.error("❌ Error updating 'applyPositions':", error);
+  }
+};

@@ -9,12 +9,15 @@ import "./ActiveSessions.css";
 import Swal from "sweetalert2";
 import LoaderSmall from "../helperComponents/LoaderSmall";
 import GameModal from "./GameModal";
+import GameSetting from "./GameSetting";
+import { TroubleshootSharp } from "@mui/icons-material";
 
 const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
   const [sessions, setSessions] = useState([]);
 
   const [open, setOpen] = useState(false);
   const [selectedDeviceId,setSelectedDeviceId]=useState(null)
+  const [openSettings,setOpenSettings]=useState(false)
   const [selectedGame,setSelectedgame]=useState({})
   const handleOpen = (deviceId) => {
     setOpen(true)
@@ -33,6 +36,12 @@ const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     getSessions();
   }, [user, triggerRefresh]);
 
+  const settingsOpen=(deviceId)=>{
+    setSelectedDeviceId(deviceId)
+    setOpenSettings(true)
+  }
+
+
   const handleEditStatus = async (hospitalId, deviceId, status) => {
     setLoadingStatus(true);
     await updateGameStatus(hospitalId, deviceId, status);
@@ -49,6 +58,9 @@ const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
 
   return (
     <div >
+      {openSettings&&<div className="settings-modal">
+        <GameSetting user={user} selectedDeviceId={selectedDeviceId} setOpenSettings={setOpenSettings}/>
+      </div>}
       <GameModal selectedDeviceId={selectedDeviceId} setSelectedgame={setSelectedgame} open={open} setOpen={setOpen} handleOpen={handleOpen} handleClose={handleClose} user={user} triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh}/> 
       <div className="active-session">
         <p style={{fontWeight:'800', fontSize:'20px',marginTop:'30px'}}>Game sessions</p>
@@ -100,7 +112,9 @@ const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
             ) : (
               <LoaderSmall />
             )}
-  
+  {session.SceneName!='ActivitySelection'&&<button onClick={()=>settingsOpen(session.deviceId)} className="game-setting-btn game-btn">
+              <i class="ri-settings-4-fill"></i>
+            </button>}
             <i
               role="button"
               onClick={() =>
@@ -110,6 +124,7 @@ const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
               style={{ color: "brown", cursor: "pointer" }}
               className="ri-home-4-fill game-btn"
             ></i>
+            
           </div>
         </div>
       </div>

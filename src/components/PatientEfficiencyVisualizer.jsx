@@ -12,6 +12,7 @@ const PatientEfficiencyVisualizer = ({ sessionRawData = [] ,selectedSession}) =>
   const [model, setModel] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
   const [modelPosition,setModelPosition]=useState(true)
+  const [lines,setLines]=useState(false)
   const textRefs = useRef([]);
 
   const [mixer, setMixer] = useState(null);
@@ -147,7 +148,12 @@ const UpdateAnimation = () => {
       </div>
       </div>
       
-<div className="toggle-div"><p>Stand</p><div role="button" style={modelPosition?{justifyContent:'right'}:{justifyContent:'left'}} className="view-toggle-btn" onClick={()=>setModelPosition(!modelPosition)}> <div className="toggle-dot"></div></div><p>Sit</p></div>
+<div className="three-d-btns-div">
+  <div className="toggle-div"><p>Stand</p><div role="button" style={modelPosition?{justifyContent:'right'}:{justifyContent:'left'}} className="view-toggle-btn" onClick={()=>setModelPosition(!modelPosition)}> <div className="toggle-dot"></div></div><p>Sit</p></div>
+
+  <div className="toggle-div"><p>Lines</p><div role="button" style={lines?{justifyContent:'right'}:{justifyContent:'left'}} className="view-toggle-btn" onClick={()=>setLines(!lines)}> <div className="toggle-dot" style={lines?{backgroundColor:''}:{backgroundColor:'gray'}}></div></div></div>
+</div>
+
 
       <Canvas camera={{ position: [-6, 2, 12], fov: 60 }}>
         <OrbitControls />
@@ -186,12 +192,13 @@ const UpdateAnimation = () => {
 </group>
 
 {/* Lines */}
-{/* {coordinates.map((part, index) => {
-  const start = new THREE.Vector3(0, 2, 0);
+{lines&&coordinates.map((part, index) => {
+  const start = new THREE.Vector3(0, 2, 0); // model's head or chest height
+
   const end = new THREE.Vector3(
-    part.position[5],
-    part.position[1] - 2.3,
-    part.position[2] + 1.5
+    part.position[0],                      // ✅ Use index 0 for X
+    part.position[1] - 2.3,               // Y (adjusted downward)
+    part.position[2] + 1.5                // Z (offset)
   );
 
   const points = [start, end];
@@ -203,7 +210,8 @@ const UpdateAnimation = () => {
       <lineBasicMaterial attach="material" color="rgb(95, 176, 243)" linewidth={1} />
     </line>
   );
-})} */}
+})}
+
             <Text
               ref={part.ref}
               position={[part.position[0], part.position[1]-2.3 + 0.2, part.position[2]+1.5]}

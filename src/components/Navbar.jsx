@@ -62,10 +62,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const menuItems = [
   { title: 'Home', img: home },
   { title: 'Manage Patients', img: examination },
-  { title: 'Manage Therapists', img: medicalteam },
+  // { title: 'Manage Therapists', img: medicalteam },
   { title: 'Manage Devices', img: vr2 },
   { title: 'Game Sessions', img: vr },
-  { title: 'Settings', img: settings },
+  // { title: 'Settings', img: settings },
   { title: 'Logout', img: logoutbtn, action: logout },
 ];
 
