@@ -1,31 +1,21 @@
-.loader-bg{
-    width: 300px;
-    height: 10px;
-    border: solid var(--primary-color) 0.5px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
+.loader-bg img{
+    animation: loaderbar 1s infinite;
 }
-.loader-bar{
-    background-color: var(--secondary-color);
-    height: 8px;
-    width: 100%;
-    animation: loaderbar 2s;
-    border-radius: 50px;
-}@keyframes loaderbar{
-    0%{
-        width: 0%;
-    }
-    30%{
-        width: 45%;
-    }
-    56%{
-        width: 48%;
-    }
-    100%{
-        width: 100%;
-    }
+@keyframes loaderbar {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
+
 .loadScreen{
   display: flex;
   justify-content: center;
