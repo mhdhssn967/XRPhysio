@@ -47,9 +47,18 @@ const GameSetting = ({setOpenSettings,user,selectedDeviceId}) => {
   const [lines,setLines]=useState(false)
   const textRefs = useRef([]);
   const [selectedPoint,setSelectedPoint]=useState(1)
+
+  
   
 
-  const [allSetting,setAllSetting]=useState({handSelected:"Right",totalRepCount:2,spawnPointsList:[{x:-0.5991023778915405,y:1.4097106456756592,z:0.343999981880188},{x:-0.2951023578643799,y:1.4097106456756592,z:0.343999981880188},{x:-0.02610236406326294,y:1.4097106456756592,z:0.343999981880188},{x:0.2548976540565491,y:1.4097106456756592,z:0.343999981880188}],applySettings:true})
+const [allSetting,setAllSetting]=useState({handSelected:"Right",totalRepCount:2,spawnPointsList:[{x:-0.5991023778915405,y:1.4097106456756592,z:0.343999981880188},{x:-0.2951023578643799,y:1.4097106456756592,z:0.343999981880188},{x:-0.02610236406326294,y:1.4097106456756592,z:0.343999981880188},{x:0.2548976540565491,y:1.4097106456756592,z:0.343999981880188}],applySettings:true,ToggleMR:false,
+  spawningGap:8})
+
+  
+  
+
+ 
+
 
   
   
@@ -376,39 +385,78 @@ const applyPositions=async()=>{
         </Box>
             </div>
             <div className="adjust-div hand-sel">
-                <h3 className="setting-headings">Select Hand</h3>
-                <div><button style={allSetting.handSelected=="Right"?{backgroundColor:'var(--primary-color)',color:'white'}:{backgroundColor:''}}
-  onClick={() =>
-    setAllSetting((prev) => ({ ...prev, handSelected: "Right" }))
-  }
->
-  Right
-</button>
+                <div>
+                  <h3 className="setting-headings">Select Hand</h3>
+                  <div><button style={allSetting.handSelected=="Right"?{backgroundColor:'var(--primary-color)',color:'white'}:{backgroundColor:''}}
+    onClick={() =>
+      setAllSetting((prev) => ({ ...prev, handSelected: "Right" }))
+    }
+  >
+    Right
+  </button>
+  
+  <button style={allSetting.handSelected=="Left"?{backgroundColor:'var(--primary-color)',color:'white'}:{backgroundColor:''}}
+    onClick={() =>
+      setAllSetting((prev) => ({ ...prev, handSelected: "Left" }))
+    }
+  >
+    Left
+  </button>
+                  </div>
 
-<button style={allSetting.handSelected=="Left"?{backgroundColor:'var(--primary-color)',color:'white'}:{backgroundColor:''}}
-  onClick={() =>
-    setAllSetting((prev) => ({ ...prev, handSelected: "Left" }))
-  }
->
-  Left
-</button>
+                  {/* MR Toggle*/}
+                  
+                </div>
+
+                <div>
+                  <h3 className="setting-headings">Select View</h3>
+                    <div><button style={allSetting.ToggleMR==false?{backgroundColor:'var(--primary-color)',color:'white'}:{backgroundColor:''}}
+      onClick={() =>
+        setAllSetting((prev) => ({ ...prev, ToggleMR: false }))
+      }
+    >
+      VR
+    </button>
+    
+    <button style={allSetting.ToggleMR==true?{backgroundColor:'var(--primary-color)',color:'white'}:{backgroundColor:''}}
+      onClick={() =>
+        setAllSetting((prev) => ({ ...prev, ToggleMR: true }))
+      }
+    >
+      MR
+    </button>
+                    </div>
                 </div>
 
             </div>
             <div className="adjust-div">
 
-  <TextField sx={{margin:'15px'}}
-    label="Total Repetitions"
-    type="number"
-    size="small"
-    value={allSetting.totalRepCount}
-    onChange={(e) =>
-      setAllSetting((prev) => ({
-        ...prev,
-        totalRepCount: Number(e.target.value),
-      }))
-    }
-  />
+  <div style={{display:'flex'}}>
+    <TextField sx={{margin:'15px',width:'140px'}}
+      label="Total Repetitions"
+      type="number"
+      size="small"
+      value={allSetting.totalRepCount}
+      onChange={(e) =>
+        setAllSetting((prev) => ({
+          ...prev,
+          totalRepCount: Number(e.target.value),
+        }))
+      }
+    />
+    <TextField sx={{margin:'15px',width:'140px'}}
+      label="Spawn Gap in seconds"
+      type="number"
+      size="small"
+      value={allSetting.spawningGap}
+      onChange={(e) =>
+        setAllSetting((prev) => ({
+          ...prev,
+          spawningGap: Number(e.target.value),
+        }))
+      }
+    />
+  </div>
 </div>
 <div className="setting-apply-btns">
   <Stack direction="row" spacing={2}>

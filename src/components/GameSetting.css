@@ -79,3 +79,7 @@
 .apply-btn:active{
     transform: scale(1);
 }
+.hand-sel{
+    display: flex;
+    flex-direction: column;
+}
