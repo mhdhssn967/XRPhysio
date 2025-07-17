@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ProjectionView from './ProjectionView';
 
-const AllProjections = ({ enhancedPoints }) => {
+const AllProjections = ({ enhancedPoints,modelPosition }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, data: null });
 
@@ -9,6 +9,7 @@ const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, data: null 
   return (
   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
     <ProjectionView
+      modelPosition={modelPosition}
       title="Top View"
       plane="top"
       points={enhancedPoints}
@@ -17,6 +18,7 @@ const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, data: null 
       setTooltip={setTooltip}
     />
     <ProjectionView
+    modelPosition={modelPosition}
       title="Front View"
       plane="front"
       points={enhancedPoints}
@@ -25,6 +27,7 @@ const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, data: null 
       setTooltip={setTooltip}
     />
     <ProjectionView
+    modelPosition={modelPosition}
       title="Side View"
       plane="side"
       points={enhancedPoints}

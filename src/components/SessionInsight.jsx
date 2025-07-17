@@ -8,7 +8,8 @@ const SessionInsight = ({ selectedSession, sessionRawData, patientDetails, setSh
   const [enhancedPoints, setEnhancedPoints] = useState([]);
   const [session, setSession] = useState(null);
   const [realSpawnPoints,setRealSpawnPoints]=useState([])  
-
+  const [modelPosition,setModelPosition]=useState(true)
+  
   useEffect(() => {
     window.scrollTo(0, 0);
 
@@ -85,7 +86,7 @@ const spawnPoints = realSpawnPoints;
       
 
       <div className='visualizer'>
-        <PatientEfficiencyVisualizer sessionRawData={sessionRawData} selectedSession={selectedSession}/>
+        <PatientEfficiencyVisualizer setModelPosition={setModelPosition} modelPosition={modelPosition} sessionRawData={sessionRawData} selectedSession={selectedSession}/>
 
         <div className='visual-data-div'>
           <h2 className='main-heading'>Game Session Summary</h2>
@@ -118,7 +119,7 @@ const spawnPoints = realSpawnPoints;
       <div className='physio-data-div'>
         <h3 style={{ marginBottom: '10px', color: '#444' }}>Performance Metrics</h3>
         <hr /> 
-        <ProjectionViews enhancedPoints={enhancedPoints} spawnPoints={spawnPoints}/>
+        <ProjectionViews setModelPosition={setModelPosition} modelPosition={modelPosition} enhancedPoints={enhancedPoints} spawnPoints={spawnPoints}/>
         <div>
           <VisualChart enhancedPoints={enhancedPoints}/>
         </div>

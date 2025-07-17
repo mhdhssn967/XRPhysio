@@ -7,11 +7,11 @@ import './PatientEfficiencyVisualizer.css';
 import eff from '../assets/efficiency.png';
 import help from '../assets/help.png'
 
-const PatientEfficiencyVisualizer = ({ sessionRawData = [] ,selectedSession}) => {
+const PatientEfficiencyVisualizer = ({ sessionRawData = [] ,selectedSession, modelPosition, setModelPosition}) => {
   
   const [model, setModel] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
-  const [modelPosition,setModelPosition]=useState(true)
+
   const [lines,setLines]=useState(false)
   const textRefs = useRef([]);
 

@@ -2,13 +2,16 @@ import React from 'react';
 import frontView from '../assets/1.png';
 import topView from '../assets/2.png';
 import sideView from '../assets/3.png';
+import frontViewStand from '../assets/1s.png';
+import topViewStand from '../assets/2s.png';
+import sideViewStand from '../assets/3s.png';
 import './ProjectionView.css'
 
 
 const SIZE = 600;
 const SCALE = 120; // 1 meter = 100px
 
-const ProjectionView = ({  title,
+const ProjectionView = ({  modelPosition,setModelPosition,title,
   plane,
   points = [],
   hoveredIndex,
@@ -32,14 +35,14 @@ const ProjectionView = ({  title,
     return {
   x:
     plane === 'side'
-      ? SIZE * 0.75 + x * SCALE
+      ? SIZE * 0.70 + x * SCALE
       : SIZE / 2 + x * SCALE,
   y:
     plane === 'top'
-      ? SIZE * 0.90 - y * SCALE
+      ? SIZE * 0.9 - y * SCALE
       : plane === 'side'
-      ? SIZE - y*1.75 * SCALE
-      : SIZE - y*1.75 * SCALE,
+      ? SIZE - y*1.70 * SCALE
+      : SIZE - y*1.70 * SCALE,
   efficiency: parseFloat(point.efficiency || '0').toFixed(1),
 };
 
@@ -51,6 +54,14 @@ const getBackgroundImage = () => {
   if (plane === 'side') return sideView;
   return null;
 };
+
+const getStandingBackgroundImage = () => {
+  if (plane === 'front') return frontViewStand;
+  if (plane === 'top') return topViewStand;
+  if (plane === 'side') return sideViewStand;
+  return null;
+};
+console.log(modelPosition);
 
 
 
@@ -76,9 +87,9 @@ const getBackgroundImage = () => {
 >
 {getBackgroundImage() && (
   <image
-    href={getBackgroundImage()}
+    href={modelPosition?getBackgroundImage():getStandingBackgroundImage()}
     x="60"
-    y="180"
+    y={plane === 'top' ? 30 : 180} // Adjust vertical position for top view
     width="480px"
     height="480px"
     preserveAspectRatio="xMidYMid slice"

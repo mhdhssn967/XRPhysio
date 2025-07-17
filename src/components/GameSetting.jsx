@@ -35,7 +35,7 @@ const GameSetting = ({setOpenSettings,user,selectedDeviceId}) => {
     ref: React.createRef(),
   },
 ];
-
+const visualScale = 4;
 
 
 
@@ -51,13 +51,27 @@ const GameSetting = ({setOpenSettings,user,selectedDeviceId}) => {
   
   
 
-const [allSetting,setAllSetting]=useState({handSelected:"Right",totalRepCount:2,spawnPointsList:[{x:-0.5991023778915405,y:1.4097106456756592,z:0.343999981880188},{x:-0.2951023578643799,y:1.4097106456756592,z:0.343999981880188},{x:-0.02610236406326294,y:1.4097106456756592,z:0.343999981880188},{x:0.2548976540565491,y:1.4097106456756592,z:0.343999981880188}],applySettings:true,ToggleMR:false,
-  spawningGap:8})
+const [allSetting, setAllSetting] = useState({
+  handSelected: "Right",
+  totalRepCount: 2, 
+  x0: -0.5991023778915405,
+  y0: 1.4097106456756592,
+  z0: 0.343999981880188,
+  x1: -0.2951023578643799,
+  y1: 1.4097106456756592,
+  z1: 0.343999981880188,
+  x2: -0.02610236406326294,
+  y2: 1.4097106456756592,
+  z2: 0.343999981880188,
+  x3: 0.2548976540565491,
+  y3: 1.4097106456756592,
+  z3: 0.343999981880188,
+  applySettings: true,
+  ToggleMR:false,
+  spawningGap:8
+});
 
-  
-  
 
- 
 
 
   
@@ -201,7 +215,7 @@ const applyPositions=async()=>{
     </div>
     
     
-          <Canvas camera={{ position: [-6, 2, 12], fov: 60 }}>
+          <Canvas camera={{ position: [-6, 8, 12], fov: 80 }}>
             <OrbitControls />
             <ambientLight intensity={1} />
             <directionalLight position={[10, 10, 10]} intensity={1} />
@@ -219,11 +233,11 @@ const applyPositions=async()=>{
             {/* Render Efficiency Points */}
             {coordinates.map((part, index) => (
               <group key={index}>
-                <group position={[
-      part.position[0]*2.5,
-      part.position[1] ,  // 👈 shift downward by 1 unit
-      part.position[2]+2]}
-                >
+               <group position={[
+  coordinates[index].position[0] * visualScale,
+  coordinates[index].position[1] * visualScale - 2.3,
+  coordinates[index].position[2] * visualScale + 1.5
+]}>
       {/* Animated glowing sphere */}
       <AnimatedSphere efficiency={part.efficiency} />
       
@@ -242,9 +256,9 @@ const applyPositions=async()=>{
       const start = new THREE.Vector3(0, 2, 0); // model's head or chest height
     
       const end = new THREE.Vector3(
-        part.position[0]*2.5,
-      part.position[1] ,  // 👈 shift downward by 1 unit
-      part.position[2]+2                // Z (offset)
+        coordinates[index].position[0] * visualScale,
+  coordinates[index].position[1] * visualScale - 2.3,
+  coordinates[index].position[2] * visualScale + 1.5               // Z (offset)
       );
     
       const points = [start, end];
@@ -261,9 +275,9 @@ const applyPositions=async()=>{
                 <Text
   ref={part.ref}
   position={[
-    part.position[0]*2.5,
-    part.position[1] +0.3,
-    part.position[2] + 2,
+    coordinates[index].position[0] * visualScale,
+  coordinates[index].position[1] * visualScale - 1.7,
+  coordinates[index].position[2] * visualScale + 1.5
   ]}
   fontSize={0.2}
   color="rgb(44, 53, 61)"
@@ -280,8 +294,8 @@ const applyPositions=async()=>{
             {model && (
               <primitive
                 object={model}
-                scale={[0.04, 0.04, 0.04]}
-                position={[0, -3, 0]}
+                scale={[0.06, 0.06, 0.06]}
+                position={[0, -3.5, -.05]}
               />
             )}
             
@@ -310,9 +324,9 @@ const applyPositions=async()=>{
               <Typography variant="body2" sx={{fontSize:'12px'}}>X Axis</Typography>
               <Slider
                 defaultValue={coordinates[selectedPoint-1].position[0]}
-                min={-5}
-                max={5}
-                step={0.001}
+                min={-3}
+                max={3}
+                step={0.0001}
                 valueLabelDisplay="auto"
                 sx={{ width: 370 }} 
                 onChange={(e, newValue) => {
@@ -320,14 +334,11 @@ const applyPositions=async()=>{
   updated[selectedPoint - 1].position[0] = newValue;
   setCoordinates(updated);
 
-  const newSpawnPoints = [...allSetting.spawnPointsList];
-  if (!newSpawnPoints[selectedPoint - 1]) {
-    newSpawnPoints[selectedPoint - 1] = { x: 0, y: 0, z: 0 };
-  }
-  newSpawnPoints[selectedPoint - 1].x = newValue;
-
-  setAllSetting({ ...allSetting, spawnPointsList: newSpawnPoints });
+  const key = `x${selectedPoint - 1}`;
+  setAllSetting(prev => ({ ...prev, [key]: newValue }));
 }}
+
+
 
               />
             </Box>
@@ -336,23 +347,20 @@ const applyPositions=async()=>{
   <Typography variant="body2">Y Axis</Typography>
   <Slider
     value={coordinates[selectedPoint - 1].position[1]}
-    min={-5}
-    max={5}
-    step={0.001}
+    min={-3}
+    max={3}
+    step={0.0001}
     valueLabelDisplay="auto"
     sx={{ width: 370 }}
     onChange={(e, newValue) => {
-      const updated = [...coordinates];
-      updated[selectedPoint - 1].position[1] = newValue;
-      setCoordinates(updated);
+  const updated = [...coordinates];
+  updated[selectedPoint - 1].position[1] = newValue;
+  setCoordinates(updated);
 
-      const newSpawnPoints = [...allSetting.spawnPointsList];
-      if (!newSpawnPoints[selectedPoint - 1]) {
-        newSpawnPoints[selectedPoint - 1] = { x: 0, y: 0, z: 0 };
-      }
-      newSpawnPoints[selectedPoint - 1].y = newValue;
-      setAllSetting({ ...allSetting, spawnPointsList: newSpawnPoints });
-    }}
+  const key = `y${selectedPoint - 1}`;
+  setAllSetting(prev => ({ ...prev, [key]: newValue }));
+}}
+
   />
 </Box>
 
@@ -360,23 +368,21 @@ const applyPositions=async()=>{
   <Typography variant="body2">Z Axis</Typography>
   <Slider
     value={coordinates[selectedPoint - 1].position[2]}
-    min={-5}
-    max={5}
-    step={0.001}
+    min={-3}
+    max={3}
+    step={0.0001}
     valueLabelDisplay="auto"
     sx={{ width: 370 }}
-    onChange={(e, newValue) => {
-      const updated = [...coordinates];
-      updated[selectedPoint - 1].position[2] = newValue;
-      setCoordinates(updated);
+   onChange={(e, newValue) => {
+  const updated = [...coordinates];
+  updated[selectedPoint - 1].position[2] = newValue;
+  setCoordinates(updated);
 
-      const newSpawnPoints = [...allSetting.spawnPointsList];
-      if (!newSpawnPoints[selectedPoint - 1]) {
-        newSpawnPoints[selectedPoint - 1] = { x: 0, y: 0, z: 0 };
-      }
-      newSpawnPoints[selectedPoint - 1].z = newValue;
-      setAllSetting({ ...allSetting, spawnPointList: newSpawnPoints });
-    }}
+  const key = `z${selectedPoint - 1}`;
+  setAllSetting(prev => ({ ...prev, [key]: newValue }));
+}}
+
+
   />
 </Box>
 <button className="apply-btn" onClick={applyPositions}>Apply positions</button>
@@ -490,7 +496,7 @@ const AnimatedSphere = ({ efficiency }) => {
 
   return (
     <mesh ref={ref}>
-<sphereGeometry args={[0.15, 32, 32]} />
+<sphereGeometry args={[0.2, 32, 32]} />
       <meshStandardMaterial
         color={`rgb(0, 255, 76)`}
         // emissive={`hsl(${colorHue}, 100%, 40%)`}
@@ -500,4 +506,4 @@ const AnimatedSphere = ({ efficiency }) => {
       />
     </mesh>
   );
-};
+};  
