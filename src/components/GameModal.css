@@ -2,6 +2,7 @@
     max-height: 80vh;
     overflow-y: scroll;
     animation: openUp 2s;
+    width: 100%;
 }
 @keyframes openUp{
   0%{
@@ -12,15 +13,22 @@
       filter: opacity(1);
   }
 }
+#transition-modal-title{
+  font-weight: 800;
+  color: white;
+  border-bottom: solid 1px;
+  padding-bottom: 10px;
+}
 .games-modal-div h2{
     font-size: 13px;
-    color: var(--primary-color);
+    color: rgb(238, 238, 238);
     margin: 10px auto 5px auto;
+     text-wrap: nowrap;
 }
 .game-modal-button{
     background-color: white;
     border: solid 1px;
-    padding:5px 5px;
+    padding:5px 15px !important;
     color: rgb(46, 46, 45);
     font-weight: 900;
     transition: 0.2s;
@@ -28,26 +36,27 @@
 .games-modal-items{
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
 }
 .game-modal-main-div{
     display: grid;
     grid-template-columns: auto auto;
-    gap: 10px;
+    gap:10px 50px;
 }
 .game-modal-button{
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 12px;
+    text-wrap: nowrap;
     /* filter: drop-shadow(2px 2px 1px black); */
 }
 .game-modal-button:hover{
-    filter: drop-shadow(5px 5px 1px black);
-    transform: translateX(-3px) translateY(-3px);
+    filter: drop-shadow(2px 2px 1px black);
+    transform: translateX(-2px) translateY(-2px);
 }
 .game-modal-button:active{
     filter: drop-shadow(0px 0px 1px black);
-    transform: translateX(5px) translateY(5px);
+    transform: translateX(2px) translateY(2px);
 }
 @media (max-width: 1200px) and (min-width: 600px) {
   .game-modal-main-div {
@@ -65,6 +74,11 @@
 
   .games-modal-div h2 {
     font-size: 15px;
+  }
+}
+@media (max-width:900px){
+  .games-modal-items{
+    flex-wrap: wrap;
   }
 }
 

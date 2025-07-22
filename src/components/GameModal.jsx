@@ -14,20 +14,31 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   maxWidth: 800,
-  bgcolor: 'white',
-  border: '2px solid #000',
   borderRadius:'10px',
   boxShadow: 24,
+   backgroundImage: 'linear-gradient(to bottom right, var(--primary-color), var(--primary-color))',
   p: 4,
   maxHeight:'80vh',
   overflowY:'scroll'
 };
 
 const gamesToAvoid=['LegKicks','LegFrontMarches']
+const focusOrder = [
+  "Hand Gross Motor - with assistive volume",
+  "Nuero Rehab Activities",
+  "Hand Gross Motor - without assistive volume",
+  "Shoulder Rehab Activities",
+  "Hand Fine Motor Activities - ADL",
+  "Trunk Rehab Activities",
+  "Leg Rehab Activities",
+  "Neck Rehab Activities"
+];
+
 
 const GameModal = ({open,setOpen,handleOpen,handleClose,user,setSelectedGame,selectedDeviceId,setTriggerRefresh, triggerRefresh}) => {
         const [allGames,setAllGames]=useState([])
     
+  console.log(allGames);
   
        useEffect(() => {
             const getGamesDetails = async () => {
@@ -88,7 +99,9 @@ const GameModal = ({open,setOpen,handleOpen,handleClose,user,setSelectedGame,sel
       groups[key].push(game);
       return groups;
     }, {})
-).map(([focus, games]) => (
+)
+.sort(([a], [b]) => focusOrder.indexOf(a) - focusOrder.indexOf(b))
+.map(([focus, games]) => (
   <div key={focus} className="games-modal-div">
     <h2 className="game-modal-heading">{focus}</h2>
     <div className="games-modal-items">
