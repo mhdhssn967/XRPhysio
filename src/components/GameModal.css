@@ -1,6 +1,16 @@
 .game-modal{
     max-height: 80vh;
     overflow-y: scroll;
+    animation: openUp 2s;
+}
+@keyframes openUp{
+  0%{
+      /* transform: scale(0.1); */
+      filter: opacity(0);
+  }100%{
+    /* transform: scale(1); */
+      filter: opacity(1);
+  }
 }
 .games-modal-div h2{
     font-size: 20px;
@@ -28,7 +38,7 @@
 .game-modal-button{
     border-radius: 70px;
     cursor: pointer;
-    filter: drop-shadow(2px 2px 1px black);
+    /* filter: drop-shadow(2px 2px 1px black); */
 }
 .game-modal-button:hover{
     filter: drop-shadow(5px 5px 1px black);
