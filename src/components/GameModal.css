@@ -51,7 +51,7 @@
 }
 @media (max-width: 1200px) and (min-width: 600px) {
   .game-modal-main-div {
-    grid-template-columns: auto; /* Stack items vertically on tablets */
+    grid-template-columns: auto auto; /* Stack items vertically on tablets */
   }
 
   .game-modal-button {
