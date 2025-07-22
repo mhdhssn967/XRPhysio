@@ -7,5 +7,5 @@ align-items: center;
     display: flex;
     justify-self: center;
     margin-bottom: 50px;
-    gap: 60px;
+    gap: 10px;
 }

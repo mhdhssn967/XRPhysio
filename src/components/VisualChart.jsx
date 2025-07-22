@@ -90,7 +90,7 @@ const VisualChart = ({ enhancedPoints = [] }) => {
         <p><strong>Average Efficiency:</strong> {metrics.avgEff}%</p>
         <p><strong>Total Touches:</strong> {metrics.totalTouch}</p>
         <p><strong>Total Targets Spawned:</strong> {metrics.totalSpawn}</p>
-        <p><strong>Symmetry Score (Left vs Right):</strong> {metrics.symmetryScore}%</p>
+        {/* <p><strong>Symmetry Score (Left vs Right):</strong> {metrics.symmetryScore}%</p> */}
         <p><strong>Reach Variance:</strong> {metrics.reachVariance}</p>
       </div>
     </div>

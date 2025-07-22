@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+
 import {
   ResponsiveContainer,
   LineChart,
@@ -16,7 +17,20 @@ import { Button, Stack } from '@mui/material';
 import { analyzeGameData } from '../firebase/processData';
 import SessionStats from './SessionStats';
 
-const PatientInsight = ({focus,sessionRawData }) => {
+const PatientInsight = ({focus,sessionRawData,onStatsImageReady }) => {
+
+  const statsRef = useRef(null);
+
+  useEffect(() => {
+    if (statsRef.current) {
+      import('html2canvas').then(({ default: html2canvas }) => {
+        html2canvas(statsRef.current).then(canvas => {
+          const imgData = canvas.toDataURL('image/png');
+          if (onStatsImageReady) onStatsImageReady(imgData); // 👈 send to parent
+        });
+      });
+    }
+  }, [sessionRawData]);
 
 const [activeFocus, setActiveFocus] = useState("");
 const sorted = [...(sessionRawData || [])].sort(
@@ -105,7 +119,7 @@ useEffect(() => {
 
   return (
     <div className="patient-insight-container">
-      <SessionStats processedPhysioData={processedPhysioData} />
+      <div ref={statsRef}><SessionStats processedPhysioData={processedPhysioData} /></div>
 
       {/* ✅ Date Filters */}
       <div className="date-filters">

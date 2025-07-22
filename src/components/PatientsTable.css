@@ -16,7 +16,7 @@
 
 .patients-table th,
 .patients-table td {
-  padding: 10px 18px;
+  padding: 17px 18px;
   font-size: 14px;
   text-align: left;
 }
@@ -42,12 +42,13 @@
 
 .patients-table tbody tr {
   border-radius: 12px;
-  box-shadow: 0 5px 5px rgba(151, 150, 150, 0.1);
   transition: transform 0.1s ease;
 }
 
 .patients-table tbody tr:hover {
   background-color: var(--extra-color);
+    box-shadow: 0 5px 5px rgba(151, 150, 150, 0.1);
+
   transform: scale(1.01);
 }
 

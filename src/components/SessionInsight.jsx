@@ -3,12 +3,44 @@ import './SessionInsight.css';
 import PatientEfficiencyVisualizer from './PatientEfficiencyVisualizer';
 import VisualChart from './VisualChart';
 import ProjectionViews from './ProjectionViews';
+import PatientReport from './PatientReport';
+import html2canvas from 'html2canvas';
+import { useRef } from 'react';
 
-const SessionInsight = ({ selectedSession, sessionRawData, patientDetails, setShowSessionInsight }) => {
+const SessionInsight = ({focus, selectedSession, sessionRawData, patientDetails, setShowSessionInsight, processedPhysioData,setProcessedPhysioData,statsImage }) => {
   const [enhancedPoints, setEnhancedPoints] = useState([]);
   const [session, setSession] = useState(null);
   const [realSpawnPoints,setRealSpawnPoints]=useState([])  
   const [modelPosition,setModelPosition]=useState(true)
+  const [downloadReport,setDownloadReport]=useState(false)
+
+const visualChartRef = useRef();
+const [chartImage, setChartImage] = useState(null);
+
+  const projectionRef = useRef();
+const [projectionImage, setProjectionImage] = useState(null);
+
+useEffect(() => {
+  setTimeout(() => {
+    const target = projectionRef.current;
+    if (target) {
+      html2canvas(target).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        setProjectionImage(imgData);
+      });
+    }
+  }, 2000); // Wait for projection render
+
+  setTimeout(() => {
+  if (visualChartRef.current) {
+    html2canvas(visualChartRef.current, { useCORS: true, scale: 2 }).then(canvas => {
+      const imgData = canvas.toDataURL("image/png");
+      setChartImage(imgData);
+    });
+  }
+}, 2500);
+}, []);
+
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -74,8 +106,31 @@ const spawnPoints = realSpawnPoints;
 
   return (
     <div className='container'>
+      {downloadReport&&<div className='report-overlay'><PatientReport setDownloadReport={setDownloadReport} statsImage={statsImage} processedPhysioData={processedPhysioData} setProcessedPhysioData={setProcessedPhysioData} focus={focus} sessionRawData={sessionRawData} chartImage={chartImage} projectionImage={projectionImage}
+  patient={{
+    name: patientDetails.name,
+    condition: patientDetails.condition,
+    id: patientDetails.id || 'HMXXXX',
+    age: patientDetails.age || 'N/A',
+  }}
+  session={{
+    date: new Date(selectedSession.timestamp.seconds * 1000).toLocaleDateString(),
+    gameName: selectedSession.gameName,
+    hand: selectedSession.handSelected,
+    targetCount: selectedSession.reactionTime?.length || 0,
+    duration: `${(selectedSession.reactionTime?.length || 0) * 3} seconds`,
+    highest: `${highest.name} (${highest.efficiency}%)`,
+    lowest: `${lowest.name} (${lowest.efficiency}%)`,
+    totalPoints,
+    touchedPoints,
+    missedPoints,
+    avgEfficiency: `${avgEfficiency}%`,
+    feedback,
+  }}
+/></div>}
+      <button title='Download Report' className='rpt-main-btn' onClick={()=>setDownloadReport(!downloadReport)}> <img className='rpt-btn' src='/rpt.png' alt="" /> </button>
       <button className='sec-btn app-btn action-btn back-button' onClick={()=>setShowSessionInsight(false)}>
-        <i class="ri-arrow-left-circle-fill" style={{fontSize:'25px',color:'white'}}></i> Back to patient details
+        <i class="ri-arrow-left-circle-fill" style={{fontSize:'25px',color:'black',fontWeight:'100'}}></i> Back to patient details
       </button>
       <div className='visualizer-heading'>
         <h2><span>Patient Name:</span> {patientDetails.name || 'Patient Name'}</h2>
@@ -105,8 +160,8 @@ const spawnPoints = realSpawnPoints;
 
           <hr />
 
-          <p><strong>Highest Efficiency:</strong> {highest.name} ({highest.efficiency}%)</p>
-          <p><strong>Lowest Efficiency:</strong> {lowest.name} ({lowest.efficiency}%)</p>
+          <p><strong>Highest Efficiency:</strong> {highest?.name} ({highest?.efficiency}%)</p>
+          <p><strong>Lowest Efficiency:</strong> {lowest?.name} ({lowest?.efficiency}%)</p>
 
           <hr />
 
@@ -119,9 +174,11 @@ const spawnPoints = realSpawnPoints;
       <div className='physio-data-div'>
         <h3 style={{ marginBottom: '10px', color: '#444' }}>Performance Metrics</h3>
         <hr /> 
-        <ProjectionViews setModelPosition={setModelPosition} modelPosition={modelPosition} enhancedPoints={enhancedPoints} spawnPoints={spawnPoints}/>
+        <ProjectionViews setModelPosition={setModelPosition} modelPosition={modelPosition} enhancedPoints={enhancedPoints} spawnPoints={spawnPoints} projectionRef={projectionRef}/>
         <div>
-          <VisualChart enhancedPoints={enhancedPoints}/>
+          <div ref={visualChartRef}><VisualChart enhancedPoints={enhancedPoints}/></div>
+          
+
         </div>
       </div>
     </div>

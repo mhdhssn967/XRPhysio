@@ -72,11 +72,11 @@ useEffect(() => {
         return <Landing hospName={hospName} triggerRefresh={triggerRefresh} fetchedHospitalData={fetchedHospitalData} user={user}/>
       case 1:
         return <Patients user={user} triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh}/>
+      // case 2:
+      //   return <ManageTherapists />
+      // case 3:
+      //   return <MockVRData />
       case 2:
-        return <ManageTherapists />
-      case 3:
-        return <MockVRData />
-      case 4:
         return <GameSessions triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} user={user} />
       case 5:
         return <Settings />

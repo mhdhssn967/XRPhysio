@@ -17,6 +17,7 @@ const PatientData = ({ user, clickedPatientID, setPatientDataPage, setInsightPag
   const [sessionData,setSessionData]=useState([])
   const [focus,setFocus]=useState([])
 
+  const [sessionStatsImage, setSessionStatsImage] = useState(null);
 
   const showInsights = () => {
     setPatientDataPage(false);
@@ -111,10 +112,11 @@ const [selectedSession, setSelectedSession] = useState(null);
     session={selectedSession}
     setShowSessionInsight={setShowSessionInsight}
     selectedSession={selectedSession}
+      statsImage={sessionStatsImage}
   /></>:
       <div className="container">
         <button className="sec-btn app-btn action-btn back-button" onClick={() => setPatientDataPage(false)}>
-          <i class="ri-arrow-left-circle-fill" style={{fontSize:'25px',color:'white'}}></i> Back to all patients
+          <i class="ri-arrow-left-circle-fill" style={{fontSize:'25px',color:'black',fontWeight:'100'}}></i> Back to all patients
         </button>
   
         {patientDetails ? (
@@ -144,7 +146,7 @@ const [selectedSession, setSelectedSession] = useState(null);
       
   
             <div className="session-table-container">
-              <PatientInsight focus={focus} sessionRawData={sessionRawData} />
+              <PatientInsight onStatsImageReady={setSessionStatsImage} focus={focus} sessionRawData={sessionRawData} />
   
               <h2 style={{ margin: '2%' }}>Session History</h2>
               <table className="session-table">

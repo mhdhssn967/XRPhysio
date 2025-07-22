@@ -1,0 +1,39 @@
+.loader-rep-bg{
+    width: 300px;
+    height: 10px;
+    border: solid black 0.5px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+}
+.loader-rep-bar{
+    background-color: black;
+    height: 8px;
+    width: 298px;
+    animation: loaderbarrep 2s;
+    border-radius: 50px;
+}
+@keyframes loaderbarrep{
+    0%{
+        width: 0%;
+    }
+    30%{
+        width: 45%;
+    }
+    56%{
+        width: 48%;
+    }
+    100%{
+        width: 100%;
+    }
+}
+.rep-bg{
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    align-items: center;
+}

@@ -14,7 +14,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   maxWidth: 800,
-  bgcolor: 'var(--background-color)',
+  bgcolor: 'white',
   border: '2px solid #000',
   borderRadius:'10px',
   boxShadow: 24,
@@ -22,6 +22,8 @@ const style = {
   maxHeight:'80vh',
   overflowY:'scroll'
 };
+
+const gamesToAvoid=['LegKicks','LegFrontMarches']
 
 const GameModal = ({open,setOpen,handleOpen,handleClose,user,setSelectedGame,selectedDeviceId,setTriggerRefresh, triggerRefresh}) => {
         const [allGames,setAllGames]=useState([])
@@ -73,27 +75,37 @@ const GameModal = ({open,setOpen,handleOpen,handleClose,user,setSelectedGame,sel
             <div >   
             
                   <div className='game-modal-main-div'>
-                      {Object.entries(
-                        allGames
-                          ?.filter(game => game.gameName !== "ActivitySelection")
-                          ?.reduce((groups, game) => {
-                            const key = game.focus || "Other";
-                            if (!groups[key]) groups[key] = [];
-                            groups[key].push(game);
-                            return groups;
-                          }, {})
-                      ).map(([focus, games]) => (
-                        <div key={focus} className="games-modal-div">
-                          <h2 className='game-modal-heading'>{focus}</h2>
-                          <div className='games-modal-items'>
-                              {games.map((game, index) => (
-                                <div key={game.gameName || index} className="modal-game-item">
-                                  <button onClick={()=>handleGameStart(game)} className="game-modal-button">{game.gameDisplayName}</button>
-                                </div>
-                              ))}
-                          </div>
-                        </div>
-                      ))}
+                     {Object.entries(
+  allGames
+    ?.filter(
+      game =>
+        game.gameName !== "ActivitySelection" &&
+        !gamesToAvoid.includes(game.gameName)
+    )
+    ?.reduce((groups, game) => {
+      const key = game.focus || "Other";
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(game);
+      return groups;
+    }, {})
+).map(([focus, games]) => (
+  <div key={focus} className="games-modal-div">
+    <h2 className="game-modal-heading">{focus}</h2>
+    <div className="games-modal-items">
+      {games.map((game, index) => (
+        <div key={game.gameName || index} className="modal-game-item">
+          <button
+            onClick={() => handleGameStart(game)}
+            className="game-modal-button"
+          >
+            {game.gameDisplayName}
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+))}
+
                   </div>
                
             

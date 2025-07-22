@@ -46,7 +46,7 @@ const MetricCard = ({ label, value, icon }) => (
 const SessionStats = ({ processedPhysioData }) => {
   if (!processedPhysioData) return null;
 
-
+console.log(processedPhysioData)
   return (
     <Box sx={{ mt: 2 }}>
   <div className="stat-container">
@@ -65,7 +65,7 @@ const SessionStats = ({ processedPhysioData }) => {
           }
           icon="timer-line"
         />
-        <MetricCard
+        {processedPhysioData?.reactionConsistency!=0&&<MetricCard
           label="Reaction Consistency"
           value={
             processedPhysioData?.reactionConsistency != null
@@ -73,7 +73,7 @@ const SessionStats = ({ processedPhysioData }) => {
               : 'N/A'
           }
           icon="pulse-line"
-        />
+        />}
       </Grid>
     
   </div>
@@ -92,7 +92,7 @@ const SessionStats = ({ processedPhysioData }) => {
           }
           icon="bar-chart-line"
         />
-        <MetricCard
+       { processedPhysioData?.efficiencyConsistency != 0&&<MetricCard
           label="Efficiency Consistency"
           value={
             processedPhysioData?.efficiencyConsistency != null
@@ -100,7 +100,7 @@ const SessionStats = ({ processedPhysioData }) => {
               : 'N/A'
           }
           icon="stack-line"
-        />
+        />}
       </Grid>
   </div>
 
@@ -132,7 +132,7 @@ const SessionStats = ({ processedPhysioData }) => {
   </div>
 
   {/* 🔴 Fatigue Indicators */}
-  <div className="stat-card">
+  {(processedPhysioData?.fatigueTrend?.reactionDrop != null && processedPhysioData?.fatigueTrend?.efficiencyDrop != null)&&<div className="stat-card">
       <Typography variant="subtitle2" sx={{ mt: 2, mb: 1, fontWeight: 'bold' }}>
         Fatigue Indicators
       </Typography>
@@ -156,7 +156,7 @@ const SessionStats = ({ processedPhysioData }) => {
           icon="arrow-down-s-line"
         />
       </Grid>
-  </div>
+  </div>}
 </div>
 </Box>
 

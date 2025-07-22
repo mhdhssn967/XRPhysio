@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import ProjectionView from './ProjectionView';
 
-const AllProjections = ({ enhancedPoints,modelPosition }) => {
+const AllProjections = ({ enhancedPoints,modelPosition, projectionRef }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, data: null });
 
 
   return (
-  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+  <div ref={projectionRef} style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }} id="projection-view-container">
     <ProjectionView
       modelPosition={modelPosition}
       title="Top View"
