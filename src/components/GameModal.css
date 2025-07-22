@@ -13,14 +13,14 @@
   }
 }
 .games-modal-div h2{
-    font-size: 20px;
-    color: var(--secondary-color);
+    font-size: 13px;
+    color: var(--primary-color);
     margin: 10px auto 5px auto;
 }
 .game-modal-button{
     background-color: white;
     border: solid 1px;
-    padding:14px 20px;
+    padding:5px 5px;
     color: rgb(46, 46, 45);
     font-weight: 900;
     transition: 0.2s;
@@ -36,8 +36,9 @@
     gap: 10px;
 }
 .game-modal-button{
-    border-radius: 70px;
+    border-radius: 10px;
     cursor: pointer;
+    font-size: 12px;
     /* filter: drop-shadow(2px 2px 1px black); */
 }
 .game-modal-button:hover{
@@ -48,13 +49,13 @@
     filter: drop-shadow(0px 0px 1px black);
     transform: translateX(5px) translateY(5px);
 }
-@media (max-width: 900px) and (min-width: 600px) {
+@media (max-width: 1200px) and (min-width: 600px) {
   .game-modal-main-div {
     grid-template-columns: auto; /* Stack items vertically on tablets */
   }
 
   .game-modal-button {
-    padding: 5px 10px;
+    padding: 2px 2px;
     font-size: 12px;
   }
 
@@ -66,3 +67,5 @@
     font-size: 15px;
   }
 }
+
+
