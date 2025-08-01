@@ -59,6 +59,7 @@ export const initiateSession = async (deviceId,patientId,deviceName,patientName,
       gameStatus:'idle',
       SceneName: "ActivitySelection",
       gameName: "Home Screen",
+      language:'english',
       changeScene:false,
       startedAt: serverTimestamp()
     };
@@ -290,3 +291,22 @@ export const setApplyPositionsTrue = async (hospitalId, deviceId) => {
     console.error("❌ Error updating 'applyPositions':", error);
   }
 };
+
+// Set language
+
+export const updateLanguage = async (hospitalId, deviceId, language) => {
+  try {
+    const sessionDocRef = doc(
+      db,
+      "hospitalData",
+      hospitalId,
+      "activeDeviceSessions",
+      deviceId
+    );
+    await updateDoc(sessionDocRef, { language });
+    console.log("✅ Language updated successfully!");
+  } catch (error) {
+    console.error("❌ Error updating language:", error);
+  }
+};
+

@@ -4,6 +4,7 @@ import {
   fetchActiveSessions,
   setSceneToActivitySelection,
   updateGameStatus,
+  updateLanguage,
 } from "../firebase/helpers"; // adjust path if needed
 import "./ActiveSessions.css";
 import Swal from "sweetalert2";
@@ -12,8 +13,10 @@ import GameModal from "./GameModal";
 import GameSetting from "./GameSetting";
 import { TroubleshootSharp } from "@mui/icons-material";
 
+
 const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
   const [sessions, setSessions] = useState([]);
+  const [selectedLanguage, setSelectedLanguage] = useState("english");
 
   const [open, setOpen] = useState(false);
   const [selectedDeviceId,setSelectedDeviceId]=useState(null)
@@ -54,6 +57,16 @@ const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     setTriggerRefresh(!triggerRefresh)
   }
 
+const handleLanguageChange = async (e, hospitalId, deviceId) => {
+  const language = e.target.value;
+
+  try {
+    await updateLanguage(hospitalId, deviceId, language);
+    console.log("✅ Language updated to", language);
+  } catch (error) {
+    console.error("❌ Failed to update language:", error);
+  }
+};
 
 
   return (
@@ -112,6 +125,20 @@ const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
             ) : (
               <LoaderSmall />
             )}
+             <select
+  style={{ width: "150px" }}
+  onChange={(e) => handleLanguageChange(e, session.hospitalId, session.deviceId)}
+>
+  <option value="" disabled>
+    Select Language
+  </option>
+  <option value="english">English</option>
+  <option value="hindi">Hindi</option>
+  <option value="malayalam">Malayalam</option>
+  <option value="arabic">Arabic</option>
+</select>
+
+
   {session.SceneName!='ActivitySelection'&&<button onClick={()=>settingsOpen(session.deviceId)} className="game-setting-btn game-btn">
               <i class="ri-settings-4-fill"></i>
             </button>}
