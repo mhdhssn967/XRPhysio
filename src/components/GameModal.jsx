@@ -13,7 +13,6 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  maxWidth: 800,
   borderRadius:'10px',
   boxShadow: 24,
    backgroundImage: 'linear-gradient(to bottom right, var(--primary-color), var(--primary-color))',

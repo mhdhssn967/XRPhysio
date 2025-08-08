@@ -8,6 +8,7 @@ import Landing from './Landing';
 import AdminPage from './AdminPage';
 import GameSessions from './GameSessions';
 import MockVRData from '../components/MockVRData';
+import GoogleTranslate from '../components/GoogleTranslate';
 const adminId = import.meta.env.VITE_ADMIN_ID
 
 
@@ -91,6 +92,7 @@ useEffect(() => {
     <div className='body-section'>
       <div className='nav-section'><Navbar user={user} adminId={adminId} setPage={setPage} page={page}/></div>  
           <div className="content">
+            <GoogleTranslate/>
           {renderPage()}
         </div>
     </div>

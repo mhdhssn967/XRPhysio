@@ -125,7 +125,7 @@ const handleLanguageChange = async (e, hospitalId, deviceId) => {
             ) : (
               <LoaderSmall />
             )}
-             <select
+             {/* <select
   style={{ width: "150px" }}
   onChange={(e) => handleLanguageChange(e, session.hospitalId, session.deviceId)}
 >
@@ -137,7 +137,7 @@ const handleLanguageChange = async (e, hospitalId, deviceId) => {
   <option value="malayalam">Malayalam</option>
   <option value="arabic">Arabic</option>
   <option value="telugu">Telugu</option>
-</select>
+</select> */}
 
 
   {session.SceneName!='ActivitySelection'&&<button onClick={()=>settingsOpen(session.deviceId)} className="game-setting-btn game-btn">
