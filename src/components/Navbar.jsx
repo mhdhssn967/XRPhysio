@@ -183,6 +183,7 @@ const Navbar = ({ user, adminId, setPage, page }) => {
           </List>
         </Drawer>
       </Box>
+      
     </>
   );
 };

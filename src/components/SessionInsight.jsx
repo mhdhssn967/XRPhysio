@@ -6,13 +6,18 @@ import ProjectionViews from './ProjectionViews';
 import PatientReport from './PatientReport';
 import html2canvas from 'html2canvas';
 import { useRef } from 'react';
+import Swal from "sweetalert2";
+import { deletePatientHistory } from '../firebase/services';
 
-const SessionInsight = ({focus, selectedSession, sessionRawData, patientDetails, setShowSessionInsight, processedPhysioData,setProcessedPhysioData,statsImage }) => {
+const SessionInsight = ({user, focus, selectedSession, sessionRawData, patientDetails, setShowSessionInsight, processedPhysioData,setProcessedPhysioData,statsImage }) => {
   const [enhancedPoints, setEnhancedPoints] = useState([]);
   const [session, setSession] = useState(null);
   const [realSpawnPoints,setRealSpawnPoints]=useState([])  
   const [modelPosition,setModelPosition]=useState(true)
   const [downloadReport,setDownloadReport]=useState(false)
+console.log(selectedSession.id);
+console.log(patientDetails.id);
+
 
 const visualChartRef = useRef();
 const [chartImage, setChartImage] = useState(null);
@@ -104,6 +109,42 @@ useEffect(() => {
 
 const spawnPoints = realSpawnPoints;
 
+const handleDelete = async () => {
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "This will permanantly delete the session data.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+  });
+
+  if (result.isConfirmed) {
+    try {
+      await deletePatientHistory(user, patientDetails.id, selectedSession.id);
+
+      Swal.fire({
+        title: "Deleted!",
+        text: "The patient history has been removed.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false
+      });
+      setShowSessionInsight(false)
+
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Something went wrong while deleting the history.",
+        icon: "error",
+        confirmButtonColor: "#d33"
+      });
+      console.error("Error deleting patient history:", error);
+    }
+  }
+};
+
   return (
     <div className='container'>
       {downloadReport&&<div className='report-overlay'><PatientReport setDownloadReport={setDownloadReport} statsImage={statsImage} processedPhysioData={processedPhysioData} setProcessedPhysioData={setProcessedPhysioData} focus={focus} sessionRawData={sessionRawData} chartImage={chartImage} projectionImage={projectionImage}
@@ -129,9 +170,14 @@ const spawnPoints = realSpawnPoints;
   }}
 /></div>}
       <button title='Download Report' className='rpt-main-btn' onClick={()=>setDownloadReport(!downloadReport)}> <img className='rpt-btn' src='/rpt.png' alt="" /> </button>
-      <button className='sec-btn app-btn action-btn back-button' onClick={()=>setShowSessionInsight(false)}>
-        <i class="ri-arrow-left-circle-fill" style={{fontSize:'25px',color:'black',fontWeight:'100'}}></i> Back to patient details
-      </button>
+      <div className='top-btn'>
+        <button className='sec-btn app-btn action-btn back-button' onClick={()=>setShowSessionInsight(false)}>
+          <i class="ri-arrow-left-circle-fill" style={{fontSize:'25px',color:'black',fontWeight:'100'}}></i> Back to patient details
+        </button>
+                <button onClick={handleDelete} className='delete-patient-btn'><i style={{color:'white',fontWeight:'200'}} className="ri-file-reduce-line"></i> Remove session data</button>
+  
+      </div>
+
       <div className='visualizer-heading'>
         <h2><span>Patient Name:</span> {patientDetails.name || 'Patient Name'}</h2>
         <h2><span>Condition</span>: {patientDetails.condition || 'Condition'}</h2>

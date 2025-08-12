@@ -1,4 +1,4 @@
-import { getFirestore, doc, getDoc, getDocs, setDoc, orderBy, query, increment, updateDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, getDocs, setDoc, orderBy, query, increment, updateDoc, deleteDoc } from 'firebase/firestore';
 import { auth, db, firebaseConfig } from '../../firebaseConfig'; // adjust path as needed
 import { collection, addDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -423,3 +423,61 @@ export const getUniqueGameNames = async (hospitalId, patientId) => {
     return [];
   }
 };
+
+
+// Delete patient history
+
+/**
+ * Deletes a specific patient history (game session) from Firestore.
+ *
+ * @param {string} userId - The logged-in user's ID
+ * @param {string} patientId - The patient's document ID
+ * @param {string} sessionId - The game session document ID
+ * @returns {Promise<void>}
+ */
+export async function deletePatientHistory(userId, patientId, sessionId) {
+  try {
+    // Reference to the document
+    const docRef = doc(db, "hospitalData", userId, "patients", patientId, "gameDatas", sessionId);
+    
+    // Delete document
+    await deleteDoc(docRef);
+    console.log(`Deleted history for patient ${patientId}, session ${sessionId}`);
+  } catch (error) {
+    console.error("Error deleting patient history:", error);
+  }
+}
+
+//Delete pateint
+/**
+ * Deletes a patient document along with all its subcollections,
+ * and decrements the patient count in the hospital document.
+ *
+ * @param {string} hospitalId - The hospital document ID (usually the logged-in user ID)
+ * @param {string} patientId - The patient document ID
+ */
+export async function deletePatient(hospitalId, patientId) {
+  try {
+    const patientRef = doc(db, "hospitalData", hospitalId, "patients", patientId);
+
+    // 1. Delete all gameDatas docs for the patient
+    const gameDatasRef = collection(db, "hospitalData", hospitalId, "patients", patientId, "gameDatas");
+    const gameDatasSnap = await getDocs(gameDatasRef);
+    const deletePromises = gameDatasSnap.docs.map(docSnap => deleteDoc(docSnap.ref));
+    await Promise.all(deletePromises);
+
+    // 2. Delete patient document
+    await deleteDoc(patientRef);
+
+    // 3. Decrement patientCount by 1
+    const hospitalRef = doc(db, "hospitalData", hospitalId);
+    await updateDoc(hospitalRef, {
+      patientCount: increment(-1)
+    });
+
+    console.log(`Patient ${patientId} and all related data deleted successfully.`);
+  } catch (error) {
+    console.error("Error deleting patient:", error);
+    throw error;
+  }
+}

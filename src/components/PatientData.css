@@ -16,7 +16,28 @@
     flex-wrap: nowrap;
     white-space: nowrap;
 }
-
+.top-btn{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.delete-patient-btn{
+  background-color: rgb(245, 94, 94);
+  padding: 5px 10px;
+  border-radius: 10px;
+  border:  black solid 1px;
+  font-weight: 900;
+  color: white;
+  cursor: pointer;
+  margin-right: 50px;
+  transition: 0.1s;
+}
+.delete-patient-btn:hover{
+  transform: scale(1.05);
+}
+.delete-patient-btn:active{
+  transform: scale(0.95);
+}
 
 /* Mock data CSS */
 

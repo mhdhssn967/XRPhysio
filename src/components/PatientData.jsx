@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './PatientData.css';
-import { fetchSessionHistoryOfPatient, getSelectedPatientData, getUniqueGameNames } from '../firebase/services';
+import { deletePatient, fetchSessionHistoryOfPatient, getSelectedPatientData, getUniqueGameNames } from '../firebase/services';
 import Loader from '../helperComponents/Loader';
 import PatientInsight from './PatientInsight';
 import { Card, CardContent, Typography, Grid, useMediaQuery } from '@mui/material';
@@ -8,6 +8,8 @@ import { useTheme } from '@mui/material/styles';
 import SessionInsight from './SessionInsight';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import Swal from 'sweetalert2';
+
 dayjs.extend(customParseFormat);
 
 const PatientData = ({ user, clickedPatientID, setPatientDataPage, setInsightPage }) => {
@@ -103,11 +105,44 @@ const [selectedSession, setSelectedSession] = useState(null);
   };getFocusPoints();
  },[])
 
+ const handleDeletePatient = async () => {
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "This will permanently delete the patient and all their data.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete!"
+  });
+
+  if (result.isConfirmed) {
+    try {
+      await deletePatient(user, patientDetails.id); // user = hospitalId
+      Swal.fire({
+        title: "Deleted!",
+        text: "The patient and their data have been removed.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false
+      });
+      setPatientDataPage(false)
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Something went wrong while deleting the patient.",
+        icon: "error",
+        confirmButtonColor: "#d33"
+      });
+    }
+  }
+};
+
   return (
     
     <>
     {showSessionInsight?<>
-    <SessionInsight sessionRawData={sessionRawData}
+    <SessionInsight user={user} sessionRawData={sessionRawData}
     displaySessionData={displaySessionData} patientDetails={patientDetails}
     session={selectedSession}
     setShowSessionInsight={setShowSessionInsight}
@@ -115,9 +150,13 @@ const [selectedSession, setSelectedSession] = useState(null);
       statsImage={sessionStatsImage}
   /></>:
       <div className="container">
-        <button className="sec-btn app-btn action-btn back-button" onClick={() => setPatientDataPage(false)}>
-          <i class="ri-arrow-left-circle-fill" style={{fontSize:'25px',color:'black',fontWeight:'100'}}></i> Back to all patients
-        </button>
+       <div className='top-btn'>
+          <button className="sec-btn app-btn action-btn back-button" onClick={() => setPatientDataPage(false)}>
+            <i class="ri-arrow-left-circle-fill" style={{fontSize:'25px',color:'black',fontWeight:'100'}}></i> Back to all patients
+          </button>
+  
+          <button onClick={handleDeletePatient} className='delete-patient-btn'><i style={{color:'white',fontWeight:'200'}} className="ri-delete-bin-2-line"></i> Delete Patient</button>
+       </div>
   
         {patientDetails ? (
           <>
