@@ -16,6 +16,7 @@ const HospitalModal = ({ setDataModal, modalData, deviceIds }) => {
                     <div className='modal-body'>
                         <div>
                             <h2><i className="fa-solid fa-house-medical"></i> Hospital Name :<span>{modalData ? modalData.name : 'Loading...'}</span> </h2>
+                            <h2><i className="fa-solid fa-house-medical"></i> Hospital Name :<span>{modalData ? modalData.id : 'Loading...'}</span> </h2>
                             <h2><i className="fa-solid fa-box-open"></i> Subscription :<span>{modalData ? modalData.isSubscriptionActive ? 'Active' : 'Inactive' : 'Loading...'}</span> </h2>
                             <h2><i className="fa-solid fa-bed"></i> Total Patients :<span> {modalData ? modalData.patientCount : 'Loading...'}</span> </h2>
                         </div>
