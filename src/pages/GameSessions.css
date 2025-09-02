@@ -5,17 +5,18 @@
 .sessions-container{
     /* background-color: rgb(248, 245, 245); */
     /* border: solid 0.5px var(--primary-color); */
-    /* display: flex; */
-    /* align-items: center; */
+    display: flex;
+    align-items: center;
     width: fit-content;
     /* justify-self: left; */
     margin-top: 3%;
     /* padding: 2% 5%; */
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
+    gap: 40px;
 }
 .sessions-container img{
     width: 300px;
-    margin-left: 5%;
+    /* margin-left: 5%; */
 }
 .sessions-body{
     display: flex;

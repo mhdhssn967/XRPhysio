@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import './GameSessions.css'
-import meta from '../assets/meta.png'
 import { fetchDeviceIdsForHospitals, fetchGameDetails, getPatientDataforHospitals, initiateSession } from '../firebase/helpers'
 import ActiveSessions from '../components/ActiveSessions'
 import Swal from 'sweetalert2';
@@ -90,7 +89,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
           </div>
           <div className='game-sessions-page'>
               <div className='sessions-container'>
-                <img src={meta} alt="" />
+                <img src='/images/meta2.png' alt="" />
                 <div className='sessions-body'>
                   <h2 style={{ fontWeight: '400' }}>Assign Device to patient</h2>
                   <div style={{ display: 'flex' }}>

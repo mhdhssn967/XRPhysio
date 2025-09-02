@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
-import {
-  endActiveSession,
-  fetchActiveSessions,
+import {fetchActiveSessions,
   setSceneToActivitySelection,
   updateGameStatus,
   updateLanguage,
 } from "../firebase/helpers"; // adjust path if needed
 import "./ActiveSessions.css";
-import Swal from "sweetalert2";
 import LoaderSmall from "../helperComponents/LoaderSmall";
 import GameModal from "./GameModal";
 import GameSetting from "./GameSetting";
-import { TroubleshootSharp } from "@mui/icons-material";
 
 
 const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
   const [sessions, setSessions] = useState([]);
-  const [selectedLanguage, setSelectedLanguage] = useState("english");
 
   const [open, setOpen] = useState(false);
   const [selectedDeviceId,setSelectedDeviceId]=useState(null)
