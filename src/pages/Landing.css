@@ -108,6 +108,20 @@ font-size: 13px;
 
 text-align: center;
 }
+.end-head-dash button{
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 10px;
+  padding: 5px 5px;
+  font-weight: 800;
+  color: white;
+  cursor: pointer;;
+}
+.end-head-dash{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
 .recent-data table thead tr{
   background-color: var(--primary-color);
   color: white;

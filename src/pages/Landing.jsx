@@ -55,7 +55,10 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
             <p>Happy Moves v{version} </p>
             <h3>{hospName}</h3>
           </div>
-          <p><strong>Subscribed since :</strong> {subscribedSince}</p>
+          <div className="end-head-dash">
+                      <a href='https://drive.google.com/uc?export=download&id=1uH625WnQvv1znz8vMwzOTyUzdXBunXyD
+'><button>Download Meta Horizon</button></a>
+<p><strong>Subscribed since :</strong> {subscribedSince}</p></div>
           
            </div>
            <div className='main-cards'>
