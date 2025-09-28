@@ -22,7 +22,22 @@ border-radius: 10px;
     align-items: center;
     gap: 20px;
     overflow-y: scroll;
+    z-index: -1;
 }
+.report-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.report-container {
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for IE/Edge (legacy) */
+.report-container {
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
 .report-header{
     display: flex;
     align-items: center;
@@ -99,6 +114,7 @@ justify-content: center;
     font-size: 16px;
     cursor: pointer;
     transition: 0.1s;
+    z-index: 3;
 }
 .download-report-btn{
     background-color:rgb(36, 156, 211);
@@ -109,4 +125,32 @@ justify-content: center;
 }
 .report-btns button:active{
     transform: scale(0.9);
+}
+
+
+.report-viewport {
+  width: 1920px;
+  height: 1080px;
+
+  /* allow scrolling but hide scrollbars */
+  overflow: auto;
+
+  /* Scale it down */
+  transform: scale(0.6);
+  /* transform-origin: top left; */
+}
+
+/* Hide scrollbar for Chrome, Safari and Edge */
+.report-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.report-viewport {
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for IE/Edge (legacy) */
+.report-viewport {
+  -ms-overflow-style: none; /* IE and Edge */
 }
