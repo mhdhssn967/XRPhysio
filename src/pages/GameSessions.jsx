@@ -163,9 +163,10 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
         <button className='main-btn app-btn' onClick={handleStartSession}>Edit</button>             
                     </div>
                   </div>
-                  <ActiveSessions triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} user={user} />
                 </div>
               </div>
+                                <ActiveSessions triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} user={user} />
+
     
     
               {/* game details */}
