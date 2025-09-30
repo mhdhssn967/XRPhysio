@@ -5,11 +5,14 @@ import * as THREE from "three";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import './GameSetting.css';
 import { Box, Stack, Typography, Slider, Select, MenuItem, FormControl, InputLabel, TextField, Button } from "@mui/material";
-import { setApplyPositionsTrue, updateGameSettings } from "../firebase/helpers";
+import { fetchPatientId, fetchSpawnPointList, setApplyPositionsTrue, updateGameSettings } from "../firebase/helpers";
 import Swal from 'sweetalert2';
 
+
 const GameSetting = ({setOpenSettings,user,selectedDeviceId}) => {
-  const defaultPoints = [
+
+
+   const defaultPoints = [
   {
     name: "1",
     position: [-0.5991023778915405, 1.4097106456756592, 0.343999981880188],
@@ -35,18 +38,41 @@ const GameSetting = ({setOpenSettings,user,selectedDeviceId}) => {
     ref: React.createRef(),
   },
 ];
-const visualScale = 4;
-
-
-
-
-
-  const [model, setModel] = useState(null);
+   const [model, setModel] = useState(null);
   const [coordinates, setCoordinates] = useState(defaultPoints);
   const [modelPosition,setModelPosition]=useState(true)
   const [lines,setLines]=useState(false)
   const textRefs = useRef([]);
   const [selectedPoint,setSelectedPoint]=useState(1)
+ 
+const visualScale = 4;
+
+
+
+const [clickedDetails,setClickedDetails] = useState({})
+console.log("Clicked Details", clickedDetails);
+
+
+useEffect(() => {
+    const getPatientId = async () => {
+      if (!user || !selectedDeviceId) return;
+
+      const clickedPatientDataRef = await fetchPatientId(user, selectedDeviceId);
+      setClickedDetails(clickedPatientDataRef)
+    };
+
+    getPatientId();
+  }, [user, selectedDeviceId]);
+
+ 
+    const loadPreviousSpawnPointList = async () => {
+      const points = await fetchSpawnPointList(user, clickedDetails.patientId, clickedDetails.gameName);
+      console.log(points);
+      
+    };
+
+
+ 
 
   
   
@@ -385,13 +411,17 @@ const applyPositions=async()=>{
 
   />
 </Box>
-<button className="apply-btn" onClick={applyPositions}>Apply positions</button>
+<div className="setting-btn">
+  <button className="apply-btn" onClick={applyPositions}>Apply positions</button>
+  <button className="apply-btn previous" onClick={loadPreviousSpawnPointList}>Load previous positions</button>
+  
+</div>
 
           </Stack>
         </Box>
             </div>
             <div className="adjust-div hand-sel">
-                <div>
+                <div className="set-hand">
                   <h3 className="setting-headings">Select Hand</h3>
                   <div><button style={allSetting.handSelected=="Right"?{backgroundColor:'var(--primary-color)',color:'white'}:{backgroundColor:''}}
     onClick={() =>
@@ -414,7 +444,7 @@ const applyPositions=async()=>{
                   
                 </div>
 
-                <div>
+                <div className="set-hand">
                   <h3 className="setting-headings">Select View</h3>
                     <div><button style={allSetting.ToggleMR==false?{backgroundColor:'var(--primary-color)',color:'white'}:{backgroundColor:''}}
       onClick={() =>

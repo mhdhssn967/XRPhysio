@@ -130,14 +130,11 @@ justify-content: center;
 
 .report-viewport {
   width: 1920px;
-  height: 1080px;
-
-  /* allow scrolling but hide scrollbars */
+  height: 1280px;
   overflow: auto;
-
-  /* Scale it down */
   transform: scale(0.6);
-  /* transform-origin: top left; */
+margin-top: -120px;
+
 }
 
 /* Hide scrollbar for Chrome, Safari and Edge */

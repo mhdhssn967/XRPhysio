@@ -18,10 +18,15 @@
     display: flex;
     gap: 10px;
     padding: 10px;
+    max-width: fit-content;
+    justify-self: center;
+    margin: 120px;
 }
 .adjust-div{
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .select-points{
     display: flex;
@@ -62,6 +67,13 @@
 .setting-apply-btns{
     display: flex;
     gap: 15px;
+    justify-content: center;
+}
+.set-hand{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .apply-btn{
     background-color: var(--extra-color);
@@ -70,6 +82,9 @@
     padding: 10px;
     border: solid 1px;
     transition: 0.1s;
+}
+.previous{
+    background-color: rgb(255, 208, 78);
 }
 .apply-btn:hover{
     transform: scale(1.05);
@@ -82,4 +97,12 @@
 .hand-sel{
     display: flex;
     flex-direction: column;
+}
+.setting-btn{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+.setting-btn button{
+    width: 100%;
 }

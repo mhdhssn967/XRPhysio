@@ -31,6 +31,8 @@ useEffect(()=>{
     setLoading(false)
   }
 },[hospName , patient , session , projectionImage , chartImage , statsImage])
+
+
   
 const page1Ref = useRef();
   const page2Ref = useRef();
@@ -57,6 +59,7 @@ const page1Ref = useRef();
   };
   return (
     <> 
+    
     {!loading?<div className='report-btns'>
           <button className='download-report-btn'onClick={handleDownload}>Download</button>
           <button onClick={()=>setDownloadReport(false)}>Close</button>

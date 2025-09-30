@@ -1,4 +1,4 @@
-import { getFirestore, doc, getDoc, getDocs, setDoc, serverTimestamp, where, query, deleteDoc, updateDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, getDocs, setDoc, serverTimestamp, where, query, deleteDoc, updateDoc, orderBy } from 'firebase/firestore';
 import { auth, db, firebaseConfig } from '../../firebaseConfig'; // adjust path as needed
 import { collection, addDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -310,3 +310,84 @@ export const updateLanguage = async (hospitalId, deviceId, language) => {
   }
 };
 
+
+
+/**
+ * Fetch patientId from Firestore
+ * @param {string} userId - The hospital/user ID (first ID in the path)
+ * @param {string} deviceId - The active device session ID (second ID in the path)
+ * @returns {Promise<string|null>} - Returns patientId or null if not found
+ */
+export const fetchPatientId = async (userId, deviceId) => {
+  try {
+    // Reference to the document
+    const docRef = doc(db, "hospitalData", userId, "activeDeviceSessions", deviceId);
+
+    // Get snapshot
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      return {patientId:data.patientId,gameName:data.gameName} || null;
+    } else {
+      console.warn("No such document!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching patientId:", error);
+    throw error;
+  }
+};
+
+
+/**
+ * Fetch spawnPointList for a given patient and gameDisplayName.
+ * Looks up focus in gameDetails, then finds matching gameName in patient gameDatas.
+ *
+ * @param {string} userId - hospital/user ID
+ * @param {string} patientId - patient ID
+ * @param {string} gameDisplayName - the display name of the game
+ * @returns {Promise<Array|null>} spawnPointList or null if not found
+ */
+export const fetchSpawnPointList = async (userId, patientId, gameDisplayName) => {
+  try {
+    // Step 1: Find gameDetails entry for this displayName
+    const gameDetailsRef = collection(db, "gameDetails");
+    const gameDetailsSnap = await getDocs(query(gameDetailsRef, where("gameDisplayName", "==", gameDisplayName)));
+
+    if (gameDetailsSnap.empty) {
+      console.warn("No gameDetails found for:", gameDisplayName);
+      return null;
+    }
+
+    // There should be only one, but take the first
+    const gameDetailsData = gameDetailsSnap.docs[0].data();
+    const focusName = gameDetailsData.focus;
+
+    console.log(gameDetailsData);
+    console.log(focusName);
+    
+    
+
+    // Step 2: Now check patient gameDatas, sorted latest → oldest
+    const gameDatasRef = collection(db, "hospitalData", userId, "patients", patientId, "gameDatas");
+    const q = query(gameDatasRef, orderBy("timestamp", "desc"));
+    const querySnap = await getDocs(q);
+
+    for (const docSnap of querySnap.docs) {
+      const data = docSnap.data();
+      console.log(data.gameName,"|||",focusName);
+      
+      if (data.gameName === focusName) {
+        return data.spawnPointList || [];
+      }
+    }
+
+    // If not found
+    console.warn("No matching gameDatas found for:", focusName);
+    return null;
+  } catch (error) {
+    console.error("Error fetching spawnPointList:", error);
+    throw error;
+  }
+};

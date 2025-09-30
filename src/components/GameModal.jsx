@@ -37,7 +37,7 @@ const focusOrder = [
 const GameModal = ({open,setOpen,handleOpen,handleClose,user,setSelectedGame,selectedDeviceId,setTriggerRefresh, triggerRefresh}) => {
         const [allGames,setAllGames]=useState([])
     
-  console.log(allGames);
+  // console.log(allGames);
   
        useEffect(() => {
             const getGamesDetails = async () => {
@@ -47,6 +47,8 @@ const GameModal = ({open,setOpen,handleOpen,handleClose,user,setSelectedGame,sel
         }, [])
   
   const handleGameStart=async(game)=>{
+    console.log(game);
+    
     console.log(user,selectedDeviceId,game.gameName,game.gameDisplayName);
     
     if(user,selectedDeviceId,game.gameName,game.gameDisplayName){
