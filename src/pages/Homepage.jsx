@@ -9,6 +9,7 @@ import AdminPage from './AdminPage';
 import GameSessions from './GameSessions';
 import MockVRData from '../components/MockVRData';
 import GoogleTranslate from '../components/GoogleTranslate';
+import Schedules from './Schedules';
 const adminId = import.meta.env.VITE_ADMIN_ID
 
 
@@ -73,11 +74,11 @@ useEffect(() => {
         return <Landing hospName={hospName} triggerRefresh={triggerRefresh} fetchedHospitalData={fetchedHospitalData} user={user}/>
       case 1:
         return <Patients user={user} triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh}/>
-      // case 2:
-      //   return <ManageTherapists />
+      case 2:
+        return <Schedules user={user} triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh}/>
       // case 3:
       //   return <MockVRData />
-      case 2:
+      case 3:
         return <GameSessions triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} user={user} />
       case 5:
         return <Settings />

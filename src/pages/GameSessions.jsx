@@ -14,9 +14,7 @@ import { div, log } from 'three/tsl'
 const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     const [deviceIds, setDeviceIds] = useState([])
     const [allPatients, setAllPatients] = useState([])
-    const [loading,setLoading]=useState(true)
-    console.log(loading);
-    
+    const [loading,setLoading]=useState(true)    
     const [selected, setSelected] = useState({ activeDevice: '', activePatient: '', activeDeviceName: '', activePatientName: ''})
     const [allGames,setAllGames]=useState([])
 
@@ -104,7 +102,6 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
             onChange={(e) => {
               const selectedValue = e.target.value;
               const selectedIndex = deviceIds.indexOf(selectedValue)+1;
-              console.log(selectedIndex);
               
               setSelected({
                 ...selected,
@@ -171,7 +168,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     
               {/* game details */}
               
-      <div className="game-details-page">   
+      {/* <div className="game-details-page">   
                 <h1 style={{fontWeight:'900',marginBottom:'20px'}}>Therapy Games by Focus Area</h1>
 
       <div className='game-dets-grid'>
@@ -200,7 +197,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
    
 
 
-    </div>
+    </div> */}
           </div>
         </div>
     

@@ -61,7 +61,6 @@ const getStandingBackgroundImage = () => {
   if (plane === 'side') return sideViewStand;
   return null;
 };
-console.log(modelPosition);
 
 
 

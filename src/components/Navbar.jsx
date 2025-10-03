@@ -12,17 +12,17 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ListItemText from '@mui/material/ListItemText';
 
 
-import home from '../assets/home.svg';
-import examination from '../assets/examination.svg';
+import home from '../assets/home.png';
+import examination from '../assets/examination.png';
 import medicalteam from '../assets/medical-team.svg';
 import vr2 from '../assets/vr-glasses(1).svg';
-import vr from '../assets/vr-glasses.svg';
+import vr from '../assets/vr-glasses.png';
 import settings from '../assets/settings.svg';
-import logoutbtn from '../assets/logoutbtn.svg';
+import logoutbtn from '../assets/logoutbtn.png';
 import adminImg from '../assets/administrator-developer-icon.svg';
 import { logout } from '../firebase/auth';
 import logo from '../assets/OQ.png'
-
+import shc from '../assets/shc.png'
 
 const drawerWidth = 240;
 
@@ -62,7 +62,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const menuItems = [
   { title: 'Home', img: home },
   { title: 'Manage Patients', img: examination },
-  // { title: 'Manage Therapists', img: medicalteam },
+  { title: 'Therapy Schedules', img: shc },
   // { title: 'Manage Devices', img: vr2 },
   { title: 'Game Sessions', img: vr },
   // { title: 'Settings', img: settings },
@@ -114,8 +114,9 @@ const Navbar = ({ user, adminId, setPage, page }) => {
                         backgroundColor: page === index ? 'black' : 'transparent',
                         padding: '4px',
                         borderRadius: '8px',
-                        width: 24,
-                        height: 24,
+                        width: 30,
+                        height: 30,
+                        margin:'5px'
                       },
                     }}
                   >

@@ -46,7 +46,6 @@ const MetricCard = ({ label, value, icon }) => (
 const SessionStats = ({ processedPhysioData }) => {
   if (!processedPhysioData) return null;
 
-console.log(processedPhysioData)
   return (
     <Box sx={{ mt: 2 }}>
   <div className="stat-container">

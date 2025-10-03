@@ -13,7 +13,6 @@ const AdminPage = ({user,triggerRefresh,setTriggerRefresh}) => {
   const [registerHospital, setRegisterHospital] = useState(false);
   const authRequest = useAccessRequestStatus(); // 👈 Real-time state
 
-  console.log(authRequest);
 
 
   return (

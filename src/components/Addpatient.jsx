@@ -11,7 +11,6 @@ const Addpatient = ({addPatients, setAddPatients, user, triggerRefresh, setTrigg
     startingStage: '',
     therapist: ''
   });
-  console.log(patient);
   
 
   const handleChange = (e) => {

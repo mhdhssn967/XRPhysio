@@ -19,7 +19,6 @@ const [loading,setLoading]=useState(true)
 useEffect(()=>{
   const getHospName=async()=>{
     const userRef=await getUserId()
-    console.log(userRef);
     
   const hospNameRef=await fetchHospitalName(userRef)
   setHospName(hospNameRef)

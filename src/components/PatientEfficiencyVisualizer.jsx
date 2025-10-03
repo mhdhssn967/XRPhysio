@@ -82,7 +82,6 @@ else{
     
 
     const spawnPoints = latestSession.spawnPointsList || [];
-    // console.log(spawnPoints);
     
     const hitCounts = latestSession.targetHitCount || [];
     const totalCounts = latestSession.targetTotalCount || [];

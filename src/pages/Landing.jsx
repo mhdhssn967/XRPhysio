@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import man from '../assets/man.png';
 import './Landing.css'
 import gamepad from '../assets/gamepad.png'
-import examination from '../assets/examination.png'
+import examination from '../assets/examination1.png'
 import vrglass from '../assets/virtual-reality-glasses.png'
 import vrr from '../assets/vrr.png'
 import { fetchActiveSessions, getPatientDataforHospitals } from '../firebase/helpers';
@@ -12,15 +12,12 @@ import LoaderComponent from './LoaderComponent';
 const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
   const subscribedSince = fetchedHospitalData?.createdAt?.toDate().toLocaleDateString();
 
-  console.log(fetchedHospitalData);
   
   const [sessions, setSessions] = useState([]);
   const [latestSessions,setLatestSessions]=useState([])
   const [loading,setLoading]=useState(true)
   const [patients,setPatients]=useState([])
-  console.log(patients);
-  
-  console.log(latestSessions);
+
   
 
 

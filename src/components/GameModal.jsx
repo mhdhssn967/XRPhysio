@@ -47,12 +47,10 @@ const GameModal = ({open,setOpen,handleOpen,handleClose,user,setSelectedGame,sel
         }, [])
   
   const handleGameStart=async(game)=>{
-    console.log(game);
     
-    console.log(user,selectedDeviceId,game.gameName,game.gameDisplayName);
     
     if(user,selectedDeviceId,game.gameName,game.gameDisplayName){
-    await updateSessionGameInfo(user,selectedDeviceId,game.gameDisplayName,game.gameName)
+    await updateSessionGameInfo(user,selectedDeviceId,game.gameDisplayName,game.gameName, game.gameSetName)
     setTriggerRefresh(!triggerRefresh)
   handleClose()
   }

@@ -276,7 +276,6 @@ export const fetchHospitalDataForAll = async (user) => {
   
     const db = getFirestore();
     const hospitalDocRef = doc(db, 'hospitalData', user); // direct reference to the doc
-  console.log(hospitalDocRef);
   
     try {
       const docSnap = await getDoc(hospitalDocRef);

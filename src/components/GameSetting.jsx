@@ -44,13 +44,13 @@ const GameSetting = ({setOpenSettings,user,selectedDeviceId}) => {
   const [lines,setLines]=useState(false)
   const textRefs = useRef([]);
   const [selectedPoint,setSelectedPoint]=useState(1)
+
  
 const visualScale = 4;
 
 
 
 const [clickedDetails,setClickedDetails] = useState({})
-console.log("Clicked Details", clickedDetails);
 
 
 useEffect(() => {
@@ -65,11 +65,29 @@ useEffect(() => {
   }, [user, selectedDeviceId]);
 
  
-    const loadPreviousSpawnPointList = async () => {
-      const points = await fetchSpawnPointList(user, clickedDetails.patientId, clickedDetails.gameName);
-      console.log(points);
-      
-    };
+   const loadPreviousSpawnPointList = async () => {
+  try {
+    const points = await fetchSpawnPointList(
+      user,
+      clickedDetails.patientId,
+      clickedDetails.gameSetName
+    );
+
+    if (points && Array.isArray(points)) {
+      const mappedPoints = points.map((p, index) => ({
+        name: (index + 1).toString(),
+        position: [p.x, p.y, p.z],
+        efficiency: 0,
+        ref: React.createRef(),
+      }));
+
+      setCoordinates(mappedPoints);
+    }
+  } catch (error) {
+    console.error("Error loading points:", error);
+  }
+};
+
 
 
  
@@ -221,9 +239,23 @@ const UpdateAnimation = () => {
   return null;
 };
 
-const applyPositions=async()=>{
-    await setApplyPositionsTrue(user,selectedDeviceId)
-}
+const applyPositions = async () => {
+  // First run your API call
+  await setApplyPositionsTrue(user, selectedDeviceId);
+
+  // Then update your state
+  setAllSetting((prev) => {
+    let updated = { ...prev };
+
+    coordinates.forEach((point, index) => {
+      updated[`x${index}`] = point.position[0];
+      updated[`y${index}`] = point.position[1];
+      updated[`z${index}`] = point.position[2];
+    });
+
+    return updated;
+  });
+};
 
   return (
     <div className="setting-container">

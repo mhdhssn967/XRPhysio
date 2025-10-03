@@ -112,7 +112,7 @@ export const endActiveSession = async (sessionId) => {
 
 // update game
 
-export const updateSessionGameInfo = async (hospitalId, deviceId, gameName, sceneName) => {
+export const updateSessionGameInfo = async (hospitalId, deviceId, gameName, sceneName, gameSetName) => {
   try {
     if (!hospitalId || !deviceId || !gameName || !sceneName) {
       throw new Error("Missing required parameters to update session.");
@@ -124,6 +124,7 @@ export const updateSessionGameInfo = async (hospitalId, deviceId, gameName, scen
       gameName: gameName,
       SceneName: sceneName,
       changeScene:true,
+      gameSetName:gameSetName,
       startedAt: serverTimestamp(),
     });
 
@@ -328,7 +329,8 @@ export const fetchPatientId = async (userId, deviceId) => {
 
     if (docSnap.exists()) {
       const data = docSnap.data();
-      return {patientId:data.patientId,gameName:data.gameName} || null;
+      
+      return {patientId:data.patientId,gameSetName:data.gameSetName} || null;
     } else {
       console.warn("No such document!");
       return null;
@@ -353,7 +355,7 @@ export const fetchSpawnPointList = async (userId, patientId, gameDisplayName) =>
   try {
     // Step 1: Find gameDetails entry for this displayName
     const gameDetailsRef = collection(db, "gameDetails");
-    const gameDetailsSnap = await getDocs(query(gameDetailsRef, where("gameDisplayName", "==", gameDisplayName)));
+    const gameDetailsSnap = await getDocs(query(gameDetailsRef, where("gameSetName", "==", gameDisplayName)));
 
     if (gameDetailsSnap.empty) {
       console.warn("No gameDetails found for:", gameDisplayName);
@@ -362,12 +364,8 @@ export const fetchSpawnPointList = async (userId, patientId, gameDisplayName) =>
 
     // There should be only one, but take the first
     const gameDetailsData = gameDetailsSnap.docs[0].data();
-    const focusName = gameDetailsData.focus;
+    const focusName = gameDetailsData.gameSetName;
 
-    console.log(gameDetailsData);
-    console.log(focusName);
-    
-    
 
     // Step 2: Now check patient gameDatas, sorted latest → oldest
     const gameDatasRef = collection(db, "hospitalData", userId, "patients", patientId, "gameDatas");
@@ -376,10 +374,9 @@ export const fetchSpawnPointList = async (userId, patientId, gameDisplayName) =>
 
     for (const docSnap of querySnap.docs) {
       const data = docSnap.data();
-      console.log(data.gameName,"|||",focusName);
       
       if (data.gameName === focusName) {
-        return data.spawnPointList || [];
+        return data.spawnPointsList || [];
       }
     }
 

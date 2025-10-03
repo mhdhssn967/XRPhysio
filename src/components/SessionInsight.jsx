@@ -15,8 +15,7 @@ const SessionInsight = ({user, focus, selectedSession, sessionRawData, patientDe
   const [realSpawnPoints,setRealSpawnPoints]=useState([])  
   const [modelPosition,setModelPosition]=useState(true)
   const [downloadReport,setDownloadReport]=useState(false)
-console.log(selectedSession.id);
-console.log(patientDetails.id);
+
 
 
 const visualChartRef = useRef();
