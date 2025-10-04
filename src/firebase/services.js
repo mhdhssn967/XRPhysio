@@ -480,3 +480,32 @@ export async function deletePatient(hospitalId, patientId) {
     throw error;
   }
 }
+
+
+// patient game no count
+export const getTotalGamesPlayed = async (userId) => {
+  try {
+    const patientsRef = collection(db, `hospitalData/${userId}/patients`);
+    const patientsSnapshot = await getDocs(patientsRef);
+
+    let totalGames = 0;
+
+    // Loop through each patient
+    for (const patientDoc of patientsSnapshot.docs) {
+      const patientId = patientDoc.id;
+      const gameDatasRef = collection(
+        db,
+        `hospitalData/${userId}/patients/${patientId}/gameDatas`
+      );
+      const gameDatasSnapshot = await getDocs(gameDatasRef);
+      totalGames += gameDatasSnapshot.size; // add number of documents in gameDatas
+    }
+
+    console.log("Total games played by all patients:", totalGames);
+    return totalGames;
+
+  } catch (error) {
+    console.error("Error getting total games played:", error);
+    return 0;
+  }
+};

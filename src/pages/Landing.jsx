@@ -8,6 +8,8 @@ import vrr from '../assets/vrr.png'
 import { fetchActiveSessions, getPatientDataforHospitals } from '../firebase/helpers';
 import { fetchLatestGameSessions } from '../firebase/processData';
 import LoaderComponent from './LoaderComponent';
+import { getTotalGamesPlayed } from '../firebase/services';
+
 
 const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
   const subscribedSince = fetchedHospitalData?.createdAt?.toDate().toLocaleDateString();
@@ -17,7 +19,7 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
   const [latestSessions,setLatestSessions]=useState([])
   const [loading,setLoading]=useState(true)
   const [patients,setPatients]=useState([])
-
+  const [totalGamesPlayed,setTotalGamesPlayed]=useState(0)
   
 
 
@@ -31,6 +33,8 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
           setLatestSessions(recentDataRef)
           const patientsRef=await getPatientDataforHospitals(user)
           setPatients(patientsRef)
+          const playedGamesRef= await getTotalGamesPlayed(user)
+          setTotalGamesPlayed(playedGamesRef)
           if(fetchedHospitalData && sessions && patients){
           setLoading(false)
           }
@@ -70,7 +74,7 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
               </div>
               <div className='main-card mc-card'>
                 <img src={gamepad} alt="" />
-                  <h2><strong>Total Games Played :</strong> {fetchedHospitalData?.totalGamePlayCount}</h2>
+                  <h2><strong>Total Games Played :</strong> {totalGamesPlayed}</h2>
               </div>
             </div>
             <div className='recent-data mc-card'>
