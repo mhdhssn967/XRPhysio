@@ -1,7 +1,7 @@
 .threeD-container-setting{
     display: flex;
     flex-direction: column;
-    height: 75vh;
+    height: 90vh;
     width: 450px;
     border-radius: 12px;
     background-color: aliceblue;
@@ -21,6 +21,8 @@
     max-width: fit-content;
     justify-self: center;
     margin: 120px;
+    transform: scale(0.8);
+    overflow-y: scroll;
 }
 .adjust-div{
     display: flex;
@@ -96,7 +98,7 @@
 }
 .hand-sel{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 .setting-btn{
     display: flex;
