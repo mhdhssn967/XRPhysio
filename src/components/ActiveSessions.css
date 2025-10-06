@@ -14,6 +14,8 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    flex-wrap: nowrap;
+    align-items: center;
   }
   .session-info{
     display:flex ;
@@ -114,6 +116,14 @@
   animation: settingOpen 2s;
  
 }
+.lang{
+  width: 120px;
+}
+.controls{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 @keyframes settingOpen {
   0%{
     filter: opacity(0);
@@ -126,7 +136,31 @@
   }
 }
 
+@media (max-width:1200px){
+  .active-session{
+    width: 95%;
+  }
+  .session-row{
+    gap: 5px;
+  }
+  .session-info p{
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .session-info{
+    gap: 15px;
+  }
 
+  .game-name-btn{
+    width: 120px;
+  }
+  .session-controls{
+    width: 400px;
+  }
+  .lang{
+    width: 75px;
+  }
+}
 
 
   

@@ -121,7 +121,7 @@ const handleLanguageChange = async (e, hospitalId, deviceId) => {
               <LoaderSmall />
             )}
              <select
-  style={{ width: "150px" }}
+  className="lang"
   onChange={(e) => handleLanguageChange(e, session.hospitalId, session.deviceId)}
 >
   <option value="" disabled>

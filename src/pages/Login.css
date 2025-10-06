@@ -82,4 +82,29 @@
     height: 100vh;
     /* max-width: 500px; */
   }
-  
+  @media (max-width:1200px){
+    .login-logo{
+      width: 50px;
+      margin-bottom: 10px;
+    }
+    .login-left h2{
+      font-size: 30px;
+    }
+    .login-left p{
+      font-size: 8px;
+    }
+    .login-form input {
+    padding: 0.5rem;
+    width: 250px;
+  }
+  .login-left {
+    padding: 10px;
+  }
+  .login-form{
+    gap: 5px;
+  }
+  .login-form button{
+    padding: 5px;
+    width: 265px;
+  }
+  }

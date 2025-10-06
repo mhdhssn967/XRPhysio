@@ -45,10 +45,24 @@
     height:500px;
   }
   .setting-container{
-    height: 800px;
+    height: 500px;
     flex-direction: column;
     overflow-y: scroll;
   }
+}
+@media (max-width: 1200px) {
+    .select-points{
+        gap: 1px;
+    }
+    .threeD-container-setting{
+        height: 600px;
+    }
+    .setting-container{
+        max-width: 100%;
+        height: 100vh;
+        overflow-y: scroll;
+        margin-left: 150px;
+    }
 }
 .setting-headings{
     margin: 15px auto 5px auto;

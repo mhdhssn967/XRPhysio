@@ -51,7 +51,20 @@ const ScheduleList = ({ userId,triggerRefresh, setTriggerRefresh }) => {
   }, [triggerRefresh]);
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 3, borderRadius: 1, boxShadow: 0,maxWidth:1400,margin: "20px 10px" }}>
+<TableContainer
+  component={Paper}
+  sx={{
+    mt: 3,
+    borderRadius: 1,
+    boxShadow: 0,
+    margin: "10px",
+    width: {
+      xs: "85vw",  // mobile screens
+      md: "75vw",  // tablets/laptops/desktops
+    },
+  }}
+>
+
       
       <Table>
         <TableHead sx={{ backgroundColor: "var(--primary-color)" }}>

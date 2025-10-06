@@ -105,4 +105,18 @@
     color: white;
     background-color: var(--primary-color);
 }
-  
+
+@media (max-width:1200px){
+    .sessions-container img{
+        width: 150px !important;
+        /* display: none; */
+    }
+    .sessions-container{
+        display: flex;
+        flex-direction: column;
+    }
+    .sessions-body h2{
+        font-size: 18px;
+        font-weight: 800 !important;
+    }
+}

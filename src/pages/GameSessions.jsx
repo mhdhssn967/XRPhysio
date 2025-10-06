@@ -18,7 +18,7 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
     const [selected, setSelected] = useState({ activeDevice: '', activePatient: '', activeDeviceName: '', activePatientName: ''})
     const [allGames,setAllGames]=useState([])
 
-    
+    console.log(allGames)
 
     useEffect(() => {
         const getDeviceIds = async (user) => {
