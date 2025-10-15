@@ -470,6 +470,14 @@ const applyPositions = async () => {
   >
     Left
   </button>
+
+  <button style={allSetting.handSelected=="Both"?{backgroundColor:'var(--primary-color)',color:'white'}:{backgroundColor:''}}
+    onClick={() =>
+      setAllSetting((prev) => ({ ...prev, handSelected: "Both" }))
+    }
+  >
+    Both
+  </button>
                   </div>
 
                   {/* MR Toggle*/}
