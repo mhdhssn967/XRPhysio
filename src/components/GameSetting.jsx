@@ -5,9 +5,8 @@ import * as THREE from "three";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import './GameSetting.css';
 import { Box, Stack, Typography, Slider, Select, MenuItem, FormControl, InputLabel, TextField, Button } from "@mui/material";
-import { fetchPatientId, fetchSpawnPointList, setApplyPositionsTrue, updateGameSettings } from "../firebase/helpers";
+import { fetchGameName, fetchPatientId, fetchSpawnPointList, setApplyPositionsTrue, updateGameSettings } from "../firebase/helpers";
 import Swal from 'sweetalert2';
-
 
 const GameSetting = ({setOpenSettings,user,selectedDeviceId}) => {
 
@@ -44,6 +43,11 @@ const GameSetting = ({setOpenSettings,user,selectedDeviceId}) => {
   const [lines,setLines]=useState(false)
   const textRefs = useRef([]);
   const [selectedPoint,setSelectedPoint]=useState(1)
+  const [notAssistiveVolume, setNotAssistiveVolume] = useState(false);
+  console.log(notAssistiveVolume);
+  
+
+  const handGamesList = ["Butterflys", "Blossom", "Balloon Burst"];
 
  
 const visualScale = 4;
@@ -115,12 +119,6 @@ const [allSetting, setAllSetting] = useState({
   spawningGap:8
 });
 
-
-
-
-  
-  
-
   const [mixer, setMixer] = useState(null);
 
 
@@ -180,7 +178,24 @@ else{
   , [modelPosition]);
 
 
+useEffect(() => {
+    const checkGameName = async () => {
+      try {
+        const gameName = await fetchGameName(user, selectedDeviceId);
+        console.log("Fetched game name:", gameName);
 
+        if (gameName && handGamesList.includes(gameName)) {
+          setNotAssistiveVolume(true);
+        } else {
+          setNotAssistiveVolume(false);
+        }
+      } catch (error) {
+        console.error("Error checking game name:", error);
+      }
+    };
+
+    checkGameName();
+  }, [user, selectedDeviceId]);
 
   const LabelsFacingCamera = () => {
     const { camera } = useThree();
@@ -471,13 +486,13 @@ const applyPositions = async () => {
     Left
   </button>
 
-  <button style={allSetting.handSelected=="Both"?{backgroundColor:'var(--primary-color)',color:'white'}:{backgroundColor:''}}
+  {notAssistiveVolume&&<button style={allSetting.handSelected=="Both"?{backgroundColor:'var(--primary-color)',color:'white'}:{backgroundColor:''}}
     onClick={() =>
       setAllSetting((prev) => ({ ...prev, handSelected: "Both" }))
     }
   >
     Both
-  </button>
+  </button>}
                   </div>
 
                   {/* MR Toggle*/}

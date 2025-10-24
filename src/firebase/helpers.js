@@ -388,3 +388,26 @@ export const fetchSpawnPointList = async (userId, patientId, gameDisplayName) =>
     throw error;
   }
 };
+
+
+export const fetchGameName = async (userId, deviceId) => {
+  try {
+    // Reference to the document
+    const docRef = doc(db, "hospitalData", userId, "activeDeviceSessions", deviceId);
+
+    // Get snapshot
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      return data.gameName || null;
+    } else {
+      console.warn("No such document!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching gameName:", error);
+    throw error;
+  }
+};
+
