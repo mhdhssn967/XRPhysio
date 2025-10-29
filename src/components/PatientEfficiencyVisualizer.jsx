@@ -94,8 +94,8 @@ else{
       return {
         name: `Point ${idx + 1}`,
         position: [
-      point.x * SCALE_FACTOR,
-      point.y * SCALE_FACTOR,
+      -point.x * SCALE_FACTOR,
+      point.y * SCALE_FACTOR+0.5,
       point.z * SCALE_FACTOR,
     ],
         touchCount,

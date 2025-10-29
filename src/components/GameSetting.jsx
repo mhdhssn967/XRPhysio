@@ -93,12 +93,6 @@ useEffect(() => {
 };
 
 
-
- 
-
-  
-  
-
 const [allSetting, setAllSetting] = useState({
   handSelected: "Right",
   totalRepCount: 2, 
