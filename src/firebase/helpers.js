@@ -61,7 +61,8 @@ export const initiateSession = async (deviceId,patientId,deviceName,patientName,
       gameName: "Home Screen",
       language:'english',
       changeScene:false,
-      startedAt: serverTimestamp()
+      startedAt: serverTimestamp(),
+      serverIP
     };
 
     await setDoc(doc(db,'hospitalData',hospitalId, "activeDeviceSessions", deviceId), sessionData);
