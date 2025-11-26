@@ -62,7 +62,7 @@ export const initiateSession = async (deviceId,patientId,deviceName,patientName,
       language:'english',
       changeScene:false,
       startedAt: serverTimestamp(),
-      serverIP:""
+      // serverIP:""
     };
 
     await setDoc(doc(db,'hospitalData',hospitalId, "activeDeviceSessions", deviceId), sessionData);

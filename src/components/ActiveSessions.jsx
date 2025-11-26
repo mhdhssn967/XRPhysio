@@ -28,6 +28,7 @@ const ActiveSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
   useEffect(() => {
     const getSessions = async () => {
       const activeSessions = await fetchActiveSessions(user);
+      console.log(activeSessions)
       setSessions(activeSessions);
     };
 
@@ -134,6 +135,7 @@ const handleLanguageChange = async (e, hospitalId, deviceId) => {
   <option value="telugu">Telugu</option>
 </select>
 
+<p>{session.serverIP}</p>
 
   {session.SceneName!='ActivitySelection'&&<button onClick={()=>settingsOpen(session.deviceId)} className="game-setting-btn game-btn">
               <i class="ri-settings-4-fill"></i>

@@ -22,6 +22,7 @@ import logoutbtn from '../assets/logoutbtn.png';
 import adminImg from '../assets/administrator-developer-icon.svg';
 import { logout } from '../firebase/auth';
 import logo from '../assets/OQ.png'
+import cast from '../assets/cast.png'
 import shc from '../assets/shc.png'
 
 const drawerWidth = 240;
@@ -66,6 +67,7 @@ const menuItems = [
   // { title: 'Manage Devices', img: vr2 },
   { title: 'Game Sessions', img: vr },
   // { title: 'Settings', img: settings },
+  {title:'Cast',img:cast},
   { title: 'Logout', img: logoutbtn, action: logout },
 ];
 

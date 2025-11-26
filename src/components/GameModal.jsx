@@ -42,6 +42,7 @@ const GameModal = ({open,setOpen,handleOpen,handleClose,user,setSelectedGame,sel
        useEffect(() => {
             const getGamesDetails = async () => {
                 const gamesRef=await fetchGameDetails()
+
                 setAllGames(gamesRef)
             }; getGamesDetails(user);
         }, [])

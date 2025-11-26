@@ -24,7 +24,6 @@ const Landing = ({hospName, fetchedHospitalData, user, triggerRefresh}) => {
 
 
     
-  
     useEffect(() => {
       const getSessions = async () => {        
           const activeSessions = await fetchActiveSessions(user);   

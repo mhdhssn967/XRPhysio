@@ -10,6 +10,7 @@ import GameSessions from './GameSessions';
 import MockVRData from '../components/MockVRData';
 import GoogleTranslate from '../components/GoogleTranslate';
 import Schedules from './Schedules';
+import Casting from './Casting';
 const adminId = import.meta.env.VITE_ADMIN_ID
 
 
@@ -80,9 +81,9 @@ useEffect(() => {
       //   return <MockVRData />
       case 3:
         return <GameSessions triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} user={user} />
+      case 4:
+        return <Casting />
       case 5:
-        return <Settings />
-      case 6:
         return <AdminPage user={user} triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh}/>
       default:
         return <Landing hospName={hospName}/>

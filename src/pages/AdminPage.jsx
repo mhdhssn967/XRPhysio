@@ -14,7 +14,6 @@ const AdminPage = ({user,triggerRefresh,setTriggerRefresh}) => {
   const authRequest = useAccessRequestStatus(); // 👈 Real-time state
 
 
-
   return (
     <div className='admin-page'>
         <div className='container-head'>
