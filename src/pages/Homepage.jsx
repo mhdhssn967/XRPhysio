@@ -83,7 +83,7 @@ useEffect(() => {
         return <GameSessions triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} user={user} />
       case 4:
         return <Casting />
-      case 5:
+      case 6:
         return <AdminPage user={user} triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh}/>
       default:
         return <Landing hospName={hospName}/>

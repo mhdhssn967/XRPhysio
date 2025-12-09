@@ -164,40 +164,6 @@ const GameSessions = ({ user, triggerRefresh, setTriggerRefresh }) => {
               </div>
                                 <ActiveSessions triggerRefresh={triggerRefresh} setTriggerRefresh={setTriggerRefresh} user={user} />
 
-    
-    
-              {/* game details */}
-              
-      {/* <div className="game-details-page">   
-                <h1 style={{fontWeight:'900',marginBottom:'20px'}}>Therapy Games by Focus Area</h1>
-
-      <div className='game-dets-grid'>
-          {Object.entries(
-            allGames
-              ?.filter(game => game.gameName !== "ActivitySelection")
-              ?.reduce((groups, game) => {
-                const key = game.focus || "Other";
-                if (!groups[key]) groups[key] = [];
-                groups[key].push(game);
-                return groups;
-              }, {})
-          ).map(([focus, games]) => (
-            <div key={focus} className="focus-group">
-              <h2>{focus}</h2>
-              <div className='game-item-div'>
-                  {games.map((game, index) => (
-                    <div key={game.gameName || index} className="game-item">
-                      <p>{game.gameDisplayName}</p>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          ))}
-      </div>
-   
-
-
-    </div> */}
           </div>
         </div>
     
