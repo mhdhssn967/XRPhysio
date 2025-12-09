@@ -235,33 +235,20 @@ export const fetchGameDetails = async (firebaseApp) => {
   const db = getFirestore(firebaseApp);
   const gameCollectionRef = collection(db, "gameDetails");
 
-  // Games you want to exclude
-  const excludedGames = [
-    "MemoryTilesCognition",
-    "ObjectRecall",
-    "QuickMath",
-    "SequenceObjectsRecall",
-    "ATMPinRecall"
-  ];
-
   try {
     const snapshot = await getDocs(gameCollectionRef);
+    const games = snapshot.docs.map(doc => ({
+      id: doc.id, // Firestore document ID
+      ...doc.data()
+    }));
 
-    const games = snapshot.docs
-      .map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }))
-      .filter(game => !excludedGames.includes(game.gameName));  // ⛔ remove unwanted games
-
-    console.log("✅ Fetched filtered games:", games);
+    console.log("✅ Fetched games:", games);
     return games;
   } catch (error) {
     console.error("❌ Error fetching game details:", error);
     return [];
   }
 };
-
 
 /**
  * Updates the specified activeDeviceSession document by merging new data
