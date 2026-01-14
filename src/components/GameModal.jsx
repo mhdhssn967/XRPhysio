@@ -21,7 +21,7 @@ const style = {
   overflowY:'scroll'
 };
 
-const gamesToAvoid=['LegKicks','LegFrontMarches']
+const gamesToAvoid=['LegKicks','LegFrontMarches','PosRecall','SequenceObjectsRecall','ATMPinRecall','QuickMath','ObjectRecall']
 const focusOrder = [
   "Hand Gross Motor - with assistive volume",
   "Nuero Rehab Activities",
@@ -36,6 +36,7 @@ const focusOrder = [
 
 const GameModal = ({open,setOpen,handleOpen,handleClose,user,setSelectedGame,selectedDeviceId,setTriggerRefresh, triggerRefresh}) => {
         const [allGames,setAllGames]=useState([])
+        console.log(allGames)
     
   // console.log(allGames);
   
