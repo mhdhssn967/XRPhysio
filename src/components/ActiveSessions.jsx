@@ -133,7 +133,7 @@ const handleLanguageChange = async (e, hospitalId, deviceId) => {
   <option value="malayalam">Malayalam</option>
   <option value="arabic">Arabic</option>
   <option value="telugu">Telugu</option>
-</select>cha
+</select>
 
 <p>{session.serverIP}</p>
 
@@ -164,4 +164,3 @@ const handleLanguageChange = async (e, hospitalId, deviceId) => {
 };
 
 export default ActiveSessions;
-
